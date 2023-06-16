@@ -1,0 +1,10 @@
+.content {
+   max-width: 600px;
+   margin: 80px 0 0 40px;
+}
+
+.lists {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}

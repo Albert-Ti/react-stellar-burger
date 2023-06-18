@@ -1,17 +1,26 @@
-.content {
-   max-width: 600px;
+.categories {
+  max-width: 600px;
 }
 
 .title {
-   margin: 40px 0 20px 0;
-}
-
-.nav {
-   display: flex;
+  margin: 40px 0 20px 0;
 }
 
 .scroll {
-   max-height: 716px;
-   margin: 40px 0 0 0;
-   overflow-x: hidden;
+  max-height: 716px;
+  margin: 40px 0 0 0;
+  overflow-x: hidden;
+}
+
+
+.category {
+  display: grid;
+  grid-template-rows: max-content;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 24px;
+}
+
+.category h2 {
+  grid-column: span 2;
+  margin: 40px 0px 0px 0px;
 }

@@ -12,6 +12,11 @@ function App() {
     hasError: false,
     items: []
   });
+  const [toggleBunId, setToogleBunId] = React.useState(1);
+  const [newIngredient, setNewIngredient] = React.useState([]);
+  const [bunItem, setBunItem] = React.useState({});
+  const [totalPrice, setTotalPrice] = React.useState(0);
+
 
   React.useEffect(() => {
     requestDataFromServer(setIngredients, ingredients, config);
@@ -20,9 +25,27 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
+      <h1 className={` ${styles.title} text_type_main-large`}>
+        {ingredients.isLoading && 'Загрузка...'}
+        {ingredients.hasError && 'Произошла ошибка при загрузке!'}
+        {!ingredients.isLoading && !ingredients.hasError && 'Соберите Бургер'}
+      </h1>
       <main className={styles.main}>
-        <BurgerIngredients  {...ingredients} />
-        <BurgerConstructor />
+        <BurgerIngredients
+          {...ingredients}
+          setNewIngredient={setNewIngredient}
+          toggleBunId={toggleBunId}
+          setToogleBunId={setToogleBunId}
+          bunItem={bunItem}
+          setBunItem={setBunItem}
+          setTotalPrice={setTotalPrice}
+        />
+        <BurgerConstructor
+          newIngredient={newIngredient}
+          toggleBunId={toggleBunId}
+          bunItem={bunItem}
+          totalPrice={totalPrice}
+        />
       </main>
     </div>
   );

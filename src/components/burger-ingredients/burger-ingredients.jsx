@@ -1,25 +1,22 @@
-import React from 'react';
-
 import styles from './burger-ingredients.module.css';
 import TabList from '../tab-list/tab-list';
 import Category from '../category/category';
 
 
-const BurgerIngredients = ({ isLoading, hasError, items }) => {
-  const [toggleBun, setToogleBun] = React.useState(0);
+const BurgerIngredients = (
+  { toggleBunId, setToogleBunId, isLoading, hasError, items, setNewIngredient, bunItem, setBunItem, setTotalPrice }
+) => {
+
   const title = {
     bun: 'Булки',
     sause: 'Соусы',
     main: 'Начинки'
   };
 
+
+
   return (
     <section className={styles.categories}>
-      <h1 className={`text text_type_main-large ${styles.title}`}>
-        {isLoading && 'Загрузка...'}
-        {hasError && 'Произошла ошибка при загрузке!'}
-        {!isLoading && !hasError && 'Соберите Бургер'}
-      </h1>
 
       <TabList />
       {
@@ -35,8 +32,10 @@ const BurgerIngredients = ({ isLoading, hasError, items }) => {
                   key={i}
                   {...item}
                   index={i}
-                  toggleBun={toggleBun}
-                  onClickToggleBun={(id) => setToogleBun(id)}
+                  toggleBunId={toggleBunId}
+                  onClickToggleBun={id => setToogleBunId(id)}
+                  addBunItem={bun => setBunItem(bun)}
+                  setTotalPrice={setTotalPrice}
                 />
               ))
             }
@@ -47,7 +46,12 @@ const BurgerIngredients = ({ isLoading, hasError, items }) => {
             {
               items.map((item, i) => (
                 item.type === 'sauce' &&
-                <Category key={i} {...item} />
+                <Category
+                  key={i}
+                  {...item}
+                  setNewIngredient={setNewIngredient}
+                  setTotalPrice={setTotalPrice}
+                />
               ))
             }
           </div>
@@ -56,8 +60,13 @@ const BurgerIngredients = ({ isLoading, hasError, items }) => {
             <h2 className='text text_type_main-medium'>{title.main}</h2>
             {
               items.map((item, i) => (
-                item.type === 'sauce' &&
-                <Category key={i} {...item} />
+                item.type === 'main' &&
+                <Category
+                  key={i}
+                  {...item}
+                  setNewIngredient={setNewIngredient}
+                  setTotalPrice={setTotalPrice}
+                />
               ))
             }
           </div>

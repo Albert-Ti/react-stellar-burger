@@ -3,19 +3,30 @@ import styles from './category.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 
-const Category = ({ toggleBun, index, onClickToggleBun, ...item }) => {
+const Category = ({ setTotalPrice, addBunItem, setNewIngredient, toggleBunId, index, onClickToggleBun, ...item }) => {
   const [countIngredient, setCountIngredient] = React.useState(0);
+
+  const handleClickIngredient = (item) => {
+    setCountIngredient(countIngredient + 1);
+    setNewIngredient(prev => [...prev, item]);
+    setTotalPrice(prev => prev + item.price);
+  }
 
   return (
     <figure
       className={styles.categoryItem}
       onClick={
         item.type !== 'bun'
-          ? () => setCountIngredient(countIngredient + 1)
-          : () => onClickToggleBun(index)
+          ? () => handleClickIngredient(item)
+          : () => {
+            onClickToggleBun(index);
+            addBunItem(item);
+            setTotalPrice(0);
+            setTotalPrice(prev => prev + item.price * 2);
+          }
       }>
       {
-        toggleBun === index &&
+        toggleBunId === index &&
         item.type === 'bun' &&
         <Counter count={1} size="default" extraClass="m-1" />
       }

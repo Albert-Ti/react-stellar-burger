@@ -1,50 +1,53 @@
 import React from 'react'
+
 import styles from "./app.module.css";
 import AppHeader from '../app-header/app-header'
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import requestDataFromServer from '../api-burger/api-burger';
-import config from '../../utils/config';
+import config from "../../utils/config";
 
 function App() {
+  React.useEffect(() => {
+    setIngredients({ ...ingredients, isLoading: true })
+    fetch(config.url)
+      .then(response => response.ok
+        ? response.json()
+        : Promise.reject(`Ошибка: ${response.status}`))
+      .then(json => setIngredients({
+        ...ingredients,
+        data: json.data
+      }))
+      .catch(error => setIngredients({ ...ingredients, hasError: true }))
+  }, [])
+
   const [ingredients, setIngredients] = React.useState({
     isLoading: false,
     hasError: false,
-    items: []
+    data: []
   });
-  const [toggleBunId, setToogleBunId] = React.useState(1);
-  const [newIngredient, setNewIngredient] = React.useState([]);
-  const [bunItem, setBunItem] = React.useState({});
-  const [totalPrice, setTotalPrice] = React.useState(0);
-
-
-  React.useEffect(() => {
-    requestDataFromServer(setIngredients, ingredients, config);
-  }, []);
+  const [addedIngredients, setAddedingredients] = React.useState([])
+  const [bun, setBun] = React.useState({})
 
   return (
     <div className={styles.app}>
       <AppHeader />
-      <h1 className={` ${styles.title} text_type_main-large`}>
+      <h1 className={`text_type_main-large ${styles.title}`}>
         {ingredients.isLoading && 'Загрузка...'}
-        {ingredients.hasError && 'Произошла ошибка при загрузке!'}
+        {ingredients.hasError && 'Ошибка'}
         {!ingredients.isLoading && !ingredients.hasError && 'Соберите Бургер'}
       </h1>
       <main className={styles.main}>
         <BurgerIngredients
+          addBun={setBun}
+          bun={bun}
+          addOtherIngredient={setAddedingredients}
           {...ingredients}
-          setNewIngredient={setNewIngredient}
-          toggleBunId={toggleBunId}
-          setToogleBunId={setToogleBunId}
-          bunItem={bunItem}
-          setBunItem={setBunItem}
-          setTotalPrice={setTotalPrice}
+          newIngredients={addedIngredients}
         />
         <BurgerConstructor
-          newIngredient={newIngredient}
-          toggleBunId={toggleBunId}
-          bunItem={bunItem}
-          totalPrice={totalPrice}
+          bun={bun}
+          otherIngredient={addedIngredients}
+          remove={setAddedingredients}
         />
       </main>
     </div>

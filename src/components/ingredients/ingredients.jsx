@@ -39,14 +39,14 @@ const Ingredients = ({ element, addOtherIngredient, addBun, newIngredients, bun 
         bun.text === name &&
         <Counter count={1} size="default" extraClass="m-1" />
       }
-      <img id='img' src={element.image} alt={element.name} />
+      <img id='img' src={image} alt={name} />
 
       <figcaption style={{ textAlign: 'center' }}>
         <div className={styles.info}>
-          <span id='price' className='text_type_digits-default'>{element.price}</span>
+          <span id='price' className='text_type_digits-default'>{price}</span>
           <CurrencyIcon />
         </div>
-        <p id='title' className='text text_type_main-default'>{element.name}</p>
+        <p id='title' className='text text_type_main-default'>{name}</p>
       </figcaption>
 
     </figure>

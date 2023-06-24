@@ -5,28 +5,21 @@ import AppHeader from '../app-header/app-header'
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import config from "../../utils/config";
+import fetchDataFromServer from '../../utils/api';
 
 function App() {
-  React.useEffect(() => {
-    setIngredients({ ...ingredients, isLoading: true })
-    fetch(config.url)
-      .then(response => response.ok
-        ? response.json()
-        : Promise.reject(`Ошибка: ${response.status}`))
-      .then(json => setIngredients({
-        ...ingredients,
-        data: json.data
-      }))
-      .catch(error => setIngredients({ ...ingredients, hasError: true }))
-  }, [])
 
   const [ingredients, setIngredients] = React.useState({
     isLoading: false,
     hasError: false,
     data: []
   });
-  const [addedIngredients, setAddedingredients] = React.useState([])
-  const [bun, setBun] = React.useState({})
+  const [addedIngredients, setAddedIngredients] = React.useState([]);
+  const [bun, setBun] = React.useState({});
+
+  React.useEffect(() => {
+    fetchDataFromServer(ingredients, setIngredients, config.url);
+  }, [])
 
   return (
     <div className={styles.app}>
@@ -40,14 +33,14 @@ function App() {
         <BurgerIngredients
           addBun={setBun}
           bun={bun}
-          addOtherIngredient={setAddedingredients}
+          addOtherIngredient={setAddedIngredients}
           {...ingredients}
           newIngredients={addedIngredients}
         />
         <BurgerConstructor
           bun={bun}
           otherIngredient={addedIngredients}
-          remove={setAddedingredients}
+          remove={setAddedIngredients}
         />
       </main>
     </div>

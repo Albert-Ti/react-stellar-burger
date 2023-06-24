@@ -6,11 +6,11 @@ import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktiku
 
 const BurgerConstructor = ({ bun, otherIngredient, remove }) => {
   const { text, price, thumbnail, isLocked } = bun;
-  const [totalPrice, setTotalPrice] = React.useState(0);
 
-  React.useEffect(() => {
-    setTotalPrice(otherIngredient.reduce((acc, item) => acc + item.price, bun.price));
-  })
+  const totalPrice = React.useMemo(() => {
+    return otherIngredient.reduce((acc, item) => acc + item.price, bun.price * 2);
+  }, [otherIngredient, bun.price])
+
 
   const removeIngredient = index => {
     remove(otherIngredient.filter((_, i) => i !== index));

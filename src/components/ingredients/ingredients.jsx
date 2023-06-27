@@ -1,11 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import styles from './ingredients.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const Ingredients = ({ element, addOtherIngredient, addBun, newIngredients, bun }) => {
+const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredients }) => {
   const { type, name, price, image } = element;
-  const [count, setCount] = React.useState(0);
 
   const handleClickIngredient = () => {
     const newIngredient = {
@@ -18,22 +18,22 @@ const Ingredients = ({ element, addOtherIngredient, addBun, newIngredients, bun 
     if (newIngredient.type === 'bun') {
       addBun(newIngredient)
     } else {
-      addOtherIngredient(prev => [
+      setAddedIngredients(prev => [
         ...prev,
         newIngredient
       ])
     }
   }
 
-  React.useEffect(() => {
-    setCount(newIngredients.filter(item => item.text === name).length)
-  }, [handleClickIngredient])
+  const countIngredient = React.useMemo(() => {
+    return addedIngredients.filter(item => item.text === name).length;
+  }, [addedIngredients])
 
   return (
     <figure onClick={handleClickIngredient} className={styles.items}>
       {
-        count > 0 &&
-        <Counter count={count} size="default" extraClass="m-1" />
+        countIngredient > 0 &&
+        <Counter count={countIngredient} size="default" extraClass="m-1" />
       }
       {
         bun.text === name &&
@@ -51,6 +51,20 @@ const Ingredients = ({ element, addOtherIngredient, addBun, newIngredients, bun 
 
     </figure>
   )
+}
+
+Ingredients.propTypes = {
+  bun: PropTypes.object,
+  addBun: PropTypes.func,
+  addedIngredients: PropTypes.arrayOf(PropTypes.object),
+  setAddedIngredients: PropTypes.func,
+
+  element: PropTypes.shape({
+    name: PropTypes.string,
+    price: PropTypes.number,
+    image: PropTypes.string,
+    type: PropTypes.string,
+  }),
 }
 
 export default Ingredients;

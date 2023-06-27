@@ -1,9 +1,11 @@
 import styles from './burger-ingredients.module.css';
 import Categories from '../categories/categories';
 import TabList from '../tab-list/tab-list';
+import PropTypes from "prop-types";
 
 
-const BurgerIngredients = ({ newIngredients, addOtherIngredient, isLoading, hasError, data, addBun, bun }) => {
+
+const BurgerIngredients = ({ data, isLoading, hasError, bun, addBun, addedIngredients, setAddedIngredients }) => {
   const categoryTitle = ['Булки', 'Соусы', 'Начинки',];
 
   return (
@@ -20,8 +22,8 @@ const BurgerIngredients = ({ newIngredients, addOtherIngredient, isLoading, hasE
                 data={data}
                 addBun={addBun}
                 bun={bun}
-                newIngredients={newIngredients}
-                addOtherIngredient={addOtherIngredient}
+                addedIngredients={addedIngredients}
+                setAddedIngredients={setAddedIngredients}
               />
             ))
           }
@@ -29,6 +31,11 @@ const BurgerIngredients = ({ newIngredients, addOtherIngredient, isLoading, hasE
       }
     </section>
   )
+}
+
+BurgerIngredients.propTypes = {
+  isLoading: PropTypes.bool,
+  hasError: PropTypes.bool
 }
 
 export default BurgerIngredients;

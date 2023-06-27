@@ -1,19 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 
 import styles from './burger-constructor.module.css';
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 
-const BurgerConstructor = ({ bun, otherIngredient, remove }) => {
+const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
   const { text, price, thumbnail, isLocked } = bun;
 
   const totalPrice = React.useMemo(() => {
-    return otherIngredient.reduce((acc, item) => acc + item.price, bun.price * 2);
-  }, [otherIngredient, bun.price])
+    return addedIngredients.reduce((acc, item) => acc + item.price, bun.price * 2);
+  }, [addedIngredients, bun.price])
 
 
   const removeIngredient = index => {
-    remove(otherIngredient.filter((_, i) => i !== index));
+    remove(addedIngredients.filter((_, i) => i !== index));
   }
 
   return (
@@ -31,8 +32,8 @@ const BurgerConstructor = ({ bun, otherIngredient, remove }) => {
         }
         <div className={`custom-scroll ${styles.lists}`}>
           {
-            otherIngredient.length > 0 &&
-            otherIngredient.map((item, i) => (
+            addedIngredients.length > 0 &&
+            addedIngredients.map((item, i) => (
               <div key={i} className={styles.list} >
                 <DragIcon />
                 <ConstructorElement
@@ -66,6 +67,18 @@ const BurgerConstructor = ({ bun, otherIngredient, remove }) => {
       }
     </section>
   )
+}
+
+BurgerConstructor.propTypes = {
+  bun: PropTypes.shape({
+    text: PropTypes.string,
+    price: PropTypes.number,
+    thumbnail: PropTypes.string,
+    isLocked: PropTypes.bool,
+  }),
+  remove: PropTypes.func,
+  addedIngredients: PropTypes.arrayOf(PropTypes.object),
+
 }
 
 export default BurgerConstructor;

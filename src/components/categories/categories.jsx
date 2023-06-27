@@ -1,7 +1,10 @@
+import PropTypes from "prop-types";
+
 import styles from './categories.module.css';
 import Ingredients from "../ingredients/ingredients";
 
-const Categories = ({ data, title, addOtherIngredient, addBun, newIngredients, bun }) => {
+
+const Categories = ({ data, title, bun, addBun, addedIngredients, setAddedIngredients }) => {
 
   return (
     <div className={styles.items}>
@@ -9,16 +12,21 @@ const Categories = ({ data, title, addOtherIngredient, addBun, newIngredients, b
 
       {data.map((item, index) => {
         if (title === 'Булки' && item.type === 'bun')
-          return <Ingredients addBun={addBun} addOtherIngredient={addOtherIngredient} element={item} key={index} newIngredients={newIngredients} bun={bun} />
+          return <Ingredients element={item} key={index} addedIngredients={addedIngredients} setAddedIngredients={setAddedIngredients} bun={bun} addBun={addBun} />
 
         if (title === 'Соусы' && item.type === 'sauce')
-          return <Ingredients addBun={addBun} addOtherIngredient={addOtherIngredient} element={item} key={index} newIngredients={newIngredients} bun={bun} />
+          return <Ingredients element={item} key={index} addedIngredients={addedIngredients} setAddedIngredients={setAddedIngredients} bun={bun} addBun={addBun} />
 
         if (title === 'Начинки' && item.type === 'main')
-          return <Ingredients addBun={addBun} addOtherIngredient={addOtherIngredient} element={item} key={index} newIngredients={newIngredients} bun={bun} />
+          return <Ingredients element={item} key={index} addedIngredients={addedIngredients} setAddedIngredients={setAddedIngredients} bun={bun} addBun={addBun} />
       })}
     </div>
   )
+}
+
+Categories.propTypes = {
+  title: PropTypes.string,
+  data: PropTypes.arrayOf(PropTypes.object)
 }
 
 export default Categories;

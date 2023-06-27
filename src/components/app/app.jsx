@@ -4,8 +4,8 @@ import styles from "./app.module.css";
 import AppHeader from '../app-header/app-header'
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import config from "../../utils/config";
-import fetchDataFromServer from '../../utils/api';
+import getIngredients from '../../utils/api';
+
 
 function App() {
 
@@ -18,7 +18,10 @@ function App() {
   const [bun, setBun] = React.useState({});
 
   React.useEffect(() => {
-    fetchDataFromServer(ingredients, setIngredients, config.url);
+    getIngredients().then(data => setIngredients({
+      ...ingredients,
+      data: data
+    }));
   }, [])
 
   return (
@@ -31,15 +34,15 @@ function App() {
       </h1>
       <main className={styles.main}>
         <BurgerIngredients
-          addBun={setBun}
-          bun={bun}
-          addOtherIngredient={setAddedIngredients}
           {...ingredients}
-          newIngredients={addedIngredients}
+          bun={bun}
+          addBun={setBun}
+          addedIngredients={addedIngredients}
+          setAddedIngredients={setAddedIngredients}
         />
         <BurgerConstructor
           bun={bun}
-          otherIngredient={addedIngredients}
+          addedIngredients={addedIngredients}
           remove={setAddedIngredients}
         />
       </main>

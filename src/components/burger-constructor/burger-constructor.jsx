@@ -71,9 +71,9 @@ const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
 BurgerConstructor.propTypes = {
   bun: PropTypes.shape({
     text: PropTypes.string,
-    price: PropTypes.number.isRequired,
-    thumbnail: PropTypes.string.isRequired,
-    isLocked: PropTypes.bool.isRequired,
+    price: PropTypes.number,
+    thumbnail: PropTypes.string,
+    isLocked: PropTypes.bool,
   }),
 
   remove: PropTypes.func.isRequired,

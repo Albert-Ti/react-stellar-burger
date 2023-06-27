@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './ingredients.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
+
 const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredients }) => {
   const { type, name, price, image } = element;
 
@@ -27,7 +28,7 @@ const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredien
 
   const countIngredient = React.useMemo(() => {
     return addedIngredients.filter(item => item.text === name).length;
-  }, [addedIngredients])
+  }, [addedIngredients, name])
 
   return (
     <figure onClick={handleClickIngredient} className={styles.items}>
@@ -39,32 +40,35 @@ const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredien
         bun.text === name &&
         <Counter count={1} size="default" extraClass="m-1" />
       }
-      <img id='img' src={image} alt={name} />
+      <img src={image} alt={name} />
 
       <figcaption style={{ textAlign: 'center' }}>
         <div className={styles.info}>
-          <span id='price' className='text_type_digits-default'>{price}</span>
+          <span className='text_type_digits-default'>{price}</span>
           <CurrencyIcon />
         </div>
-        <p id='title' className='text text_type_main-default'>{name}</p>
+        <p className='text text_type_main-default'>{name}</p>
       </figcaption>
-
     </figure>
   )
 }
 
+
 Ingredients.propTypes = {
-  bun: PropTypes.object,
-  addBun: PropTypes.func,
-  addedIngredients: PropTypes.arrayOf(PropTypes.object),
-  setAddedIngredients: PropTypes.func,
+  bun: PropTypes.shape({
+    text: PropTypes.string,
+  }).isRequired,
+
+  addBun: PropTypes.func.isRequired,
+  addedIngredients: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  setAddedIngredients: PropTypes.func.isRequired,
 
   element: PropTypes.shape({
-    name: PropTypes.string,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    type: PropTypes.string,
-  }),
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default Ingredients;

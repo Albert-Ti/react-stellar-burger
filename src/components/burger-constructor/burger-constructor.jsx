@@ -12,7 +12,6 @@ const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
     return addedIngredients.reduce((acc, item) => acc + item.price, bun.price * 2);
   }, [addedIngredients, bun.price])
 
-
   const removeIngredient = index => {
     remove(addedIngredients.filter((_, i) => i !== index));
   }
@@ -72,13 +71,13 @@ const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
 BurgerConstructor.propTypes = {
   bun: PropTypes.shape({
     text: PropTypes.string,
-    price: PropTypes.number,
-    thumbnail: PropTypes.string,
-    isLocked: PropTypes.bool,
+    price: PropTypes.number.isRequired,
+    thumbnail: PropTypes.string.isRequired,
+    isLocked: PropTypes.bool.isRequired,
   }),
-  remove: PropTypes.func,
-  addedIngredients: PropTypes.arrayOf(PropTypes.object),
 
+  remove: PropTypes.func.isRequired,
+  addedIngredients: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 }
 
 export default BurgerConstructor;

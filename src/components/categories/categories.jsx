@@ -4,13 +4,13 @@ import styles from './categories.module.css';
 import Ingredients from "../ingredients/ingredients";
 
 
-const Categories = ({ data, title, bun, addBun, addedIngredients, setAddedIngredients }) => {
+const Categories = ({ items, title, bun, addBun, addedIngredients, setAddedIngredients }) => {
 
   return (
     <div className={styles.items}>
       <h2 className='text text_type_main-medium'>{title}</h2>
 
-      {data.map((item, index) => {
+      {items.map((item, index) => {
         if (title === 'Булки' && item.type === 'bun')
           return <Ingredients element={item} key={index} addedIngredients={addedIngredients} setAddedIngredients={setAddedIngredients} bun={bun} addBun={addBun} />
 
@@ -25,8 +25,8 @@ const Categories = ({ data, title, bun, addBun, addedIngredients, setAddedIngred
 }
 
 Categories.propTypes = {
-  title: PropTypes.string,
-  data: PropTypes.arrayOf(PropTypes.object)
+  title: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
 export default Categories;

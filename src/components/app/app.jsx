@@ -8,20 +8,21 @@ import getIngredients from '../../utils/api';
 
 
 function App() {
-
   const [ingredients, setIngredients] = React.useState({
-    isLoading: false,
+    isLoading: true,
     hasError: false,
-    data: []
+    items: []
   });
   const [addedIngredients, setAddedIngredients] = React.useState([]);
   const [bun, setBun] = React.useState({});
 
   React.useEffect(() => {
-    getIngredients().then(data => setIngredients({
-      ...ingredients,
-      data: data
-    }));
+    getIngredients()
+      .then(data => setIngredients({ ...ingredients, isLoading: false, items: data }))
+      .catch(err => {
+        setIngredients({ ...ingredients, hasError: true });
+        console.log(`Произошла ошибка: ${err}`);
+      })
   }, [])
 
   return (
@@ -29,7 +30,7 @@ function App() {
       <AppHeader />
       <h1 className={`text_type_main-large ${styles.title}`}>
         {ingredients.isLoading && 'Загрузка...'}
-        {ingredients.hasError && 'Ошибка'}
+        {ingredients.hasError && 'Ошибка запроса!'}
         {!ingredients.isLoading && !ingredients.hasError && 'Соберите Бургер'}
       </h1>
       <main className={styles.main}>

@@ -1,15 +1,52 @@
+import React from 'react'
+
 import styles from "./app.module.css";
-import { data } from "../../utils/data";
+import AppHeader from '../app-header/app-header'
+import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import BurgerConstructor from "../burger-constructor/burger-constructor";
+import getIngredients from '../../utils/api';
+
 
 function App() {
+  const [ingredients, setIngredients] = React.useState({
+    isLoading: true,
+    hasError: false,
+    items: []
+  });
+  const [addedIngredients, setAddedIngredients] = React.useState([]);
+  const [bun, setBun] = React.useState({});
+
+  React.useEffect(() => {
+    getIngredients()
+      .then(data => setIngredients({ ...ingredients, isLoading: false, items: data }))
+      .catch(err => {
+        setIngredients({ ...ingredients, hasError: true });
+        console.log(`Произошла ошибка: ${err}`);
+      })
+  }, [])
+
   return (
     <div className={styles.app}>
-      <pre style={{
-      	margin: "auto",
-      	fontSize: "1.5rem"
-      }}>
-      	Измените src/components/app/app.jsx и сохраните для обновления.
-      </pre>
+      <AppHeader />
+      <h1 className={`text_type_main-large ${styles.title}`}>
+        {ingredients.isLoading && 'Загрузка...'}
+        {ingredients.hasError && 'Ошибка запроса!'}
+        {!ingredients.isLoading && !ingredients.hasError && 'Соберите Бургер'}
+      </h1>
+      <main className={styles.main}>
+        <BurgerIngredients
+          {...ingredients}
+          bun={bun}
+          addBun={setBun}
+          addedIngredients={addedIngredients}
+          setAddedIngredients={setAddedIngredients}
+        />
+        <BurgerConstructor
+          bun={bun}
+          addedIngredients={addedIngredients}
+          remove={setAddedIngredients}
+        />
+      </main>
     </div>
   );
 }

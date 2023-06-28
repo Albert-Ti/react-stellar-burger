@@ -1,0 +1,16 @@
+.items {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   margin: 0;
+   gap: 8px;
+   position: relative;
+   max-width: 272px;
+}
+
+.info {
+   display: flex;
+   justify-content: center;
+   gap: 9px;
+   margin-bottom: 8px;
+}

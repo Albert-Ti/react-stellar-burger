@@ -1,27 +1,31 @@
 import React from 'react'
 
-import styles from "./app.module.css";
+import styles from './app.module.css'
 import AppHeader from '../app-header/app-header'
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import getIngredients from '../../utils/api';
-
+import BurgerIngredients from '../burger-ingredients/burger-ingredients'
+import BurgerConstructor from '../burger-constructor/burger-constructor'
+import getIngredients from '../../utils/api'
+import OrderDetails from '../order-details/order-details'
 
 function App() {
+  const [visibleModal, setVisibleModal] = React.useState({
+    order: false,
+    ingredient: false
+  })
   const [ingredients, setIngredients] = React.useState({
     isLoading: true,
     hasError: false,
     items: []
-  });
-  const [addedIngredients, setAddedIngredients] = React.useState([]);
-  const [bun, setBun] = React.useState({});
+  })
+  const [addedIngredients, setAddedIngredients] = React.useState([])
+  const [bun, setBun] = React.useState({})
 
   React.useEffect(() => {
     getIngredients()
       .then(data => setIngredients({ ...ingredients, isLoading: false, items: data }))
       .catch(err => {
-        setIngredients({ ...ingredients, hasError: true });
-        console.log(`Произошла ошибка: ${err}`);
+        setIngredients({ ...ingredients, hasError: true })
+        console.log(`Произошла ошибка: ${err}`)
       })
   }, [])
 
@@ -45,10 +49,12 @@ function App() {
           bun={bun}
           addedIngredients={addedIngredients}
           remove={setAddedIngredients}
+          setVisibleModal={setVisibleModal}
         />
       </main>
+      <OrderDetails setVisibleModal={setVisibleModal} visibleModal={visibleModal} />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,12 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import styles from './ingredients.module.css';
-import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import styles from './ingredients.module.css'
+import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
 const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredients }) => {
-  const { type, name, price, image } = element;
+  const { type, name, price, image } = element
 
   const handleClickIngredient = () => {
     const newIngredient = {
@@ -14,35 +13,26 @@ const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredien
       isLocked: type === 'bun' && true,
       text: name,
       price: price,
-      thumbnail: image,
+      thumbnail: image
     }
     if (newIngredient.type === 'bun') {
       addBun(newIngredient)
     } else {
-      setAddedIngredients(prev => [
-        ...prev,
-        newIngredient
-      ])
+      setAddedIngredients(prev => [...prev, newIngredient])
     }
   }
 
   const countIngredient = React.useMemo(() => {
-    return addedIngredients.filter(item => item.text === name).length;
+    return addedIngredients.filter(item => item.text === name).length
   }, [addedIngredients, name])
 
   return (
     <figure onClick={handleClickIngredient} className={styles.items}>
-      {
-        countIngredient > 0 &&
-        <Counter count={countIngredient} size="default" extraClass="m-1" />
-      }
-      {
-        bun.text === name &&
-        <Counter count={1} size="default" extraClass="m-1" />
-      }
+      {countIngredient > 0 && <Counter count={countIngredient} size='default' extraClass='m-1' />}
+      {bun.text === name && <Counter count={1} size='default' extraClass='m-1' />}
       <img src={image} alt={name} />
 
-      <figcaption style={{ textAlign: 'center' }}>
+      <figcaption className={styles.figcaption}>
         <div className={styles.info}>
           <span className='text_type_digits-default'>{price}</span>
           <CurrencyIcon />
@@ -53,10 +43,9 @@ const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredien
   )
 }
 
-
 Ingredients.propTypes = {
   bun: PropTypes.shape({
-    text: PropTypes.string,
+    text: PropTypes.string
   }).isRequired,
 
   addBun: PropTypes.func.isRequired,
@@ -67,8 +56,8 @@ Ingredients.propTypes = {
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-  }).isRequired,
+    type: PropTypes.string.isRequired
+  }).isRequired
 }
 
-export default Ingredients;
+export default Ingredients

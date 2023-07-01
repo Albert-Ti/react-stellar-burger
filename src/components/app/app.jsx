@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import styles from './app.module.css'
 import AppHeader from '../app-header/app-header'
@@ -6,6 +6,7 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients'
 import BurgerConstructor from '../burger-constructor/burger-constructor'
 import getIngredients from '../../utils/api'
 import OrderDetails from '../order-details/order-details'
+import IngredientDetails from '../ingredient-details/ingredient-details'
 
 function App() {
   const [visibleModal, setVisibleModal] = React.useState({
@@ -17,8 +18,9 @@ function App() {
     hasError: false,
     items: []
   })
-  const [addedIngredients, setAddedIngredients] = React.useState([])
   const [bun, setBun] = React.useState({})
+  const [addedIngredients, setAddedIngredients] = React.useState([])
+  const [itemModalIngredient, setItemModalIngredient] = useState({})
 
   React.useEffect(() => {
     getIngredients()
@@ -50,9 +52,15 @@ function App() {
           addedIngredients={addedIngredients}
           remove={setAddedIngredients}
           setVisibleModal={setVisibleModal}
+          setItemModalIngredient={setItemModalIngredient}
         />
       </main>
       <OrderDetails setVisibleModal={setVisibleModal} visibleModal={visibleModal} />
+      <IngredientDetails
+        setVisibleModal={setVisibleModal}
+        visibleModal={visibleModal}
+        itemModalIngredient={itemModalIngredient}
+      />
     </div>
   )
 }

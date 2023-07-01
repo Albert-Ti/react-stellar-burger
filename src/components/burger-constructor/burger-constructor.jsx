@@ -9,7 +9,13 @@ import {
   DragIcon
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-const BurgerConstructor = ({ bun, addedIngredients, remove, setVisibleModal }) => {
+const BurgerConstructor = ({
+  bun,
+  addedIngredients,
+  remove,
+  setVisibleModal,
+  setItemModalIngredient
+}) => {
   const { text, price, thumbnail, isLocked } = bun
 
   const totalPrice = React.useMemo(() => {
@@ -24,22 +30,30 @@ const BurgerConstructor = ({ bun, addedIngredients, remove, setVisibleModal }) =
     addedIngredients.length && setVisibleModal({ ingredient: false, order: true })
   }
 
+  const openModalIngredient = item => {
+    setItemModalIngredient(item)
+    setVisibleModal({ ingredient: true, order: false })
+  }
+
   return (
     <section className={styles.content}>
       <div className={styles.wrapper}>
-        {text && (
-          <ConstructorElement
-            type='top'
-            isLocked={isLocked}
-            text={text}
-            price={price}
-            thumbnail={thumbnail}
-          />
-        )}
-        <div className={`custom-scroll ${styles.lists}`}>
+        <div onClick={() => openModalIngredient(bun)} className={styles.bunItem}>
+          {text && (
+            <ConstructorElement
+              type='top'
+              isLocked={isLocked}
+              text={text}
+              price={price}
+              thumbnail={thumbnail}
+            />
+          )}
+        </div>
+
+        <ul className={`custom-scroll ${styles.lists}`}>
           {addedIngredients.length > 0 &&
             addedIngredients.map((item, i) => (
-              <div key={i} className={styles.list}>
+              <li onClick={() => openModalIngredient(item)} key={i} className={styles.list}>
                 <DragIcon />
                 <ConstructorElement
                   text={item.text}
@@ -47,18 +61,21 @@ const BurgerConstructor = ({ bun, addedIngredients, remove, setVisibleModal }) =
                   thumbnail={item.thumbnail}
                   handleClose={() => removeIngredient(i)}
                 />
-              </div>
+              </li>
             ))}
+        </ul>
+
+        <div onClick={() => openModalIngredient(bun)} className={styles.bunItem}>
+          {text && (
+            <ConstructorElement
+              type='bottom'
+              isLocked={isLocked}
+              text={text}
+              price={price}
+              thumbnail={thumbnail}
+            />
+          )}
         </div>
-        {text && (
-          <ConstructorElement
-            type='bottom'
-            isLocked={isLocked}
-            text={text}
-            price={price}
-            thumbnail={thumbnail}
-          />
-        )}
       </div>
       {text && (
         <div className={styles.priceBurger}>

@@ -5,7 +5,7 @@ import styles from './ingredients.module.css'
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
 const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredients }) => {
-  const { type, name, price, image } = element
+  const { type, name, price, image, calories, carbohydrates, fat, proteins } = element
 
   const handleClickIngredient = () => {
     const newIngredient = {
@@ -13,7 +13,13 @@ const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredien
       isLocked: type === 'bun' && true,
       text: name,
       price: price,
-      thumbnail: image
+      thumbnail: image,
+      info: {
+        calories,
+        proteins,
+        fat,
+        carbohydrates
+      }
     }
     if (newIngredient.type === 'bun') {
       addBun(newIngredient)

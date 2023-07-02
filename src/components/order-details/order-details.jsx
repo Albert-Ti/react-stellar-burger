@@ -1,11 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { createPortal } from 'react-dom'
-import styles from './order-details.module.css'
 
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import checkIcon from '../../image/graphics.svg'
-
-const modal = document.getElementById('modal')
+import styles from './order-details.module.css'
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { modalElememt } from '../../utils/constants'
 
 const OrderDetails = ({ setVisibleModal, visibleModal }) => {
   const animationClasses = [styles.overlay, styles.visible]
@@ -42,8 +42,13 @@ const OrderDetails = ({ setVisibleModal, visibleModal }) => {
         </p>
       </div>
     </div>,
-    modal
+    modalElememt
   )
+}
+
+OrderDetails.propTypes = {
+  visibleModal: PropTypes.objectOf(PropTypes.bool.isRequired).isRequired,
+  setVisibleModal: PropTypes.func.isRequired
 }
 
 export default OrderDetails

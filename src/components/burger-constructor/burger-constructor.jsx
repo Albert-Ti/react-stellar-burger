@@ -8,6 +8,7 @@ import {
   CurrencyIcon,
   DragIcon
 } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ingredientConstructorPropType } from '../../utils/prop-types'
 
 const BurgerConstructor = ({
   bun,
@@ -22,7 +23,8 @@ const BurgerConstructor = ({
     return addedIngredients.reduce((acc, item) => acc + item.price, bun.price * 2)
   }, [addedIngredients, bun.price])
 
-  const removeIngredient = index => {
+  const removeIngredient = index => event => {
+    event.stopPropagation()
     remove(addedIngredients.filter((_, i) => i !== index))
   }
 
@@ -51,18 +53,17 @@ const BurgerConstructor = ({
         </div>
 
         <ul className={`custom-scroll ${styles.lists}`}>
-          {addedIngredients.length > 0 &&
-            addedIngredients.map((item, i) => (
-              <li onClick={() => openModalIngredient(item)} key={i} className={styles.list}>
-                <DragIcon />
-                <ConstructorElement
-                  text={item.text}
-                  price={item.price}
-                  thumbnail={item.thumbnail}
-                  handleClose={() => removeIngredient(i)}
-                />
-              </li>
-            ))}
+          {addedIngredients?.map((item, i) => (
+            <li onClick={() => openModalIngredient(item)} key={i} className={styles.list}>
+              <DragIcon />
+              <ConstructorElement
+                text={item.text}
+                price={item.price}
+                thumbnail={item.thumbnail}
+                handleClose={removeIngredient(i)}
+              />
+            </li>
+          ))}
         </ul>
 
         <div onClick={() => openModalIngredient(bun)} className={styles.bunItem}>
@@ -92,15 +93,12 @@ const BurgerConstructor = ({
 }
 
 BurgerConstructor.propTypes = {
-  bun: PropTypes.shape({
-    text: PropTypes.string,
-    price: PropTypes.number,
-    thumbnail: PropTypes.string,
-    isLocked: PropTypes.bool
-  }),
+  bun: ingredientConstructorPropType,
 
+  addedIngredients: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   remove: PropTypes.func.isRequired,
-  addedIngredients: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
+  setItemModalIngredient: PropTypes.func.isRequired,
+  setVisibleModal: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor

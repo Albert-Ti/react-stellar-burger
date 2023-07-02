@@ -1,9 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { createPortal } from 'react-dom'
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import styles from './ingredient-details.module.css'
 
-const modal = document.getElementById('modal')
+import styles from './ingredient-details.module.css'
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { modalElememt } from '../../utils/constants'
+import { ingredientModalPropType } from '../../utils/prop-types'
 
 const IngredientDetails = ({ setVisibleModal, visibleModal, itemModalIngredient }) => {
   const animationClasses = [styles.overlay, styles.visible]
@@ -49,8 +51,15 @@ const IngredientDetails = ({ setVisibleModal, visibleModal, itemModalIngredient 
         </figure>
       </div>
     </div>,
-    modal
+    modalElememt
   )
+}
+
+IngredientDetails.propTypes = {
+  itemModalIngredient: ingredientModalPropType,
+
+  visibleModal: PropTypes.objectOf(PropTypes.bool.isRequired).isRequired,
+  setVisibleModal: PropTypes.func.isRequired
 }
 
 export default IngredientDetails

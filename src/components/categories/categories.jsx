@@ -8,12 +8,12 @@ const Categories = ({ items, title, bun, addBun, addedIngredients, setAddedIngre
     <div className={styles.items}>
       <h2 className='text text_type_main-medium'>{title}</h2>
 
-      {items.map((item, index) => {
+      {items.map(item => {
         if (title === 'Булки' && item.type === 'bun')
           return (
             <Ingredients
               element={item}
-              key={index}
+              key={item._id}
               addedIngredients={addedIngredients}
               setAddedIngredients={setAddedIngredients}
               bun={bun}
@@ -25,7 +25,7 @@ const Categories = ({ items, title, bun, addBun, addedIngredients, setAddedIngre
           return (
             <Ingredients
               element={item}
-              key={index}
+              key={item._id}
               addedIngredients={addedIngredients}
               setAddedIngredients={setAddedIngredients}
               bun={bun}
@@ -37,7 +37,7 @@ const Categories = ({ items, title, bun, addBun, addedIngredients, setAddedIngre
           return (
             <Ingredients
               element={item}
-              key={index}
+              key={item._id}
               addedIngredients={addedIngredients}
               setAddedIngredients={setAddedIngredients}
               bun={bun}

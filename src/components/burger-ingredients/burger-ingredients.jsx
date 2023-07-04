@@ -14,15 +14,14 @@ const BurgerIngredients = ({
   setAddedIngredients
 }) => {
   const categoryTitle = ['Булки', 'Соусы', 'Начинки']
-
   return (
     <section className={styles.content}>
       <TabList />
       {!isLoading && !hasError && (
         <div className={`custom-scroll ${styles.scroll}`}>
-          {categoryTitle.map((title, i) => (
+          {categoryTitle.map(title => (
             <Categories
-              key={i}
+              key={title}
               title={title}
               items={items}
               addBun={addBun}

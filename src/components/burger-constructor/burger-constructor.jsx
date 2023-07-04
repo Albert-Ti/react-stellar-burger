@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { ingredientConstructorPropType } from '../../utils/prop-types'
 
 import styles from './burger-constructor.module.css'
 import {
@@ -8,7 +9,6 @@ import {
   CurrencyIcon,
   DragIcon
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { ingredientConstructorPropType } from '../../utils/prop-types'
 
 const BurgerConstructor = ({
   bun,

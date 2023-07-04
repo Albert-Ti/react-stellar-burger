@@ -5,6 +5,7 @@ import AppHeader from '../app-header/app-header'
 import BurgerIngredients from '../burger-ingredients/burger-ingredients'
 import BurgerConstructor from '../burger-constructor/burger-constructor'
 import getIngredients from '../../utils/api'
+import Modal from '../modal/modal'
 import OrderDetails from '../order-details/order-details'
 import IngredientDetails from '../ingredient-details/ingredient-details'
 
@@ -55,12 +56,15 @@ function App() {
           setItemModalIngredient={setItemModalIngredient}
         />
       </main>
-      <OrderDetails setVisibleModal={setVisibleModal} visibleModal={visibleModal} />
-      <IngredientDetails
+
+      <Modal
         setVisibleModal={setVisibleModal}
         visibleModal={visibleModal}
         itemModalIngredient={itemModalIngredient}
-      />
+      >
+        {visibleModal.order && <OrderDetails />}
+        {visibleModal.ingredient && <IngredientDetails itemModalIngredient={itemModalIngredient} />}
+      </Modal>
     </div>
   )
 }

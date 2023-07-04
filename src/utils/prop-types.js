@@ -23,3 +23,8 @@ export const ingredientModalPropType = PropTypes.shape({
   text: PropTypes.string,
   info: PropTypes.objectOf(PropTypes.number)
 }).isRequired
+
+export const visibleModalPropType = PropTypes.shape({
+  order: PropTypes.bool.isRequired,
+  ingredient: PropTypes.bool.isRequired
+})

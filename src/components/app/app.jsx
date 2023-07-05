@@ -1,19 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import styles from './app.module.css'
 import AppHeader from '../app-header/app-header'
 import BurgerIngredients from '../burger-ingredients/burger-ingredients'
 import BurgerConstructor from '../burger-constructor/burger-constructor'
 import getIngredients from '../../utils/api'
-import Modal from '../modal/modal'
-import OrderDetails from '../order-details/order-details'
-import IngredientDetails from '../ingredient-details/ingredient-details'
 
 function App() {
-  const [visibleModal, setVisibleModal] = React.useState({
-    order: false,
-    ingredient: false
-  })
   const [ingredients, setIngredients] = React.useState({
     isLoading: true,
     hasError: false,
@@ -21,7 +14,6 @@ function App() {
   })
   const [bun, setBun] = React.useState({})
   const [addedIngredients, setAddedIngredients] = React.useState([])
-  const [itemModalIngredient, setItemModalIngredient] = useState({})
 
   React.useEffect(() => {
     getIngredients()
@@ -52,19 +44,8 @@ function App() {
           bun={bun}
           addedIngredients={addedIngredients}
           remove={setAddedIngredients}
-          setVisibleModal={setVisibleModal}
-          setItemModalIngredient={setItemModalIngredient}
         />
       </main>
-
-      <Modal
-        setVisibleModal={setVisibleModal}
-        visibleModal={visibleModal}
-        itemModalIngredient={itemModalIngredient}
-      >
-        {visibleModal.order && <OrderDetails />}
-        {visibleModal.ingredient && <IngredientDetails itemModalIngredient={itemModalIngredient} />}
-      </Modal>
     </div>
   )
 }

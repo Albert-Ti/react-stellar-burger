@@ -1,9 +1,9 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
+import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ingredientConstructorPropType, ingredientPropType } from '../../utils/prop-types'
 import styles from './ingredients.module.css'
-import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
-import { ingredientPropType } from '../../utils/prop-types'
 
 const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredients }) => {
   const { type, name, price, image, calories, carbohydrates, fat, proteins } = element
@@ -51,15 +51,12 @@ const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredien
 }
 
 Ingredients.propTypes = {
-  bun: PropTypes.shape({
-    text: PropTypes.string
-  }).isRequired,
+  element: ingredientPropType,
+  bun: ingredientConstructorPropType,
 
+  addedIngredients: PropTypes.arrayOf(ingredientConstructorPropType).isRequired,
   addBun: PropTypes.func.isRequired,
-  addedIngredients: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  setAddedIngredients: PropTypes.func.isRequired,
-
-  element: ingredientPropType
+  setAddedIngredients: PropTypes.func.isRequired
 }
 
 export default Ingredients

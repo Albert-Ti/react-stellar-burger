@@ -15,12 +15,7 @@ export const ingredientConstructorPropType = PropTypes.shape({
   text: PropTypes.string,
   price: PropTypes.number,
   thumbnail: PropTypes.string,
-  isLocked: PropTypes.bool
-}).isRequired
-
-export const ingredientModalPropType = PropTypes.shape({
-  thumbnail: PropTypes.string,
-  text: PropTypes.string,
+  isLocked: PropTypes.bool,
   info: PropTypes.objectOf(PropTypes.number)
 }).isRequired
 

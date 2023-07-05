@@ -9,45 +9,50 @@ import styles from './modal.module.css'
 
 export const modalElememt = document.getElementById('modal')
 
-const Modal = ({ setVisibleModal, visibleModal, children }) => {
-  const onCloseModal = () => {
-    setVisibleModal({ ingredient: false, order: false })
-  }
+const Modal = ({ onClose, showModal, children }) => {
+  const animationClasses = [styles.modal, styles.visible]
 
+  const handleClick = () => {
+    onClose({ ingredient: false, order: false })
+  }
   React.useEffect(() => {
     function clickEscape(e) {
-      if (e.key === 'Escape') setVisibleModal({ ingredient: false, order: false })
+      if (e.key === 'Escape') onClose({ ingredient: false, order: false })
     }
     document.addEventListener('keydown', clickEscape)
     return () => document.removeEventListener('keydown', clickEscape)
-  }, [visibleModal])
+  }, [showModal, onClose])
 
   return createPortal(
-    <ModalOverlay onCloseModal={onCloseModal} visibleModal={visibleModal}>
+    <div
+      className={
+        showModal.order || showModal.ingredient ? animationClasses.join(' ') : styles.modal
+      }
+    >
+      <ModalOverlay onClose={handleClick} />
       <div
         onClick={e => e.stopPropagation()}
-        className={`${styles.wrapper} ${visibleModal.order && styles.paddingOrder}`}
+        className={`${styles.wrapper} ${showModal.order && styles.paddingOrder}`}
       >
         <h3
-          className={`text text_type_main-large ${styles.title} ${
-            visibleModal.order && styles.right
-          }`}
+          className={`text text_type_main-large ${styles.title} ${showModal.order && styles.right}`}
         >
-          {visibleModal.ingredient && <span>Детали ингридиента</span>}
+          {showModal.ingredient && <span>Детали ингридиента</span>}
           <button className={styles.btn}>
-            <CloseIcon onClick={onCloseModal} />
+            <CloseIcon onClick={handleClick} />
           </button>
         </h3>
         {children}
       </div>
-    </ModalOverlay>,
+    </div>,
     modalElememt
   )
 }
 
 Modal.propTypes = {
-  visibleModal: visibleModalPropType,
-  setVisibleModal: PropTypes.func.isRequired
+  children: PropTypes.node.isRequired,
+  showModal: visibleModalPropType,
+  onClose: PropTypes.func.isRequired
 }
 
 export default Modal

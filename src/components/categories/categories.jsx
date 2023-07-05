@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 
 import styles from './categories.module.css'
 import Ingredients from '../ingredients/ingredients'
+import { ingredientPropType } from '../../utils/prop-types'
 
 const Categories = ({ items, title, bun, addBun, addedIngredients, setAddedIngredients }) => {
   return (
@@ -51,7 +52,7 @@ const Categories = ({ items, title, bun, addBun, addedIngredients, setAddedIngre
 
 Categories.propTypes = {
   title: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired
+  items: PropTypes.arrayOf(ingredientPropType).isRequired
 }
 
 export default Categories

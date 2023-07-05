@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types'
+import { ingredientConstructorPropType } from '../../utils/prop-types'
 import styles from './ingredient-details.module.css'
-import { ingredientModalPropType } from '../../utils/prop-types'
 
-const IngredientDetails = ({ itemModalIngredient }) => {
-  const { thumbnail, text, info } = itemModalIngredient
+const IngredientDetails = ({ item, showContent }) => {
+  const { thumbnail, text, info } = item
 
-  if (!itemModalIngredient.text) return
+  if (!showContent) return null
   return (
     <figure className={styles.figure}>
       <img className={styles.img} src={thumbnail} alt={text} />
@@ -22,7 +23,8 @@ const IngredientDetails = ({ itemModalIngredient }) => {
 }
 
 IngredientDetails.propTypes = {
-  itemModalIngredient: ingredientModalPropType
+  item: ingredientConstructorPropType,
+  showContent: PropTypes.bool.isRequired
 }
 
 export default IngredientDetails

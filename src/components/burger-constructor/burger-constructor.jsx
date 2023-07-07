@@ -8,17 +8,12 @@ import {
   DragIcon
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { ingredientConstructorPropType } from '../../utils/prop-types'
-import IngredientDetails from '../ingredient-details/ingredient-details'
 import Modal from '../modal/modal'
 import OrderDetails from '../order-details/order-details'
 import styles from './burger-constructor.module.css'
 
 const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
-  const [itemModalIngredient, setItemModalIngredient] = React.useState({})
-  const [visibleModal, setVisibleModal] = React.useState({
-    order: false,
-    ingredient: false
-  })
+  const [visibleModal, setVisibleModal] = React.useState(false)
   const { text, price, thumbnail, isLocked } = bun
 
   const totalPrice = React.useMemo(() => {
@@ -31,19 +26,14 @@ const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
   }
 
   const openModalOrder = () => {
-    addedIngredients.length && setVisibleModal({ ingredient: false, order: true })
-  }
-
-  const openModalIngredient = item => {
-    setItemModalIngredient(item)
-    setVisibleModal({ ingredient: true, order: false })
+    setVisibleModal(true)
   }
 
   return (
     <>
       <section className={styles.content}>
         <div className={styles.wrapper}>
-          <div onClick={() => openModalIngredient(bun)} className={styles.bunItem}>
+          <div className={styles.bunItem}>
             {text && (
               <ConstructorElement
                 type='top'
@@ -57,7 +47,7 @@ const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
 
           <ul className={`custom-scroll ${styles.lists}`}>
             {addedIngredients?.map((item, i) => (
-              <li onClick={() => openModalIngredient(item)} key={i} className={styles.list}>
+              <li key={i} className={styles.list}>
                 <DragIcon />
                 <ConstructorElement
                   text={item.text}
@@ -69,7 +59,7 @@ const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
             ))}
           </ul>
 
-          <div onClick={() => openModalIngredient(bun)} className={styles.bunItem}>
+          <div className={styles.bunItem}>
             {text && (
               <ConstructorElement
                 type='bottom'
@@ -92,9 +82,9 @@ const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
           </div>
         )}
       </section>
+
       <Modal showModal={visibleModal} onClose={setVisibleModal}>
-        <IngredientDetails item={itemModalIngredient} showContent={visibleModal.ingredient} />
-        <OrderDetails showContent={visibleModal.order} />
+        <OrderDetails />
       </Modal>
     </>
   )

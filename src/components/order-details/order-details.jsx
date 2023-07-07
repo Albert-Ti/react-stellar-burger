@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types'
 import checkIcon from '../../image/graphics.svg'
 import styles from './order-details.module.css'
 
-const OrderDetails = ({ showContent }) => {
-  if (!showContent) return null
+const OrderDetails = () => {
   return (
     <>
       <p className={`text text_type_digits-large ${styles.number}`}>034536</p>
@@ -18,9 +16,4 @@ const OrderDetails = ({ showContent }) => {
     </>
   )
 }
-
-OrderDetails.propTypes = {
-  showContent: PropTypes.bool.isRequired
-}
-
 export default OrderDetails

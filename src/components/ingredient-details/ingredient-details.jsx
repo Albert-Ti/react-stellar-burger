@@ -1,21 +1,18 @@
 import PropTypes from 'prop-types'
-import { ingredientConstructorPropType } from '../../utils/prop-types'
 import styles from './ingredient-details.module.css'
 
-const IngredientDetails = ({ item, showContent }) => {
-  const { thumbnail, text, info } = item
-
-  if (!showContent) return null
+const IngredientDetails = props => {
+  const { name, image, calories, carbohydrates, fat, proteins } = props
   return (
     <figure className={styles.figure}>
-      <img className={styles.img} src={thumbnail} alt={text} />
+      <img className={styles.img} src={image} alt={name} />
       <figcaption className={styles.info}>
-        <p className='text text_type_main-medium'>{text}</p>
+        <p className='text text_type_main-medium'>{name}</p>
         <ul className={`text text_type_main-default text_color_inactive ${styles.lists}`}>
-          <li>Калории, калл {info.calories}</li>
-          <li>Белки, г {info.carbohydrates}</li>
-          <li>Жиры, г {info.fat}</li>
-          <li>Углеводы, г {info.proteins}</li>
+          <li>Калории, калл {calories}</li>
+          <li>Белки, г {carbohydrates}</li>
+          <li>Жиры, г {fat}</li>
+          <li>Углеводы, г {proteins}</li>
         </ul>
       </figcaption>
     </figure>
@@ -23,8 +20,7 @@ const IngredientDetails = ({ item, showContent }) => {
 }
 
 IngredientDetails.propTypes = {
-  item: ingredientConstructorPropType,
-  showContent: PropTypes.bool.isRequired
+  props: PropTypes.any
 }
 
 export default IngredientDetails

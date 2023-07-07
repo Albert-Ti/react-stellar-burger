@@ -1,6 +1,6 @@
 .app {
   background-color: #131316;
-  margin: 40px 0;
+  height: 100vh;
 }
 
 .main {
@@ -13,5 +13,4 @@
 .title {
   max-width: 1280px;
   margin: 40px auto 20px auto;
-
 }

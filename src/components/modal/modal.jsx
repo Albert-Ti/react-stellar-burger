@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { createPortal } from 'react-dom'
-import { visibleModalPropType } from '../../utils/prop-types'
 
 import ModalOverlay from '../modal-overlay/modal-overlay'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -13,31 +12,26 @@ const Modal = ({ onClose, showModal, children }) => {
   const animationClasses = [styles.modal, styles.visible]
 
   const handleClick = () => {
-    onClose({ ingredient: false, order: false })
+    onClose(false)
   }
+
   React.useEffect(() => {
     function clickEscape(e) {
-      if (e.key === 'Escape') onClose({ ingredient: false, order: false })
+      if (e.key === 'Escape') onClose(false)
     }
     document.addEventListener('keydown', clickEscape)
     return () => document.removeEventListener('keydown', clickEscape)
   }, [showModal, onClose])
 
   return createPortal(
-    <div
-      className={
-        showModal.order || showModal.ingredient ? animationClasses.join(' ') : styles.modal
-      }
-    >
+    <div className={showModal ? animationClasses.join(' ') : styles.modal}>
       <ModalOverlay onClose={handleClick} />
       <div
         onClick={e => e.stopPropagation()}
-        className={`${styles.wrapper} ${showModal.order && styles.paddingOrder}`}
+        className={`${styles.wrapper} ${showModal && styles.paddingOrder}`}
       >
-        <h3
-          className={`text text_type_main-large ${styles.title} ${showModal.order && styles.right}`}
-        >
-          {showModal.ingredient && <span>Детали ингридиента</span>}
+        <h3 className={`text text_type_main-large ${styles.title} ${showModal && styles.right}`}>
+          {false && <span>Детали ингридиента</span>}
           <button className={styles.btn}>
             <CloseIcon onClick={handleClick} />
           </button>
@@ -51,7 +45,7 @@ const Modal = ({ onClose, showModal, children }) => {
 
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
-  showModal: visibleModalPropType,
+  showModal: PropTypes.any,
   onClose: PropTypes.func.isRequired
 }
 

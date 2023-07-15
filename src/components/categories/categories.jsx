@@ -20,7 +20,7 @@ const Categories = ({ title }) => {
         if (title === categoryTitle[1] && item.type === isSauce)
           return <Ingredients element={item} key={item._id} />
 
-        if (title === categoryTitle[3] && item.type === isMain)
+        if (title === categoryTitle[2] && item.type === isMain)
           return <Ingredients element={item} key={item._id} />
       })}
     </div>

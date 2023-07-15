@@ -1,9 +1,9 @@
 import styles from './burger-ingredients.module.css'
 import Categories from '../categories/categories'
 import TabList from '../tab-list/tab-list'
+import { categoryTitle } from '../../utils/constants'
 
 const BurgerIngredients = () => {
-  const categoryTitle = ['Булки', 'Соусы', 'Начинки']
   return (
     <section className={styles.content}>
       <TabList />

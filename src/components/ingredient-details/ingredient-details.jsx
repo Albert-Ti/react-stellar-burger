@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
 import styles from './ingredient-details.module.css'
+import { ingredientPropType } from '../../utils/prop-types'
 
 const IngredientDetails = props => {
   const { name, image, calories, carbohydrates, fat, proteins } = props
   return (
-    <figure className={styles.figure}>
+    <figure className={styles.details}>
+      <h3 className={`text text_type_main-large ${styles.title}`}>Детали ингридиента</h3>
       <img className={styles.img} src={image} alt={name} />
       <figcaption className={styles.info}>
         <p className='text text_type_main-medium'>{name}</p>
@@ -20,7 +22,7 @@ const IngredientDetails = props => {
 }
 
 IngredientDetails.propTypes = {
-  props: PropTypes.any
+  props: PropTypes.oneOfType([PropTypes.oneOf([null]).isRequired, ingredientPropType])
 }
 
 export default IngredientDetails

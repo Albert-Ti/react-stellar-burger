@@ -1,5 +1,12 @@
-.figure {
+.details {
   margin: 0;
+  margin: 105px 100px 40px;
+}
+
+.title {
+  position: absolute;
+  top: 52px;
+  left: 40px;
 }
 
 .img {

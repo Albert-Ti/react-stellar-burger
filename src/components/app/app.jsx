@@ -13,9 +13,9 @@ const priceInitialState = { total: 0 }
 function reducer(state, action) {
   switch (action.type) {
     case 'set':
-      return { total: (state.total += action.payload) }
+      return { total: state.total + action.payload }
     case 'remove':
-      return { total: (state.total -= action.payload) }
+      return { total: state.total - action.payload }
     default:
       throw new Error(`Wrong type of action: ${action.type}`)
   }
@@ -38,10 +38,7 @@ function App() {
   React.useEffect(() => {
     getIngredients()
       .then(data => setIngredients({ ...ingredients, isLoading: false, items: data }))
-      .catch(err => {
-        setIngredients({ ...ingredients, hasError: true })
-        console.log(`Произошла ошибка: ${err}`)
-      })
+      .catch(err => setIngredients({ ...ingredients, hasError: true }))
   }, [])
 
   return (

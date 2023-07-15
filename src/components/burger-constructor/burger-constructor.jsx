@@ -13,7 +13,6 @@ import { IngredientsContext } from '../app/app'
 import { getOrder } from '../../utils/api'
 
 const BurgerConstructor = () => {
-  const [visibleModal, setVisibleModal] = React.useState(false)
   const [order, setOrder] = React.useState({ number: 0 })
 
   const { bun, addedIngredients, setAddedIngredients, totalPriceState, totalPriceDispatcher } =
@@ -32,10 +31,16 @@ const BurgerConstructor = () => {
     })
       .then(data => setOrder(data.order))
       .catch(err => console.log('Ошибка данных: ' + err.message))
-
-    setVisibleModal(true)
   }
 
+  const closeModalOrder = () => {
+    setOrder({ number: 0 })
+  }
+
+  const burgerPrice = React.useMemo(
+    () => totalPriceState.total + bun.price * 2,
+    [totalPriceState.total, bun.price]
+  )
   return (
     <>
       <section className={styles.content}>
@@ -81,7 +86,7 @@ const BurgerConstructor = () => {
         {bun.isLocked && (
           <div className={styles.priceBurger}>
             <span className='text text_type_digits-medium'>
-              {totalPriceState.total + bun.price * 2} <CurrencyIcon />
+              {burgerPrice} <CurrencyIcon />
             </span>
             <Button onClick={handleClickOrder} htmlType='button'>
               Оформить заказ
@@ -90,9 +95,11 @@ const BurgerConstructor = () => {
         )}
       </section>
 
-      <Modal showModal={visibleModal} onClose={setVisibleModal}>
-        <OrderDetails {...order} />
-      </Modal>
+      {order.number > 0 && (
+        <Modal onClose={closeModalOrder}>
+          <OrderDetails {...order} />
+        </Modal>
+      )}
     </>
   )
 }

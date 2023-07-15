@@ -6,6 +6,7 @@ import styles from './ingredients.module.css'
 import Modal from '../modal/modal'
 import IngredientDetails from '../ingredient-details/ingredient-details'
 import { IngredientsContext } from '../app/app'
+import { isBun } from '../../utils/constants'
 
 const Ingredients = ({ element }) => {
   const [ingredientModal, setIngredientModal] = React.useState(null)
@@ -18,19 +19,23 @@ const Ingredients = ({ element }) => {
     const newIngredient = {
       id: _id,
       type: type,
-      isLocked: type === 'bun' && true,
+      isLocked: type === isBun && true,
       text: name,
       price: price,
       thumbnail: image
     }
 
-    if (newIngredient.type === 'bun') {
+    if (newIngredient.type === isBun) {
       setBun(newIngredient)
     } else {
       setAddedIngredients(prev => [...prev, newIngredient])
       totalPriceDispatcher({ type: 'set', payload: newIngredient.price })
     }
     // setIngredientModal(element)
+  }
+
+  const closeModalIngredient = () => {
+    setIngredientModal(null)
   }
 
   const countIngredient = React.useMemo(() => {
@@ -53,9 +58,11 @@ const Ingredients = ({ element }) => {
         </figcaption>
       </figure>
 
-      <Modal showModal={ingredientModal} onClose={setIngredientModal}>
-        <IngredientDetails {...ingredientModal} />
-      </Modal>
+      {ingredientModal && (
+        <Modal onClose={closeModalIngredient}>
+          <IngredientDetails {...ingredientModal} />
+        </Modal>
+      )}
     </>
   )
 }

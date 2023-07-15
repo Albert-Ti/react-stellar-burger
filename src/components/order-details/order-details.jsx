@@ -5,7 +5,7 @@ import styles from './order-details.module.css'
 
 const OrderDetails = ({ number }) => {
   return (
-    <>
+    <div className={styles.details}>
       <p className={`text text_type_digits-large ${styles.number}`}>{number}</p>
       <p className='text text_type_main-medium'>идентификатор заказа</p>
       <img className={styles.img} src={checkIcon} alt='иконка-выполнения' />
@@ -15,7 +15,7 @@ const OrderDetails = ({ number }) => {
           Дождитесь готовности на орбитальной станции
         </span>
       </p>
-    </>
+    </div>
   )
 }
 

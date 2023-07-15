@@ -10,6 +10,7 @@
 }
 
 .lists {
+  list-style: none;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,6 +20,7 @@
   max-height: 464px;
   overflow-x: hidden;
   margin: 16px 0;
+  padding: 0;
 }
 
 .list {
@@ -27,7 +29,6 @@
   align-items: center;
   gap: 13px;
 }
-
 
 .priceBurger {
   display: flex;

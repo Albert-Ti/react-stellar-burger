@@ -1,12 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
+import React from 'react'
 
-import styles from './ingredients.module.css';
-import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ingredientConstructorPropType, ingredientPropType } from '../../utils/prop-types'
+import styles from './ingredients.module.css'
+import Modal from '../modal/modal'
+import IngredientDetails from '../ingredient-details/ingredient-details'
 
 const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredients }) => {
-  const { type, name, price, image } = element;
+  const [ingredientModal, setIngredientModal] = React.useState(null)
+  const { type, name, price, image } = element
 
   const handleClickIngredient = () => {
     const newIngredient = {
@@ -14,61 +17,51 @@ const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredien
       isLocked: type === 'bun' && true,
       text: name,
       price: price,
-      thumbnail: image,
+      thumbnail: image
     }
+
     if (newIngredient.type === 'bun') {
       addBun(newIngredient)
     } else {
-      setAddedIngredients(prev => [
-        ...prev,
-        newIngredient
-      ])
+      setAddedIngredients(prev => [...prev, newIngredient])
     }
+    setIngredientModal(element)
   }
 
   const countIngredient = React.useMemo(() => {
-    return addedIngredients.filter(item => item.text === name).length;
+    return addedIngredients.filter(item => item.text === name).length
   }, [addedIngredients, name])
 
   return (
-    <figure onClick={handleClickIngredient} className={styles.items}>
-      {
-        countIngredient > 0 &&
-        <Counter count={countIngredient} size="default" extraClass="m-1" />
-      }
-      {
-        bun.text === name &&
-        <Counter count={1} size="default" extraClass="m-1" />
-      }
-      <img src={image} alt={name} />
+    <>
+      <figure onClick={handleClickIngredient} className={styles.items}>
+        {countIngredient > 0 && <Counter count={countIngredient} size='default' extraClass='m-1' />}
+        {bun.text === name && <Counter count={1} size='default' extraClass='m-1' />}
+        <img src={image} alt={name} />
 
-      <figcaption style={{ textAlign: 'center' }}>
-        <div className={styles.info}>
-          <span className='text_type_digits-default'>{price}</span>
-          <CurrencyIcon />
-        </div>
-        <p className='text text_type_main-default'>{name}</p>
-      </figcaption>
-    </figure>
+        <figcaption className={styles.figcaption}>
+          <div className={styles.info}>
+            <span className='text_type_digits-default'>{price}</span>
+            <CurrencyIcon />
+          </div>
+          <p className='text text_type_main-default'>{name}</p>
+        </figcaption>
+      </figure>
+
+      <Modal showModal={ingredientModal} onClose={setIngredientModal}>
+        <IngredientDetails {...ingredientModal} />
+      </Modal>
+    </>
   )
 }
 
-
 Ingredients.propTypes = {
-  bun: PropTypes.shape({
-    text: PropTypes.string,
-  }).isRequired,
+  element: ingredientPropType,
+  bun: ingredientConstructorPropType,
 
+  addedIngredients: PropTypes.arrayOf(ingredientConstructorPropType).isRequired,
   addBun: PropTypes.func.isRequired,
-  addedIngredients: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  setAddedIngredients: PropTypes.func.isRequired,
-
-  element: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-  }).isRequired,
+  setAddedIngredients: PropTypes.func.isRequired
 }
 
-export default Ingredients;
+export default Ingredients

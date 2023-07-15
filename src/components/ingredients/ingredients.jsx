@@ -1,18 +1,22 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { ingredientConstructorPropType, ingredientPropType } from '../../utils/prop-types'
+import { ingredientPropType } from '../../utils/prop-types'
 import styles from './ingredients.module.css'
 import Modal from '../modal/modal'
 import IngredientDetails from '../ingredient-details/ingredient-details'
+import { IngredientsContext } from '../app/app'
 
-const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredients }) => {
+const Ingredients = ({ element }) => {
   const [ingredientModal, setIngredientModal] = React.useState(null)
-  const { type, name, price, image } = element
+  const { type, name, price, image, _id } = element
+
+  const { bun, setBun, addedIngredients, setAddedIngredients, totalPriceDispatcher } =
+    React.useContext(IngredientsContext)
 
   const handleClickIngredient = () => {
     const newIngredient = {
+      id: _id,
       type: type,
       isLocked: type === 'bun' && true,
       text: name,
@@ -21,11 +25,12 @@ const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredien
     }
 
     if (newIngredient.type === 'bun') {
-      addBun(newIngredient)
+      setBun(newIngredient)
     } else {
       setAddedIngredients(prev => [...prev, newIngredient])
+      totalPriceDispatcher({ type: 'set', payload: newIngredient.price })
     }
-    setIngredientModal(element)
+    // setIngredientModal(element)
   }
 
   const countIngredient = React.useMemo(() => {
@@ -56,12 +61,7 @@ const Ingredients = ({ element, bun, addBun, addedIngredients, setAddedIngredien
 }
 
 Ingredients.propTypes = {
-  element: ingredientPropType,
-  bun: ingredientConstructorPropType,
-
-  addedIngredients: PropTypes.arrayOf(ingredientConstructorPropType).isRequired,
-  addBun: PropTypes.func.isRequired,
-  setAddedIngredients: PropTypes.func.isRequired
+  element: ingredientPropType
 }
 
 export default Ingredients

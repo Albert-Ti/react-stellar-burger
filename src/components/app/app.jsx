@@ -4,7 +4,22 @@ import styles from './app.module.css'
 import AppHeader from '../app-header/app-header'
 import BurgerIngredients from '../burger-ingredients/burger-ingredients'
 import BurgerConstructor from '../burger-constructor/burger-constructor'
-import getIngredients from '../../utils/api'
+import { getIngredients } from '../../utils/api'
+
+export const IngredientsContext = React.createContext()
+
+const priceInitialState = { total: 0 }
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'set':
+      return { total: (state.total += action.payload) }
+    case 'remove':
+      return { total: (state.total -= action.payload) }
+    default:
+      throw new Error(`Wrong type of action: ${action.type}`)
+  }
+}
 
 function App() {
   const [ingredients, setIngredients] = React.useState({
@@ -14,6 +29,11 @@ function App() {
   })
   const [bun, setBun] = React.useState({})
   const [addedIngredients, setAddedIngredients] = React.useState([])
+  const [totalPriceState, totalPriceDispatcher] = React.useReducer(
+    reducer,
+    priceInitialState,
+    undefined
+  )
 
   React.useEffect(() => {
     getIngredients()
@@ -33,18 +53,20 @@ function App() {
         {!ingredients.isLoading && !ingredients.hasError && 'Соберите Бургер'}
       </h1>
       <main className={styles.main}>
-        <BurgerIngredients
-          {...ingredients}
-          bun={bun}
-          addBun={setBun}
-          addedIngredients={addedIngredients}
-          setAddedIngredients={setAddedIngredients}
-        />
-        <BurgerConstructor
-          bun={bun}
-          addedIngredients={addedIngredients}
-          remove={setAddedIngredients}
-        />
+        <IngredientsContext.Provider
+          value={{
+            bun,
+            setBun,
+            addedIngredients,
+            setAddedIngredients,
+            items: ingredients.items,
+            totalPriceState,
+            totalPriceDispatcher
+          }}
+        >
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </IngredientsContext.Provider>
       </main>
     </div>
   )

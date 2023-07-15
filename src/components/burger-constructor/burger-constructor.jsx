@@ -1,31 +1,38 @@
-import PropTypes from 'prop-types'
 import React from 'react'
-
+import PropTypes from 'prop-types'
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
   DragIcon
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { ingredientConstructorPropType } from '../../utils/prop-types'
 import Modal from '../modal/modal'
 import OrderDetails from '../order-details/order-details'
 import styles from './burger-constructor.module.css'
+import { IngredientsContext } from '../app/app'
+import { getOrder } from '../../utils/api'
 
-const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
+const BurgerConstructor = () => {
   const [visibleModal, setVisibleModal] = React.useState(false)
-  const { text, price, thumbnail, isLocked } = bun
+  const [order, setOrder] = React.useState({ number: 0 })
 
-  const totalPrice = React.useMemo(() => {
-    return addedIngredients.reduce((acc, item) => acc + item.price, bun.price * 2)
-  }, [addedIngredients, bun.price])
+  const { bun, addedIngredients, setAddedIngredients, totalPriceState, totalPriceDispatcher } =
+    React.useContext(IngredientsContext)
 
-  const removeIngredient = index => event => {
+  const removeIngredient = (index, item) => event => {
     event.stopPropagation()
-    remove(addedIngredients.filter((_, i) => i !== index))
+    setAddedIngredients(addedIngredients.filter((_, i) => i !== index))
+    totalPriceDispatcher({ type: 'remove', payload: item.price })
   }
 
-  const openModalOrder = () => {
+  const handleClickOrder = async () => {
+    const ingredientsIdx = [...addedIngredients.map(item => item.id), bun.id]
+    await getOrder({
+      ingredients: ingredientsIdx
+    })
+      .then(data => setOrder(data.order))
+      .catch(err => console.log('Ошибка данных: ' + err.message))
+
     setVisibleModal(true)
   }
 
@@ -34,13 +41,13 @@ const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
       <section className={styles.content}>
         <div className={styles.wrapper}>
           <div className={styles.bunItem}>
-            {text && (
+            {bun.isLocked && (
               <ConstructorElement
                 type='top'
-                isLocked={isLocked}
-                text={text}
-                price={price}
-                thumbnail={thumbnail}
+                isLocked={bun.isLocked}
+                text={bun.text}
+                price={bun.price}
+                thumbnail={bun.thumbnail}
               />
             )}
           </div>
@@ -53,30 +60,30 @@ const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
                   text={item.text}
                   price={item.price}
                   thumbnail={item.thumbnail}
-                  handleClose={removeIngredient(i)}
+                  handleClose={removeIngredient(i, item)}
                 />
               </li>
             ))}
           </ul>
 
           <div className={styles.bunItem}>
-            {text && (
+            {bun.isLocked && (
               <ConstructorElement
                 type='bottom'
-                isLocked={isLocked}
-                text={text}
-                price={price}
-                thumbnail={thumbnail}
+                isLocked={bun.isLocked}
+                text={bun.text}
+                price={bun.price}
+                thumbnail={bun.thumbnail}
               />
             )}
           </div>
         </div>
-        {text && (
+        {bun.isLocked && (
           <div className={styles.priceBurger}>
             <span className='text text_type_digits-medium'>
-              {totalPrice} <CurrencyIcon />
+              {totalPriceState.total + bun.price * 2} <CurrencyIcon />
             </span>
-            <Button onClick={openModalOrder} htmlType='button'>
+            <Button onClick={handleClickOrder} htmlType='button'>
               Оформить заказ
             </Button>
           </div>
@@ -84,19 +91,21 @@ const BurgerConstructor = ({ bun, addedIngredients, remove }) => {
       </section>
 
       <Modal showModal={visibleModal} onClose={setVisibleModal}>
-        <OrderDetails />
+        <OrderDetails {...order} />
       </Modal>
     </>
   )
 }
 
 BurgerConstructor.propTypes = {
-  bun: ingredientConstructorPropType,
-
-  addedIngredients: PropTypes.arrayOf(ingredientConstructorPropType).isRequired,
-  remove: PropTypes.func.isRequired,
   setItemModalIngredient: PropTypes.func,
   setVisibleModal: PropTypes.func
 }
 
 export default BurgerConstructor
+
+/* 
+  const totalPrice = React.useMemo(() => {
+    return addedIngredients.reduce((acc, item) => acc + item.price, bun.price * 2)
+  }, [addedIngredients, bun.price])
+ */

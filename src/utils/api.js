@@ -12,7 +12,7 @@ export const getIngredients = () => {
     })
 }
 
-export const getOrder = async obj => {
+export const requestOrder = async obj => {
   return await fetch(`${BURGER_API_URL}/orders`, {
     method: 'POST',
     headers: {

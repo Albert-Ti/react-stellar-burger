@@ -1,5 +1,6 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import { useSelector, useDispatch } from 'react-redux'
+
 import {
   Button,
   ConstructorElement,
@@ -9,38 +10,37 @@ import {
 import Modal from '../modal/modal'
 import OrderDetails from '../order-details/order-details'
 import styles from './burger-constructor.module.css'
-import { IngredientsContext } from '../app/app'
-import { getOrder } from '../../utils/api'
+import { requestOrder } from '../../utils/api'
+import {
+  setTotalPrice,
+  removeIngredient,
+  setOrder,
+  constructorState
+} from '../../redux/slice/constructor-slice'
 
 const BurgerConstructor = () => {
-  const [order, setOrder] = React.useState({ number: 0 })
+  const { bun, addedIngredients, totalPrice, order } = useSelector(constructorState)
+  const dispatch = useDispatch()
 
-  const { bun, addedIngredients, setAddedIngredients, totalPriceState, totalPriceDispatcher } =
-    React.useContext(IngredientsContext)
-
-  const removeIngredient = (index, item) => event => {
+  const handleClickIngredient = (index, item) => event => {
     event.stopPropagation()
-    setAddedIngredients(addedIngredients.filter((_, i) => i !== index))
-    totalPriceDispatcher({ type: 'remove', payload: item.price })
+    dispatch(removeIngredient(index))
+    dispatch(setTotalPrice({ type: 'remove', price: item.price }))
   }
 
   const handleClickOrder = async () => {
-    const ingredientsIdx = [...addedIngredients.map(item => item.id), bun.id]
-    await getOrder({
+    const ingredientsIdx = [...addedIngredients.map(item => item._id), bun._id]
+    await requestOrder({
       ingredients: ingredientsIdx
     })
-      .then(data => setOrder(data.order))
+      .then(data => dispatch(setOrder(data.order)))
       .catch(err => console.log('Ошибка данных: ' + err.message))
   }
 
   const closeModalOrder = () => {
-    setOrder({ number: 0 })
+    dispatch(setOrder({ number: 0 }))
   }
 
-  const burgerPrice = React.useMemo(
-    () => totalPriceState.total + bun.price * 2,
-    [totalPriceState.total, bun.price]
-  )
   return (
     <>
       <section className={styles.content}>
@@ -50,9 +50,9 @@ const BurgerConstructor = () => {
               <ConstructorElement
                 type='top'
                 isLocked={bun.isLocked}
-                text={bun.text}
+                text={bun.name}
                 price={bun.price}
-                thumbnail={bun.thumbnail}
+                thumbnail={bun.image}
               />
             )}
           </div>
@@ -62,10 +62,10 @@ const BurgerConstructor = () => {
               <li key={i} className={styles.list}>
                 <DragIcon />
                 <ConstructorElement
-                  text={item.text}
+                  text={item.name}
                   price={item.price}
-                  thumbnail={item.thumbnail}
-                  handleClose={removeIngredient(i, item)}
+                  thumbnail={item.image}
+                  handleClose={handleClickIngredient(i, item)}
                 />
               </li>
             ))}
@@ -76,9 +76,9 @@ const BurgerConstructor = () => {
               <ConstructorElement
                 type='bottom'
                 isLocked={bun.isLocked}
-                text={bun.text}
+                text={bun.name}
                 price={bun.price}
-                thumbnail={bun.thumbnail}
+                thumbnail={bun.image}
               />
             )}
           </div>
@@ -86,7 +86,7 @@ const BurgerConstructor = () => {
         {bun.isLocked && (
           <div className={styles.priceBurger}>
             <span className='text text_type_digits-medium'>
-              {burgerPrice} <CurrencyIcon />
+              {totalPrice} <CurrencyIcon />
             </span>
             <Button onClick={handleClickOrder} htmlType='button'>
               Оформить заказ

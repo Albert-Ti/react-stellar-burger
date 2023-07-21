@@ -1,60 +1,59 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { ingredientPropType } from '../../utils/prop-types'
 import styles from './ingredients.module.css'
 import Modal from '../modal/modal'
 import IngredientDetails from '../ingredient-details/ingredient-details'
-import { IngredientsContext } from '../app/app'
 import { isBun } from '../../utils/constants'
+import {
+  addBun,
+  addIngredient,
+  constructorState,
+  setTotalPrice
+} from '../../redux/slice/constructor-slice'
+import { ingredientsState, openModalIngredient } from '../../redux/slice/ingredients-slice'
 
 const Ingredients = ({ element }) => {
-  const [ingredientModal, setIngredientModal] = React.useState(null)
-  const { type, name, price, image, _id } = element
+  const dispatch = useDispatch()
 
-  const { bun, setBun, addedIngredients, setAddedIngredients, totalPriceDispatcher } =
-    React.useContext(IngredientsContext)
+  const { bun, addedIngredients } = useSelector(constructorState)
+  const { ingredientModal } = useSelector(ingredientsState)
 
   const handleClickIngredient = () => {
-    const newIngredient = {
-      id: _id,
-      type: type,
-      isLocked: type === isBun && true,
-      text: name,
-      price: price,
-      thumbnail: image
-    }
-
-    if (newIngredient.type === isBun) {
-      setBun(newIngredient)
+    if (element.type === isBun) {
+      dispatch(addBun(element))
+      dispatch(setTotalPrice({ type: 'set-bun', price: element.price }))
     } else {
-      setAddedIngredients(prev => [...prev, newIngredient])
-      totalPriceDispatcher({ type: 'set', payload: newIngredient.price })
+      dispatch(addIngredient(element))
+      dispatch(setTotalPrice({ type: 'set-other', price: element.price }))
     }
-    // setIngredientModal(element)
+    // dispatch(openModalIngredient(element))
   }
 
   const closeModalIngredient = () => {
-    setIngredientModal(null)
+    dispatch(openModalIngredient(null))
   }
 
   const countIngredient = React.useMemo(() => {
-    return addedIngredients.filter(item => item.text === name).length
-  }, [addedIngredients, name])
+    return addedIngredients.filter(item => item.name === element.name).length
+  }, [addedIngredients, element.name])
 
   return (
     <>
       <figure onClick={handleClickIngredient} className={styles.items}>
         {countIngredient > 0 && <Counter count={countIngredient} size='default' extraClass='m-1' />}
-        {bun.text === name && <Counter count={1} size='default' extraClass='m-1' />}
-        <img src={image} alt={name} />
+        {bun.name === element.name && <Counter count={1} size='default' extraClass='m-1' />}
+
+        <img src={element.image} alt={element.name} />
 
         <figcaption className={styles.figcaption}>
           <div className={styles.info}>
-            <span className='text_type_digits-default'>{price}</span>
+            <span className='text_type_digits-default'>{element.price}</span>
             <CurrencyIcon />
           </div>
-          <p className='text text_type_main-default'>{name}</p>
+          <p className='text text_type_main-default'>{element.name}</p>
         </figcaption>
       </figure>
 

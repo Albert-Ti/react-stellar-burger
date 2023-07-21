@@ -1,51 +1,28 @@
 .modal {
-  opacity: 0;
-  visibility: hidden;
   z-index: 1;
+  position: relative;
 }
 
-.visible {
-  opacity: 1;
-  visibility: visible;
-  transition: all 0.1s linear;
-}
-
-.wrapper {
-  width: 520px;
+.content {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   background-color: #1c1c21;
   border-radius: 40px;
-  padding: 105px 100px 40px;
-}
-
-.paddingOrder {
-  padding: 120px 100px;
-}
-
-.title {
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  width: 640px;
-  top: 40px;
-}
-.right {
-  justify-content: end;
 }
 
 .btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
+  position: absolute;
+  top: 63px;
+  right: 43px;
+
   padding: 0;
+  border: none;
+  background: transparent;
   transition: all 0.1s linear;
+  cursor: pointer;
 }
 
 .btn:hover {

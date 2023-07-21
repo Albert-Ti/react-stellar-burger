@@ -8,34 +8,22 @@ import styles from './modal.module.css'
 
 export const modalElememt = document.getElementById('modal')
 
-const Modal = ({ onClose, showModal, children }) => {
-  const animationClasses = [styles.modal, styles.visible]
-
-  const handleClick = () => {
-    onClose(false)
-  }
-
+const Modal = ({ onClose, children }) => {
   React.useEffect(() => {
     function clickEscape(e) {
-      if (e.key === 'Escape') onClose(false)
+      if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', clickEscape)
     return () => document.removeEventListener('keydown', clickEscape)
-  }, [showModal, onClose])
+  }, [onClose])
 
   return createPortal(
-    <div className={showModal ? animationClasses.join(' ') : styles.modal}>
-      <ModalOverlay onClose={handleClick} />
-      <div
-        onClick={e => e.stopPropagation()}
-        className={`${styles.wrapper} ${showModal && styles.paddingOrder}`}
-      >
-        <h3 className={`text text_type_main-large ${styles.title} ${showModal && styles.right}`}>
-          {false && <span>Детали ингридиента</span>}
-          <button className={styles.btn}>
-            <CloseIcon onClick={handleClick} />
-          </button>
-        </h3>
+    <div className={styles.modal}>
+      <ModalOverlay onClose={onClose} />
+      <div className={`${styles.content}`} onClick={e => e.stopPropagation()}>
+        <button className={styles.btn}>
+          <CloseIcon onClick={() => onClose()} />
+        </button>
         {children}
       </div>
     </div>,
@@ -45,7 +33,6 @@ const Modal = ({ onClose, showModal, children }) => {
 
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
-  showModal: PropTypes.any,
   onClose: PropTypes.func.isRequired
 }
 

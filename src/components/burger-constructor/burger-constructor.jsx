@@ -1,32 +1,23 @@
-import PropTypes from 'prop-types'
-import { useSelector, useDispatch } from 'react-redux'
-
+import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useDrop } from 'react-dnd'
+import { useDispatch, useSelector } from 'react-redux'
 import {
-  Button,
-  ConstructorElement,
-  CurrencyIcon,
-  DragIcon
-} from '@ya.praktikum/react-developer-burger-ui-components'
+  addBun,
+  addIngredient,
+  constructorState,
+  setOrder,
+  setTotalPrice
+} from '../../redux/slice/constructor-slice'
+import { requestOrder } from '../../utils/api'
+import { isBun } from '../../utils/constants'
+import IngredientConstructor from '../ingredient-constructor/ingredient-constructor'
 import Modal from '../modal/modal'
 import OrderDetails from '../order-details/order-details'
 import styles from './burger-constructor.module.css'
-import { requestOrder } from '../../utils/api'
-import {
-  setTotalPrice,
-  removeIngredient,
-  setOrder,
-  constructorState
-} from '../../redux/slice/constructor-slice'
 
 const BurgerConstructor = () => {
   const { bun, addedIngredients, totalPrice, order } = useSelector(constructorState)
   const dispatch = useDispatch()
-
-  const handleClickIngredient = (index, item) => event => {
-    event.stopPropagation()
-    dispatch(removeIngredient(index))
-    dispatch(setTotalPrice({ type: 'remove', price: item.price }))
-  }
 
   const handleClickOrder = async () => {
     const ingredientsIdx = [...addedIngredients.map(item => item._id), bun._id]
@@ -41,48 +32,38 @@ const BurgerConstructor = () => {
     dispatch(setOrder({ number: 0 }))
   }
 
+  const [{ isDrop }, dropRef] = useDrop({
+    accept: 'ingredient',
+    drop: element => {
+      if (element.type === isBun) {
+        dispatch(addBun(element))
+        dispatch(setTotalPrice({ type: 'set-bun', price: element.price }))
+      } else {
+        dispatch(addIngredient(element))
+        dispatch(setTotalPrice({ type: 'set-other', price: element.price }))
+      }
+    },
+    collect: monitor => ({
+      isDrop: monitor.isOver()
+    })
+  })
+
+  const classesAnimation = isDrop ? [styles.content, styles.shadow] : [styles.content]
   return (
     <>
-      <section className={styles.content}>
-        <div className={styles.wrapper}>
-          <div className={styles.bunItem}>
-            {bun.isLocked && (
-              <ConstructorElement
-                type='top'
-                isLocked={bun.isLocked}
-                text={bun.name}
-                price={bun.price}
-                thumbnail={bun.image}
-              />
-            )}
-          </div>
+      <section ref={dropRef} className={classesAnimation.join(' ')}>
+        <ul className={styles.wrapper}>
+          <IngredientConstructor type='top' item={bun} />
 
-          <ul className={`custom-scroll ${styles.lists}`}>
-            {addedIngredients?.map((item, i) => (
-              <li key={i} className={styles.list}>
-                <DragIcon />
-                <ConstructorElement
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                  handleClose={handleClickIngredient(i, item)}
-                />
-              </li>
+          <ul className={`custom-scroll ${styles.otherItems}`}>
+            {addedIngredients.map((item, i) => (
+              <IngredientConstructor type='' item={item} index={i} key={i} />
             ))}
           </ul>
 
-          <div className={styles.bunItem}>
-            {bun.isLocked && (
-              <ConstructorElement
-                type='bottom'
-                isLocked={bun.isLocked}
-                text={bun.name}
-                price={bun.price}
-                thumbnail={bun.image}
-              />
-            )}
-          </div>
-        </div>
+          <IngredientConstructor type='bottom' item={bun} />
+        </ul>
+
         {bun.isLocked && (
           <div className={styles.priceBurger}>
             <span className='text text_type_digits-medium'>
@@ -104,15 +85,4 @@ const BurgerConstructor = () => {
   )
 }
 
-BurgerConstructor.propTypes = {
-  setItemModalIngredient: PropTypes.func,
-  setVisibleModal: PropTypes.func
-}
-
 export default BurgerConstructor
-
-/* 
-  const totalPrice = React.useMemo(() => {
-    return addedIngredients.reduce((acc, item) => acc + item.price, bun.price * 2)
-  }, [addedIngredients, bun.price])
- */

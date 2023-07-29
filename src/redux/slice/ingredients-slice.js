@@ -1,10 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { tabBun } from '../../utils/constants'
 
 const initialState = {
   items: [],
   isLoading: false,
   hasError: false,
-  ingredientModal: null
+  ingredientModal: null,
+
+  currentTab: tabBun
 }
 
 const ingredientsSlice = createSlice({
@@ -28,10 +31,15 @@ const ingredientsSlice = createSlice({
 
     openModalIngredient: (state, action) => {
       state.ingredientModal = action.payload
+    },
+
+    getCurrentTab: (state, action) => {
+      state.currentTab = action.payload
     }
   }
 })
 
 export const ingredientsState = state => state.ingredients
-export const { loadItems, getItems, errorItems, openModalIngredient } = ingredientsSlice.actions
+export const { loadItems, getItems, errorItems, openModalIngredient, getCurrentTab } =
+  ingredientsSlice.actions
 export default ingredientsSlice.reducer

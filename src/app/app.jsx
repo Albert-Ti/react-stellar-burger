@@ -1,12 +1,14 @@
 import React from 'react'
+import { DndProvider } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import styles from './app.module.css'
 import AppHeader from '../components/app-header/app-header'
-import BurgerIngredients from '../components/burger-ingredients/burger-ingredients'
 import BurgerConstructor from '../components/burger-constructor/burger-constructor'
-import { getIngredients } from '../utils/api'
+import BurgerIngredients from '../components/burger-ingredients/burger-ingredients'
 import { errorItems, getItems, ingredientsState, loadItems } from '../redux/slice/ingredients-slice'
+import { getIngredients } from '../utils/api'
+import styles from './app.module.css'
 
 function App() {
   const dispatch = useDispatch()
@@ -28,8 +30,10 @@ function App() {
         {!isLoading && !hasError && 'Соберите Бургер'}
       </h1>
       <main className={styles.main}>
-        <BurgerIngredients />
-        <BurgerConstructor />
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
       </main>
     </div>
   )

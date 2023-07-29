@@ -45,11 +45,26 @@ const constructorSlice = createSlice({
 
     setOrder: (state, action) => {
       state.order = action.payload
+    },
+
+    sortedIngredients: (state, { payload }) => {
+      let newItems = [...state.addedIngredients]
+
+      const removedDragItem = newItems.splice(payload.dragIndex, 1)
+      newItems.splice(payload.hoverIndex, 0, ...removedDragItem)
+
+      state.addedIngredients = newItems
     }
   }
 })
 
 export const constructorState = state => state.burger
-export const { addBun, addIngredient, setTotalPrice, setOrder, removeIngredient } =
-  constructorSlice.actions
+export const {
+  addBun,
+  addIngredient,
+  setTotalPrice,
+  setOrder,
+  removeIngredient,
+  sortedIngredients
+} = constructorSlice.actions
 export default constructorSlice.reducer

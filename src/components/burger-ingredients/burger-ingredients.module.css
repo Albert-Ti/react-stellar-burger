@@ -10,4 +10,6 @@
   max-height: 716px;
   margin: 40px 0 0 0;
   overflow-x: hidden;
+  padding: 5px;
+  scroll-behavior: smooth;
 }

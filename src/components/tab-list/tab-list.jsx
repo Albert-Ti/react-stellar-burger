@@ -1,21 +1,44 @@
-import React from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCurrentTab, ingredientsState } from '../../redux/slice/ingredients-slice'
+import { isBun, isMain, isSauce, tabBun, tabMain, tabSauce } from '../../utils/constants'
 import styles from './tab-list.module.css'
 
 const TabList = () => {
-  const [current, setCurrent] = React.useState('one')
+  const dispatch = useDispatch()
+  const { currentTab } = useSelector(ingredientsState)
 
   return (
     <div className={styles.tabLists}>
-      <Tab value='one' active={current === 'one'} onClick={setCurrent}>
-        Булки
-      </Tab>
-      <Tab value='two' active={current === 'two'} onClick={setCurrent}>
-        Соусы
-      </Tab>
-      <Tab value='three' active={current === 'three'} onClick={setCurrent}>
-        Начинки
-      </Tab>
+      <a className={styles.link} href={`#${isBun}`}>
+        <Tab
+          value={tabBun}
+          active={currentTab === tabBun}
+          onClick={value => dispatch(getCurrentTab(value))}
+        >
+          Булки
+        </Tab>
+      </a>
+
+      <a className={styles.link} href={`#${isSauce}`}>
+        <Tab
+          value={tabSauce}
+          active={currentTab === tabSauce}
+          onClick={value => dispatch(getCurrentTab(value))}
+        >
+          Соусы
+        </Tab>
+      </a>
+
+      <a className={styles.link} href={`#${isMain}`}>
+        <Tab
+          value={tabMain}
+          active={currentTab === tabMain}
+          onClick={value => dispatch(getCurrentTab(value))}
+        >
+          Начинки
+        </Tab>
+      </a>
     </div>
   )
 }

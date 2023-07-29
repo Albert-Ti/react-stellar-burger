@@ -1,11 +1,11 @@
-import styles from './burger-ingredients.module.css'
+import { categoryTitle } from '../../utils/constants'
 import Categories from '../categories/categories'
 import TabList from '../tab-list/tab-list'
-import { categoryTitle } from '../../utils/constants'
+import styles from './burger-ingredients.module.css'
 
 const BurgerIngredients = () => {
   return (
-    <section className={styles.content}>
+    <section className={`content ${styles.content}`}>
       <TabList />
 
       <div className={`custom-scroll ${styles.scroll}`}>

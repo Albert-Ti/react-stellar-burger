@@ -1,19 +1,13 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { ingredientPropType } from '../../utils/prop-types'
-import styles from './ingredients.module.css'
-import Modal from '../modal/modal'
-import IngredientDetails from '../ingredient-details/ingredient-details'
-import { isBun } from '../../utils/constants'
-import {
-  addBun,
-  addIngredient,
-  constructorState,
-  setTotalPrice
-} from '../../redux/slice/constructor-slice'
+import React from 'react'
+import { useDrag } from 'react-dnd'
+import { useDispatch, useSelector } from 'react-redux'
+import { constructorState } from '../../redux/slice/constructor-slice'
 import { ingredientsState, openModalIngredient } from '../../redux/slice/ingredients-slice'
+import { ingredientPropType } from '../../utils/prop-types'
+import IngredientDetails from '../ingredient-details/ingredient-details'
+import Modal from '../modal/modal'
+import styles from './ingredients.module.css'
 
 const Ingredients = ({ element }) => {
   const dispatch = useDispatch()
@@ -22,14 +16,7 @@ const Ingredients = ({ element }) => {
   const { ingredientModal } = useSelector(ingredientsState)
 
   const handleClickIngredient = () => {
-    if (element.type === isBun) {
-      dispatch(addBun(element))
-      dispatch(setTotalPrice({ type: 'set-bun', price: element.price }))
-    } else {
-      dispatch(addIngredient(element))
-      dispatch(setTotalPrice({ type: 'set-other', price: element.price }))
-    }
-    // dispatch(openModalIngredient(element))
+    dispatch(openModalIngredient(element))
   }
 
   const closeModalIngredient = () => {
@@ -40,9 +27,18 @@ const Ingredients = ({ element }) => {
     return addedIngredients.filter(item => item.name === element.name).length
   }, [addedIngredients, element.name])
 
+  const [{ isDrag }, dragRef] = useDrag({
+    type: 'ingredient',
+    item: element,
+    collect: monitor => ({
+      isDrag: monitor.isDragging()
+    })
+  })
+
+  const classesAnimation = isDrag ? [styles.ingredient, styles.shadow] : [styles.ingredient]
   return (
     <>
-      <figure onClick={handleClickIngredient} className={styles.items}>
+      <figure ref={dragRef} onClick={handleClickIngredient} className={classesAnimation.join(' ')}>
         {countIngredient > 0 && <Counter count={countIngredient} size='default' extraClass='m-1' />}
         {bun.name === element.name && <Counter count={1} size='default' extraClass='m-1' />}
 
@@ -57,7 +53,7 @@ const Ingredients = ({ element }) => {
         </figcaption>
       </figure>
 
-      {ingredientModal && (
+      {ingredientModal === element && (
         <Modal onClose={closeModalIngredient}>
           <IngredientDetails {...ingredientModal} />
         </Modal>

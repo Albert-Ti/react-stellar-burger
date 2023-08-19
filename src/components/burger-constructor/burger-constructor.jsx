@@ -36,10 +36,10 @@ const BurgerConstructor = () => {
     accept: 'ingredient',
     drop: element => {
       if (element.type === isBun) {
-        dispatch(addBun({ ...element, id: Date.now() }))
+        dispatch(addBun({ ...element, id: crypto.randomUUID() }))
         dispatch(setTotalPrice({ type: isBun, price: element.price }))
       } else {
-        dispatch(addIngredient({ ...element, id: Date.now() }))
+        dispatch(addIngredient({ ...element, id: crypto.randomUUID() }))
         dispatch(setTotalPrice({ type: isSauce || isMain, price: element.price }))
       }
     },

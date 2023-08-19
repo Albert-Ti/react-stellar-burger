@@ -7,9 +7,9 @@ import { ingredientsState, openModalIngredient } from '../../redux/slice/ingredi
 import { ingredientPropType } from '../../utils/prop-types'
 import IngredientDetails from '../ingredient-details/ingredient-details'
 import Modal from '../modal/modal'
-import styles from './ingredients.module.css'
+import styles from './category-ingredients.module.css'
 
-const Ingredients = ({ element }) => {
+const CategoryIngredients = ({ element }) => {
   const dispatch = useDispatch()
 
   const { bun, addedIngredients } = useSelector(constructorState)
@@ -62,8 +62,8 @@ const Ingredients = ({ element }) => {
   )
 }
 
-Ingredients.propTypes = {
+CategoryIngredients.propTypes = {
   element: ingredientPropType
 }
 
-export default Ingredients
+export default CategoryIngredients

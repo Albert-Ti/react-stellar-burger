@@ -9,7 +9,7 @@ import {
   setTotalPrice
 } from '../../redux/slice/constructor-slice'
 import { requestOrder } from '../../utils/api'
-import { isBun } from '../../utils/constants'
+import { isBun, isMain, isSauce } from '../../utils/constants'
 import IngredientConstructor from '../ingredient-constructor/ingredient-constructor'
 import Modal from '../modal/modal'
 import OrderDetails from '../order-details/order-details'
@@ -36,11 +36,11 @@ const BurgerConstructor = () => {
     accept: 'ingredient',
     drop: element => {
       if (element.type === isBun) {
-        dispatch(addBun(element))
-        dispatch(setTotalPrice({ type: 'set-bun', price: element.price }))
+        dispatch(addBun({ ...element, id: Date.now() }))
+        dispatch(setTotalPrice({ type: isBun, price: element.price }))
       } else {
-        dispatch(addIngredient(element))
-        dispatch(setTotalPrice({ type: 'set-other', price: element.price }))
+        dispatch(addIngredient({ ...element, id: Date.now() }))
+        dispatch(setTotalPrice({ type: isSauce || isMain, price: element.price }))
       }
     },
     collect: monitor => ({
@@ -54,13 +54,11 @@ const BurgerConstructor = () => {
       <section ref={dropRef} className={classesAnimation.join(' ')}>
         <ul className={styles.wrapper}>
           <IngredientConstructor type='top' item={bun} />
-
           <ul className={`custom-scroll ${styles.otherItems}`}>
             {addedIngredients.map((item, i) => (
-              <IngredientConstructor type='' item={item} index={i} key={i} />
+              <IngredientConstructor type='' item={item} index={i} key={item.id} />
             ))}
           </ul>
-
           <IngredientConstructor type='bottom' item={bun} />
         </ul>
 

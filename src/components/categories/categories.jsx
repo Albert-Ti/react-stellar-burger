@@ -1,25 +1,25 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import { getCurrentTab, ingredientsState } from '../../redux/slice/ingredients-slice'
+import { getCurrentTab } from '../../redux/slice/ingredients-slice'
 import {
-  categoryTitle,
   isBun,
   isMain,
   isSauce,
   tabBun,
   tabMain,
-  tabSauce
+  tabSauce,
+  titleBun,
+  titleMain,
+  titleSauce
 } from '../../utils/constants'
-import Ingredients from '../ingredients/ingredients'
-import MyLoader from '../loader/loader'
+import CategoryIngredients from '../category-ingredients/category-ingredients'
 import styles from './categories.module.css'
 
-const Categories = ({ title }) => {
+const Categories = ({ title, items }) => {
   const dispatch = useDispatch()
 
-  const { isLoading, items } = useSelector(ingredientsState)
   const targetRef = React.useRef(null)
 
   React.useEffect(() => {
@@ -42,32 +42,24 @@ const Categories = ({ title }) => {
   }, [targetRef, dispatch])
 
   const isLinkTitle = () => {
-    if (title === categoryTitle[0]) return isBun
-    if (title === categoryTitle[1]) return isSauce
-    if (title === categoryTitle[2]) return isMain
+    if (title === titleBun) return isBun
+    if (title === titleSauce) return isSauce
+    if (title === titleMain) return isMain
   }
 
   return (
     <div ref={targetRef} id={`${isLinkTitle()}`} className={`categories ${styles.items}`}>
       <h2 className='text text_type_main-medium'>{title}</h2>
-      {isLoading
-        ? [...Array(2)].map((_, i) => <MyLoader key={i} />)
-        : items?.map(item => {
-            if (title === categoryTitle[0] && item.type === isBun)
-              return <Ingredients element={item} key={item._id} />
-
-            if (title === categoryTitle[1] && item.type === isSauce)
-              return <Ingredients element={item} key={item._id} />
-
-            if (title === categoryTitle[2] && item.type === isMain)
-              return <Ingredients element={item} key={item._id} />
-          })}
+      {items.map(item => (
+        <CategoryIngredients element={item} key={item._id} />
+      ))}
     </div>
   )
 }
 
 Categories.propTypes = {
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
 }
 
 export default Categories

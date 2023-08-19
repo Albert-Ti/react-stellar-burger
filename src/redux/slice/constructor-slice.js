@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { isBun, isMain, isSauce } from '../../utils/constants'
 
 const initialState = {
   bun: {},
@@ -29,10 +30,10 @@ const constructorSlice = createSlice({
 
     setTotalPrice: (state, action) => {
       switch (action.payload.type) {
-        case 'set-bun':
+        case isBun:
           state.totalPrice = action.payload.price * 2
           break
-        case 'set-other':
+        case isSauce || isMain:
           state.totalPrice += action.payload.price
           break
         case 'remove':

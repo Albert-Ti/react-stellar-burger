@@ -8,8 +8,8 @@ import {
   setTotalPrice,
   sortedIngredients
 } from '../../redux/slice/constructor-slice'
-import styles from './ingredient-constructor.module.css'
 import { ingredientConstructorPropType } from '../../utils/prop-types'
+import styles from './ingredient-constructor.module.css'
 
 const IngredientConstructor = ({ type, item, index }) => {
   const dispatch = useDispatch()
@@ -33,7 +33,6 @@ const IngredientConstructor = ({ type, item, index }) => {
     }),
     hover: item => {
       if (!ref.current) return
-
       const dragIndex = item.index
       const hoverIndex = index
 
@@ -43,11 +42,13 @@ const IngredientConstructor = ({ type, item, index }) => {
       item.index = hoverIndex
     }
   })
+
   !item.isLocked && drag(drop(ref))
 
   const isClasses = `${item.isLocked ? styles.bun : styles.other} ${
     !item.isLocked && isDrop ? styles.indicator : ''
   }`
+
   return (
     item.name && (
       <li ref={ref} className={isClasses} draggable={item.isLocked ? false : true}>

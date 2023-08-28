@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { HideIcon, Input, ShowIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
 
@@ -11,6 +12,10 @@ const PasswordInput = ({ ...props }) => {
       </span>
     </div>
   )
+}
+
+PasswordInput.propTypes = {
+  props: PropTypes.object.isRequired
 }
 
 export default PasswordInput

@@ -1,4 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom'
+import PropTypes from 'prop-types'
+
 import { useAuth } from '../hooks/use-auth'
 import Preloader from '../pages/preloader/preloader'
 
@@ -20,6 +22,11 @@ const Protected = ({ onlyUnAuth = false, element }) => {
   }
 
   return element
+}
+
+Protected.propTypes = {
+  element: PropTypes.node.isRequired,
+  onlyUnAuth: PropTypes.bool.isRequired
 }
 
 export const OnlyAuth = Protected

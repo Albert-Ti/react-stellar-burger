@@ -77,7 +77,7 @@ const Profile = () => {
             <span
               style={{ cursor: 'pointer' }}
               onClick={cancelForm}
-              className='text_type_main-default text_color_accent'
+              className='text_type_main-default text_color_accent route-link'
             >
               Отмена
             </span>

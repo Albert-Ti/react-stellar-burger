@@ -60,7 +60,7 @@ export const useAuth = () => {
   const signOut = async () => {
     await logoutRequest()
       .then(data => {
-        if (data.access) {
+        if (data.success) {
           dispatch(removeUser())
           localStorage.removeItem('access-token')
           localStorage.removeItem('refresh-token')

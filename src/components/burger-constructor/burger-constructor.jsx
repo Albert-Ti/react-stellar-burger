@@ -1,6 +1,8 @@
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../hooks/use-auth'
 import {
   addBun,
   addIngredient,
@@ -16,10 +18,16 @@ import OrderDetails from '../order-details/order-details'
 import styles from './burger-constructor.module.css'
 
 const BurgerConstructor = () => {
-  const { bun, addedIngredients, totalPrice, order } = useSelector(constructorState)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  const { user } = useAuth()
+  const { bun, addedIngredients, totalPrice, order } = useSelector(constructorState)
 
   const handleClickOrder = async () => {
+    if (!user) navigate('/login', { replace: true, state: { from: { pathname } } })
+
     const ingredientsIdx = [...addedIngredients.map(item => item._id), bun._id]
     await requestOrder({
       ingredients: ingredientsIdx

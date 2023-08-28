@@ -20,10 +20,10 @@
 .indicator::before {
   display: block;
   content: '';
-  width: 75%;
+  width: 70%;
   height: 2px;
-  background-color: rgb(104, 27, 204);
-  box-shadow: 0 0 15px 3px blueviolet;
+  background-color: var(--colors-interface-accent);
+  box-shadow: 0 0 15px 3px var(--colors-interface-accent);
 
   position: absolute;
   bottom: -5px;

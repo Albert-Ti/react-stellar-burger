@@ -1,27 +1,15 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
 import { useDrag } from 'react-dnd'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { Link, useLocation } from 'react-router-dom'
 import { constructorState } from '../../redux/slice/constructor-slice'
-import { ingredientsState, openModalIngredient } from '../../redux/slice/ingredients-slice'
 import { ingredientPropType } from '../../utils/prop-types'
-import IngredientDetails from '../ingredient-details/ingredient-details'
-import Modal from '../modal/modal'
 import styles from './category-ingredients.module.css'
 
 const CategoryIngredients = ({ element }) => {
-  const dispatch = useDispatch()
-
   const { bun, addedIngredients } = useSelector(constructorState)
-  const { ingredientModal } = useSelector(ingredientsState)
-
-  const handleClickIngredient = () => {
-    dispatch(openModalIngredient(element))
-  }
-
-  const closeModalIngredient = () => {
-    dispatch(openModalIngredient(null))
-  }
+  const location = useLocation()
 
   const countIngredient = React.useMemo(() => {
     return addedIngredients.filter(item => item.name === element.name).length
@@ -35,10 +23,14 @@ const CategoryIngredients = ({ element }) => {
     })
   })
 
-  const classesAnimation = isDrag ? [styles.ingredient, styles.shadow] : [styles.ingredient]
+  const classesAnimation = isDrag ? [styles.ingredient, styles.indicator] : [styles.ingredient]
   return (
-    <>
-      <figure ref={dragRef} onClick={handleClickIngredient} className={classesAnimation.join(' ')}>
+    <Link
+      to={`/ingredients/${element._id}`}
+      state={{ background: location }}
+      className={styles.link}
+    >
+      <figure ref={dragRef} className={classesAnimation.join(' ')}>
         {countIngredient > 0 && <Counter count={countIngredient} size='default' extraClass='m-1' />}
         {bun.name === element.name && <Counter count={1} size='default' extraClass='m-1' />}
 
@@ -52,13 +44,7 @@ const CategoryIngredients = ({ element }) => {
           <p className='text text_type_main-default'>{element.name}</p>
         </figcaption>
       </figure>
-
-      {ingredientModal === element && (
-        <Modal onClose={closeModalIngredient}>
-          <IngredientDetails {...ingredientModal} />
-        </Modal>
-      )}
-    </>
+    </Link>
   )
 }
 

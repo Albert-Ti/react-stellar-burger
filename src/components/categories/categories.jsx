@@ -21,7 +21,6 @@ const Categories = ({ title, items }) => {
   const dispatch = useDispatch()
 
   const targetRef = React.useRef(null)
-
   React.useEffect(() => {
     const observer = new IntersectionObserver(callBack, { threshold: 0.5 })
 

@@ -1,0 +1,22 @@
+.nav {
+  width: 320px;
+  margin-bottom: 80px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  display: block;
+  padding: 14px 0;
+  text-decoration: none;
+  color: #fff;
+}
+
+.description {
+  max-width: 320px;
+  opacity: 0.4;
+  margin-top: auto;
+}

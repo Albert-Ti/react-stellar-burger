@@ -8,26 +8,25 @@
 }
 
 .nav {
-  display: flex;
-  gap: 50px;
-}
-
-.content {
   width: 1280px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+}
+
+.links {
+  display: flex;
+  gap: 50px;
 }
 
 .link {
   display: flex;
   align-items: center;
   gap: 10px;
-  cursor: pointer;
   text-decoration: none;
   color: #fff;
 }
 
-.profile {
+.profileLink {
   composes: link;
   justify-self: end;
 }

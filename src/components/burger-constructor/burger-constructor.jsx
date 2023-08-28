@@ -48,10 +48,16 @@ const BurgerConstructor = () => {
     })
   })
 
-  const classesAnimation = isDrop ? [styles.content, styles.shadow] : [styles.content]
+  const classesAnimation = isDrop ? [styles.content, styles.indicator] : [styles.content]
   return (
     <>
       <section ref={dropRef} className={classesAnimation.join(' ')}>
+        {!bun.isLocked && !addedIngredients?.length && (
+          <h2 className={`text text_type_main-large ${styles.title}`}>
+            Перетащите ингридиент сюда!
+          </h2>
+        )}
+
         <ul className={styles.wrapper}>
           <IngredientConstructor type='top' item={bun} />
           <ul className={`custom-scroll ${styles.otherItems}`}>

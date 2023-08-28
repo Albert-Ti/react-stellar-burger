@@ -1,29 +1,41 @@
 .details {
-  max-width: 520px;
   margin: 0;
-  margin: 105px 100px 60px;
+  padding: 40px 40px 60px;
+  text-align: center;
 }
 
-.title {
-  position: absolute;
-  top: 52px;
-  left: 40px;
+.box {
+  width: 640px;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  justify-content: center;
 }
 
 .img {
   width: 480px;
   height: 240px;
-}
-
-.info {
-  text-align: center;
-  margin: 16px 0 0 0;
+  margin: 0 0 16px 0;
 }
 
 .lists {
   margin: 32px 0 0 0;
   list-style: none;
   display: flex;
+  justify-content: center;
   gap: 20px;
-  text-align: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.list p {
+  margin: 0;
 }

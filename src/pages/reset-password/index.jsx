@@ -1,58 +1,47 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import PasswordInput from '../../components/UI/password-input'
-import { useAuth } from '../../hooks/use-auth'
 import { useForm } from '../../hooks/use-form'
-import { catchError } from '../../redux/slice/user-slice'
-import { resetPasswordRequest } from '../../utils/api'
+import { fetchResetPassword } from '../../redux/actions/user-action'
+import { userState } from '../../redux/slice/user-slice'
 
 const ResetPassword = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { resetPasswordStatus } = useSelector(userState)
+  const { values, handleChanges } = useForm({
+    password: '',
+    token: ''
+  })
 
-  const { form, setForm } = useForm()
-  const { errorStatus } = useAuth()
-
-  const handleResetPassword = async e => {
+  const handleResetPassword = e => {
     e.preventDefault()
-    await resetPasswordRequest({ password: form.password, token: form.codeEmail })
-      .then(data => {
-        if (data?.success) navigate('/ingredients')
-      })
-      .catch(err => dispatch(catchError(err)))
+    dispatch(fetchResetPassword(values))
+    navigate('/', { replace: true })
   }
 
+  if (!resetPasswordStatus) return <Navigate to='/forgot-password' replace />
   return (
     <div className='wrapper'>
-      <form className='content-route'>
+      <form className='content-route' onSubmit={handleResetPassword}>
         <h2 className='text text_type_main-medium'>Восстановление пароля</h2>
         <PasswordInput
           autoFocus
-          value={form.password}
+          value={values.password}
           type='password'
           name='password'
           placeholder='Введите новый пароль'
-          onChange={e => setForm({ ...form, password: e.target.value })}
+          onChange={handleChanges}
         />
         <Input
-          value={form.codeEmail}
+          value={values.token}
           type='text'
-          name='code'
+          name='token'
           placeholder='Введите код из письма'
-          onChange={e => setForm({ ...form, codeEmail: e.target.value })}
+          onChange={handleChanges}
         />
-        <Button onClick={handleResetPassword} htmlType='submit'>
-          Сохранить
-        </Button>
-
-        <span
-          className={`text text_type_main-default ${
-            errorStatus ? 'text-error-active' : 'text-error'
-          }`}
-        >
-          {errorStatus?.message}
-        </span>
+        <Button htmlType='submit'>Сохранить</Button>
       </form>
       <p className='text text_type_main-default text_color_inactive'>
         Вспомнили пароль?{' '}

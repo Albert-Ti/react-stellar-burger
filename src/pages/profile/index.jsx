@@ -1,19 +1,26 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { useAuth } from '../../hooks/use-auth'
-import { useForm } from '../../hooks/use-form'
-import styles from './profile.module.css'
+import { useDispatch, useSelector } from 'react-redux'
 import ProfileNav from '../../components/profile-nav/profile-nav'
+import { useForm } from '../../hooks/use-form'
+import { fetchEditUser } from '../../redux/actions/user-action'
+import styles from './profile.module.css'
+import { userState } from '../../redux/slice/user-slice'
 
 const Profile = () => {
-  const { form, setForm } = useForm()
-  const { editUser } = useAuth()
+  const dispatch = useDispatch()
+  const { user } = useSelector(userState)
+  const { values, setValues } = useForm({
+    name: user.name || '',
+    email: user.email || '',
+    password: user.password || ''
+  })
 
-  const [editForm, setEditForm] = React.useState(form)
+  const [editValues, setEditValues] = React.useState(values)
   const [visible, setVisible] = React.useState({ button: false, icon: false })
 
   const handleChangeInput = e => {
-    setEditForm({ ...editForm, [e.target.name]: e.target.value })
+    setEditValues({ ...editValues, [e.target.name]: e.target.value })
   }
 
   const handleFocusInput = e => {
@@ -21,25 +28,25 @@ const Profile = () => {
   }
 
   const cancelForm = () => {
-    setEditForm(form)
+    setEditValues(values)
     setVisible(false)
   }
 
-  const submitForm = async e => {
+  const handleSubmitProfile = e => {
     e.preventDefault()
-    if (editForm.name && editForm.email && editForm.password) {
-      await editUser(editForm)
-      setForm(editForm)
+    if (editValues.name && editValues.email && editValues.password) {
+      dispatch(fetchEditUser(editValues))
+      setValues(editValues)
       setVisible(false)
     }
   }
   return (
     <div className={styles.profile}>
       <ProfileNav />
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmitProfile}>
         <div className='input'>
           <Input
-            value={editForm.name}
+            value={editValues.name}
             type='text'
             name='name'
             placeholder='Имя'
@@ -51,7 +58,7 @@ const Profile = () => {
 
         <div className='input'>
           <Input
-            value={editForm.email}
+            value={editValues.email}
             type='email'
             name='email'
             placeholder='Login'
@@ -63,7 +70,7 @@ const Profile = () => {
 
         <div className='input'>
           <Input
-            value={editForm.password}
+            value={editValues.password}
             type='password'
             name='password'
             placeholder='Пароль'
@@ -81,9 +88,7 @@ const Profile = () => {
             >
               Отмена
             </span>
-            <Button onClick={submitForm} htmlType='submit'>
-              Сохранить
-            </Button>
+            <Button htmlType='submit'>Сохранить</Button>
           </div>
         )}
       </form>

@@ -1,16 +1,13 @@
 import React from 'react'
 
-export const useForm = () => {
-  const [form, setForm] = React.useState({
-    name: localStorage.getItem('name'),
-    email: localStorage.getItem('email'),
-    password: sessionStorage.getItem('password'),
-    codeEmail: ''
-  })
+export const useForm = (inputValue = {}) => {
+  const [values, setValues] = React.useState(inputValue)
 
-  if (form.name) localStorage.setItem('name', form.name)
-  if (form.email) localStorage.setItem('email', form.email)
-  if (form.password) sessionStorage.setItem('password', form.password)
+  const handleChanges = event => {
+    const { name, value } = event.target
+    setValues({ ...values, [name]: value })
+    sessionStorage.setItem(name, value)
+  }
 
-  return { form, setForm }
+  return { values, setValues, handleChanges }
 }

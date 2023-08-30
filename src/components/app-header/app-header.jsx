@@ -10,11 +10,11 @@ import styles from './app-header.module.css'
 const AppHeader = () => {
   const { pathname } = useLocation()
 
-  const isHome = useMatch('/ingredients')
+  const isHome = useMatch('/')
   const isProfile = useMatch('/profile')
 
   const isClassLinkHome = `text text_type_main-default ${
-    pathname !== '/ingredients' ? 'text_color_inactive' : ''
+    pathname !== '/' ? 'text_color_inactive' : ''
   }`
   const isClassLinkProfile = `text text_type_main-default ${
     pathname !== '/profile' ? 'text_color_inactive' : ''
@@ -23,7 +23,7 @@ const AppHeader = () => {
     <header className={styles.header}>
       <nav className={styles.nav}>
         <div className={styles.links}>
-          <Link to='/ingredients' className={styles.link} state={{ from: { pathname } }}>
+          <Link to='/' className={styles.link} state={{ from: { pathname } }}>
             <BurgerIcon type={isHome ? 'primary' : 'secondary'} />
             <p className={isClassLinkHome}>Конструктор</p>
           </Link>
@@ -34,9 +34,9 @@ const AppHeader = () => {
           </Link>
         </div>
 
-        <div className={styles.logo}>
+        <Link to='/' className={styles.logo}>
           <Logo />
-        </div>
+        </Link>
 
         <Link to='/profile' className={styles.profileLink} state={{ from: { pathname } }}>
           <ProfileIcon type={isProfile ? 'primary' : 'secondary'} />

@@ -15,7 +15,7 @@ const PasswordInput = ({ ...props }) => {
 }
 
 PasswordInput.propTypes = {
-  props: PropTypes.object.isRequired
+  props: PropTypes.object
 }
 
 export default PasswordInput

@@ -1,49 +1,36 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Navigate } from 'react-router-dom'
 import { useForm } from '../../hooks/use-form'
-import { forgotPasswordRequest } from '../../utils/api'
-import { useDispatch } from 'react-redux'
-import { catchError } from '../../redux/slice/user-slice'
-import { useAuth } from '../../hooks/use-auth'
+import { fetchForgotPassword } from '../../redux/actions/user-action'
+import { userState } from '../../redux/slice/user-slice'
 
 const ForgotPassword = () => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { form, setForm } = useForm()
-  const { errorStatus } = useAuth()
+  const { resetPasswordStatus } = useSelector(userState)
+  const { values, handleChanges } = useForm({
+    email: sessionStorage.getItem('email') || ''
+  })
 
-  const handleForgotPassword = async e => {
+  const handleSubmitForgotPassword = e => {
     e.preventDefault()
-    await forgotPasswordRequest({ email: form.email })
-      .then(data => {
-        if (data?.success) navigate('/reset-password')
-      })
-      .catch(err => dispatch(catchError(err)))
+    dispatch(fetchForgotPassword(values))
   }
 
+  if (resetPasswordStatus) return <Navigate to='/reset-password' replace />
   return (
     <div className='wrapper'>
-      <form className='content-route'>
+      <form className='content-route' onSubmit={handleSubmitForgotPassword}>
         <h2 className='text text_type_main-medium'>Восстановление пароля</h2>
         <Input
           autoFocus
-          value={form.email}
+          value={values.email}
           type='email'
           name='email'
           placeholder='Укажите E-mail'
-          onChange={e => setForm({ ...form, email: e.target.value })}
+          onChange={handleChanges}
         />
-        <Button onClick={handleForgotPassword} htmlType='submit'>
-          Восстановить
-        </Button>
-
-        <span
-          className={`text text_type_main-default ${
-            errorStatus ? 'text-error-active' : 'text-error'
-          }`}
-        >
-          {errorStatus?.message}
-        </span>
+        <Button htmlType='submit'>Восстановить</Button>
       </form>
 
       <p className='text text_type_main-default text_color_inactive'>

@@ -1,60 +1,44 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../../components/UI/password-input'
-import { useAuth } from '../../hooks/use-auth'
 import { useForm } from '../../hooks/use-form'
-import { catchError } from '../../redux/slice/user-slice'
+import { fetchRegister } from '../../redux/actions/user-action'
 
 const Register = () => {
   const dispatch = useDispatch()
-  const { form, setForm } = useForm()
-  const { registration, errorStatus } = useAuth()
+  const { values, handleChanges } = useForm({
+    name: sessionStorage.getItem('name') || '',
+    email: sessionStorage.getItem('email') || '',
+    password: ''
+  })
 
-  const handleInput = e => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
-
-  React.useEffect(() => {
-    dispatch(catchError(null))
-  }, [])
-
-  const handleRegistration = async e => {
+  const handleSubmitRegistration = e => {
     e.preventDefault()
-    await registration(form)
+    dispatch(fetchRegister(values))
   }
 
   return (
     <div className='wrapper'>
-      <form className='content-route'>
+      <form className='content-route' onSubmit={handleSubmitRegistration}>
         <h2 className='text text_type_main-medium'>Регистрация</h2>
         <Input
           autoFocus
           type='text'
           name='name'
           placeholder='Имя'
-          value={form.name}
-          onChange={handleInput}
+          value={values.name}
+          onChange={handleChanges}
         />
         <Input
           type='email'
           name='email'
           placeholder='E-mail'
-          value={form.email}
-          onChange={handleInput}
+          value={values.email}
+          onChange={handleChanges}
         />
-        <PasswordInput placeholder='Пароль' value={form.password} onChange={handleInput} />
-        <Button htmlType='submit' onClick={handleRegistration}>
-          Зарегистрироваться
-        </Button>
-        <span
-          className={`text text_type_main-default ${
-            errorStatus ? 'text-error-active' : 'text-error'
-          }`}
-        >
-          {errorStatus?.message}
-        </span>
+        <PasswordInput placeholder='Пароль' value={values.password} onChange={handleChanges} />
+        <Button htmlType='submit'>Зарегистрироваться</Button>
       </form>
       <p className='text text_type_main-default text_color_inactive mb-4'>
         Уже зарегистрированы?{' '}

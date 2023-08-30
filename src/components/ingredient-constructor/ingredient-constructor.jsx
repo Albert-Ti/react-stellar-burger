@@ -3,11 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
-import {
-  removeIngredient,
-  setTotalPrice,
-  sortedIngredients
-} from '../../redux/slice/constructor-slice'
+import { removeIngredient, sortedIngredients } from '../../redux/slice/constructor-slice'
 import { ingredientConstructorPropType } from '../../utils/prop-types'
 import styles from './ingredient-constructor.module.css'
 
@@ -15,10 +11,9 @@ const IngredientConstructor = ({ type, item, index }) => {
   const dispatch = useDispatch()
   const ref = React.useRef(null)
 
-  const onClickRemoveIngredient = (index, item) => event => {
-    event.stopPropagation()
-    dispatch(removeIngredient(index))
-    dispatch(setTotalPrice({ type: 'remove', price: item.price }))
+  const onClickRemoveIngredient = (index, item) => e => {
+    e.stopPropagation()
+    dispatch(removeIngredient(item))
   }
 
   const [, drag] = useDrag({
@@ -49,6 +44,8 @@ const IngredientConstructor = ({ type, item, index }) => {
     !item.isLocked && isDrop ? styles.indicator : ''
   }`
 
+  const typeTextBun = type === 'top' ? '(верх)' : type === 'bottom' ? '(низ)' : ''
+
   return (
     item.name && (
       <li ref={ref} className={isClasses} draggable={item.isLocked ? false : true}>
@@ -56,7 +53,7 @@ const IngredientConstructor = ({ type, item, index }) => {
         <ConstructorElement
           type={type}
           isLocked={item.isLocked}
-          text={item.name}
+          text={`${item.name} ${typeTextBun}`}
           price={item.price}
           thumbnail={item.image}
           handleClose={onClickRemoveIngredient(index, item)}

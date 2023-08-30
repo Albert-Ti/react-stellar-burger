@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { isBun, isMain, isSauce } from '../../utils/constants'
+import { fetchOrder } from '../actions/constructor-action'
 
 const initialState = {
   bun: {},
   addedIngredients: [],
   countIngredient: 0,
   totalPrice: 0,
-  order: { number: 0 }
+  order: { number: 0 },
+  statusOrder: ''
 }
 
 const constructorSlice = createSlice({
@@ -18,43 +19,38 @@ const constructorSlice = createSlice({
         ...action.payload,
         isLocked: true
       }
+      state.totalPrice = action.payload.price * 2
     },
-
-    addIngredient: (state, action) => {
-      state.addedIngredients.push(action.payload)
+    addIngredient: (state, { payload }) => {
+      state.addedIngredients.push(payload)
     },
-
-    removeIngredient: (state, action) => {
-      state.addedIngredients = state.addedIngredients.filter((_, index) => index !== action.payload)
+    removeIngredient: (state, { payload }) => {
+      state.addedIngredients = state.addedIngredients.filter(item => item.id !== payload.id)
     },
-
-    setTotalPrice: (state, action) => {
-      switch (action.payload.type) {
-        case isBun:
-          state.totalPrice = action.payload.price * 2
-          break
-        case isSauce || isMain:
-          state.totalPrice += action.payload.price
-          break
-        case 'remove':
-          state.totalPrice -= action.payload.price
-          break
-        default:
-          throw new Error(`Wrong type of action: ${action.type}`)
-      }
-    },
-
     setOrder: (state, action) => {
       state.order = action.payload
     },
-
     sortedIngredients: (state, { payload }) => {
       let newItems = [...state.addedIngredients]
-
       const removedDragItem = newItems.splice(payload.dragIndex, 1)
       newItems.splice(payload.hoverIndex, 0, ...removedDragItem)
-
       state.addedIngredients = newItems
+    },
+    setTotalPrice: (state, action) => {
+      state.totalPrice = action.payload
+    }
+  },
+  extraReducers: {
+    [fetchOrder.pending]: state => {
+      state.statusOrder = 'loading'
+    },
+    [fetchOrder.fulfilled]: (state, { payload }) => {
+      state.order = payload.order
+      state.statusOrder = 'success'
+    },
+    [fetchOrder.rejected]: state => {
+      state.statusOrder = 'error'
+      state.order = { number: 0 }
     }
   }
 })

@@ -1,179 +1,99 @@
-const BURGER_API_URL = 'https://norma.nomoreparties.space/api'
-const checkResponse = response =>
-  response.ok ? response.json() : response.json().then(err => Promise.reject(err))
+import { BASE_URL, options } from './constants'
 
-export const getIngredients = async () => {
-  return await fetch(`${BURGER_API_URL}/ingredients`, {
-    method: 'GET',
-    headers: {
-      'Content-type': 'application/json'
-    }
-  })
-    .then(checkResponse)
-    .then(data => {
-      if (data?.success) return data.data
-      return Promise.reject(data)
-    })
+const checkResponse = res => {
+  if (res.ok) {
+    return res.json()
+  }
+  return Promise.reject(`Ошибка: ${res.status}`)
 }
 
-export const requestOrder = async obj => {
-  return await fetch(`${BURGER_API_URL}/orders`, {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json'
-    },
+const checkSuccess = res => {
+  if (res && res.success) return res
+  return Promise.reject(`Ответ на success ${res}`)
+}
+
+const request = (endpoint, options) => {
+  return fetch(`${BASE_URL}${endpoint}`, options).then(checkResponse).then(checkSuccess)
+}
+
+export const ingredientsRequest = () => request('ingredients')
+
+export const orderRequest = obj =>
+  request('orders', {
+    ...options,
     body: JSON.stringify(obj)
   })
-    .then(checkResponse)
-    .then(data => {
-      if (data?.success) return data
-      return Promise.reject(data)
-    })
-}
 
-export const registerRequest = async form => {
-  return await fetch(`${BURGER_API_URL}/auth/register`, {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json'
-    },
+export const loginRequest = form =>
+  request('auth/login', {
+    ...options,
     body: JSON.stringify(form)
   })
-    .then(checkResponse)
-    .then(data => {
-      if (data?.success) return data
-      return Promise.reject(data)
-    })
-}
 
-export const loginRequest = async form => {
-  return await fetch(`${BURGER_API_URL}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json'
-    },
+export const registerRequest = form =>
+  request('auth/register', {
+    ...options,
     body: JSON.stringify(form)
   })
-    .then(checkResponse)
-    .then(data => {
-      if (data?.success) return data
-      return Promise.reject(data)
-    })
-}
 
-export const getUserRequest = async () => {
-  return await fetchWithRefresh(`${BURGER_API_URL}/auth/user`, {
+export const forgotPasswordRequest = form =>
+  request('password-reset', {
+    ...options,
+    body: JSON.stringify(form)
+  })
+
+export const resetPasswordRequest = form =>
+  request('password-reset/reset', {
+    ...options,
+    body: JSON.stringify(form)
+  })
+
+export const logoutRequest = () =>
+  request('auth/logout', {
+    ...options,
+    body: JSON.stringify({ token: localStorage.getItem('refresh-token') })
+  })
+
+export const refreshToken = () =>
+  request('auth/token', {
+    ...options,
+    body: JSON.stringify({ token: localStorage.getItem('refresh-token') })
+  })
+
+export const userRequest = async () => {
+  return await fetchWithRefresh(`auth/user`, {
+    ...options,
     method: 'GET',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-type': 'application/json',
       authorization: localStorage.getItem('access-token')
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer'
+    }
   })
 }
 
 export const editUserRequest = async form => {
-  return await fetchWithRefresh(`${BURGER_API_URL}/auth/user`, {
+  return await fetchWithRefresh(`auth/user`, {
+    ...options,
     method: 'PATCH',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-type': 'application/json',
       authorization: localStorage.getItem('access-token')
     },
-    body: JSON.stringify(form),
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer'
-  })
-}
-
-export const forgotPasswordRequest = async form => {
-  return await fetch(`${BURGER_API_URL}/password-reset`, {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json'
-    },
     body: JSON.stringify(form)
-  })
-    .then(checkResponse)
-    .then(data => {
-      if (data?.success) return data
-      return Promise.reject(data)
-    })
-}
-
-export const resetPasswordRequest = async form => {
-  return await fetch(`${BURGER_API_URL}/password-reset/reset`, {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(checkResponse)
-    .then(data => {
-      if (data?.success) return data
-      return Promise.reject(data)
-    })
-}
-
-export const logoutRequest = async () => {
-  return await fetch(`${BURGER_API_URL}/auth/logout`, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ token: localStorage.getItem('refresh-token') }),
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer'
-  })
-    .then(checkResponse)
-    .then(data => {
-      if (data?.success) return data
-      return Promise.reject(data)
-    })
-}
-
-export const refreshToken = async () => {
-  return await fetch(`${BURGER_API_URL}/auth/token`, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ token: localStorage.getItem('refresh-token') }),
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer'
   })
 }
 
 const fetchWithRefresh = async (url, options) => {
   try {
-    const res = await fetch(url, options)
-    const data = await checkResponse(res)
-    if (data?.success) return data
+    return request(url, options)
   } catch (error) {
     if (error.messages === 'jwt expired') {
       const refreshData = refreshToken()
       if (!refreshData) return Promise.reject(refreshData)
-
       localStorage.setItem('access-token', refreshData.accessToken)
       localStorage.setItem('refresh-token', refreshData.refreshToken)
       options.headers.authorization = refreshData.accessToken
-
-      const res = await fetch(url, options)
-      const data = await checkResponse(res)
-      if (data?.success) return data
+      return request(url, options)
     } else {
       return Promise.reject(error)
     }

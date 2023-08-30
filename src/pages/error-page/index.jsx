@@ -13,7 +13,7 @@ const ErrorPage = () => {
           The specified path does not exist:{' '}
           <span className='text_color_error'>...{location.pathname}</span>
         </p>
-        <Button htmlType='button' onClick={() => navigate('/ingredients', { replace: true })}>
+        <Button htmlType='button' onClick={() => navigate('/', { replace: true })}>
           Вернуться
         </Button>
       </div>

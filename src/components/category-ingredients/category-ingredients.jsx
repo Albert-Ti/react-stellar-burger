@@ -30,7 +30,7 @@ const CategoryIngredients = ({ element }) => {
       state={{ background: location }}
       className={styles.link}
     >
-      <figure ref={dragRef} className={classesAnimation.join(' ')}>
+      <figure ref={dragRef} className={classesAnimation.join(' ')} draggable={false}>
         {countIngredient > 0 && <Counter count={countIngredient} size='default' extraClass='m-1' />}
         {bun.name === element.name && <Counter count={1} size='default' extraClass='m-1' />}
 

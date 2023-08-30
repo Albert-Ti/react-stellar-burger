@@ -1,11 +1,13 @@
-import { Navigate, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { Navigate, useLocation } from 'react-router-dom'
 
-import { useAuth } from '../hooks/use-auth'
+import { useSelector } from 'react-redux'
 import Preloader from '../pages/preloader/preloader'
+import { userState } from '../redux/slice/user-slice'
 
 const Protected = ({ onlyUnAuth = false, element }) => {
-  const { isAuthChecked, user } = useAuth()
+  const { isAuthChecked, user } = useSelector(userState)
+
   const location = useLocation()
 
   if (!isAuthChecked) {
@@ -13,7 +15,7 @@ const Protected = ({ onlyUnAuth = false, element }) => {
   }
 
   if (onlyUnAuth && user) {
-    const { from } = location.state || { from: { pathname: '/ingredients' } }
+    const { from } = location.state || { from: { pathname: '/' } }
     return <Navigate to={from.pathname} />
   }
 
@@ -26,7 +28,7 @@ const Protected = ({ onlyUnAuth = false, element }) => {
 
 Protected.propTypes = {
   element: PropTypes.node.isRequired,
-  onlyUnAuth: PropTypes.bool.isRequired
+  onlyUnAuth: PropTypes.bool
 }
 
 export const OnlyAuth = Protected

@@ -47,6 +47,8 @@ const constructorSlice = createSlice({
     [fetchOrder.fulfilled]: (state, { payload }) => {
       state.order = payload.order
       state.statusOrder = 'success'
+      state.addedIngredients = []
+      state.bun = {}
     },
     [fetchOrder.rejected]: state => {
       state.statusOrder = 'error'

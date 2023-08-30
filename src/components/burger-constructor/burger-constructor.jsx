@@ -1,7 +1,9 @@
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import React from 'react'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
+import Preloader from '../../pages/preloader/preloader'
 import { fetchOrder } from '../../redux/actions/constructor-action'
 import {
   addBun,
@@ -16,7 +18,6 @@ import IngredientConstructor from '../ingredient-constructor/ingredient-construc
 import Modal from '../modal/modal'
 import OrderDetails from '../order-details/order-details'
 import styles from './burger-constructor.module.css'
-import React from 'react'
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch()
@@ -24,7 +25,7 @@ const BurgerConstructor = () => {
   const { pathname } = useLocation()
 
   const { user } = useSelector(userState)
-  const { bun, addedIngredients, totalPrice, order } = useSelector(constructorState)
+  const { bun, addedIngredients, totalPrice, order, statusOrder } = useSelector(constructorState)
 
   const handleClickOrder = () => {
     if (!user) {
@@ -60,6 +61,8 @@ const BurgerConstructor = () => {
 
   const classesAnimation =
     isDrop && bun.isLocked ? [styles.content, styles.indicator] : [styles.content]
+
+  if (statusOrder === 'loading') return <Preloader />
   return (
     <>
       <section ref={dropRef} className={classesAnimation.join(' ')}>

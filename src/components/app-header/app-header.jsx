@@ -12,12 +12,16 @@ const AppHeader = () => {
 
   const isHome = useMatch('/')
   const isProfile = useMatch('/profile')
+  const isFeed = useMatch('/feed')
 
   const isClassLinkHome = `text text_type_main-default ${
     pathname !== '/' ? 'text_color_inactive' : ''
   }`
   const isClassLinkProfile = `text text_type_main-default ${
     pathname !== '/profile' ? 'text_color_inactive' : ''
+  }`
+  const isClassLinkFeed = `text text_type_main-default ${
+    pathname !== '/feed' ? 'text_color_inactive' : ''
   }`
   return (
     <header className={styles.header}>
@@ -28,9 +32,9 @@ const AppHeader = () => {
             <p className={isClassLinkHome}>Конструктор</p>
           </Link>
 
-          <Link to='#' className={styles.link} state={{ from: { pathname } }}>
-            <ListIcon type={false ? 'primary' : 'secondary'} />
-            <p className='text text_type_main-default text_color_inactive'>Лента заказов</p>
+          <Link to='/feed' className={styles.link} state={{ from: { pathname } }}>
+            <ListIcon type={isFeed ? 'primary' : 'secondary'} />
+            <p className={isClassLinkFeed}>Лента заказов</p>
           </Link>
         </div>
 

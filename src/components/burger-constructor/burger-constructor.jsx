@@ -59,8 +59,7 @@ const BurgerConstructor = () => {
     dispatch(setTotalPrice(total))
   }, [addedIngredients, bun])
 
-  const classesAnimation =
-    isDrop && bun.isLocked ? [styles.content, styles.indicator] : [styles.content]
+  const classesAnimation = isDrop ? [styles.content, styles.indicator] : [styles.content]
 
   if (statusOrder === 'loading') return <Preloader />
   return (

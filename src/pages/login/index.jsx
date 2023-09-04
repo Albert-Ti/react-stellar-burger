@@ -1,12 +1,14 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../../components/UI/password-input'
 import { useForm } from '../../hooks/use-form'
 import { fetchLogin } from '../../redux/actions/user-action'
+import { userState } from '../../redux/slice/user-slice'
 
 const Login = () => {
   const dispatch = useDispatch()
+  const { errorStatus } = useSelector(userState)
 
   const { values, handleChanges } = useForm({
     email: sessionStorage.getItem('email') || '',
@@ -19,7 +21,7 @@ const Login = () => {
   }
 
   return (
-    <div className='wrapper'>
+    <section className='wrapper'>
       <form className='content-route' onSubmit={handleSubmitLogin}>
         <h2 className='text text_type_main-medium'>Вход</h2>
         <Input
@@ -32,6 +34,13 @@ const Login = () => {
         />
         <PasswordInput placeholder='Пароль' value={values.password} onChange={handleChanges} />
         <Button htmlType='submit'>Войти</Button>
+        <span
+          className={`text text_type_main-default ${
+            errorStatus ? 'text-error-active' : 'text-error'
+          }`}
+        >
+          {errorStatus?.message}
+        </span>
       </form>
 
       <p className='text text_type_main-default text_color_inactive mb-4'>
@@ -46,7 +55,7 @@ const Login = () => {
           Восстановить пароль
         </Link>
       </p>
-    </div>
+    </section>
   )
 }
 

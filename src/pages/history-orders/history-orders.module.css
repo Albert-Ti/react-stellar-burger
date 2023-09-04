@@ -1,0 +1,11 @@
+.content {
+  margin-top: 40px;
+  width: 844px;
+  height: 100vh;
+  padding-right: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-x: hidden;
+}

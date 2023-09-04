@@ -4,12 +4,12 @@ const checkResponse = res => {
   if (res.ok) {
     return res.json()
   }
-  return Promise.reject(`Ошибка: ${res.status}`)
+  return res.json().then(err => Promise.reject(err))
 }
 
 const checkSuccess = res => {
   if (res && res.success) return res
-  return Promise.reject(`Ответ на success ${res}`)
+  return Promise.reject(res)
 }
 
 const request = (endpoint, options) => {

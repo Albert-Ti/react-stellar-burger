@@ -7,7 +7,8 @@ import { userState } from '../../redux/slice/user-slice'
 
 const ForgotPassword = () => {
   const dispatch = useDispatch()
-  const { resetPasswordStatus } = useSelector(userState)
+  const { resetPasswordStatus, errorStatus } = useSelector(userState)
+
   const { values, handleChanges } = useForm({
     email: sessionStorage.getItem('email') || ''
   })
@@ -19,7 +20,7 @@ const ForgotPassword = () => {
 
   if (resetPasswordStatus) return <Navigate to='/reset-password' replace />
   return (
-    <div className='wrapper'>
+    <section className='wrapper'>
       <form className='content-route' onSubmit={handleSubmitForgotPassword}>
         <h2 className='text text_type_main-medium'>Восстановление пароля</h2>
         <Input
@@ -31,6 +32,13 @@ const ForgotPassword = () => {
           onChange={handleChanges}
         />
         <Button htmlType='submit'>Восстановить</Button>
+        <span
+          className={`text text_type_main-default ${
+            errorStatus ? 'text-error-active' : 'text-error'
+          }`}
+        >
+          {errorStatus?.message}
+        </span>
       </form>
 
       <p className='text text_type_main-default text_color_inactive'>
@@ -39,7 +47,7 @@ const ForgotPassword = () => {
           Войти
         </Link>
       </p>
-    </div>
+    </section>
   )
 }
 

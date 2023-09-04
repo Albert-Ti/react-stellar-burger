@@ -1,0 +1,61 @@
+.order {
+  width: 640px;
+  margin: 120px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.orderNumber {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.orderTitle {
+  margin-bottom: 12px;
+}
+
+.orderStatus {
+  margin-bottom: 63px;
+}
+
+.titleListText {
+  margin-bottom: 24px;
+}
+
+.orderList {
+  padding-right: 24px;
+  margin-bottom: 40px;
+  max-height: 313px;
+  overflow-x: hidden;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.orderListItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.orderInfoItem {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.orderPriceItem {
+  display: flex;
+  gap: 8px;
+}
+
+.orderDate {
+  display: flex;
+  justify-content: space-between;
+}
+
+.orderFullPrice {
+  display: flex;
+  gap: 8px;
+}

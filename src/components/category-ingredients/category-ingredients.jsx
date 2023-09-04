@@ -41,7 +41,7 @@ const CategoryIngredients = ({ element }) => {
             <span className='text_type_digits-default'>{element.price}</span>
             <CurrencyIcon />
           </div>
-          <p className='text text_type_main-default'>{element.name}</p>
+          <h4 className='text text_type_main-default'>{element.name}</h4>
         </figcaption>
       </figure>
     </Link>

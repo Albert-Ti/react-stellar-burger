@@ -8,7 +8,7 @@ import TabList from '../tab-list/tab-list'
 import styles from './burger-ingredients.module.css'
 
 const BurgerIngredients = () => {
-  const { isLoading, items } = useSelector(ingredientsState)
+  const { status, items } = useSelector(ingredientsState)
 
   const sortedCategories = React.useMemo(() => {
     return [
@@ -24,7 +24,7 @@ const BurgerIngredients = () => {
 
       <div className={`custom-scroll ${styles.scroll}`}>
         {sortedCategories.map(category =>
-          isLoading ? (
+          status === 'loading' ? (
             [...Array(2)].map((_, i) => <MyLoader key={i} />)
           ) : (
             <Categories key={category.id} {...category} />

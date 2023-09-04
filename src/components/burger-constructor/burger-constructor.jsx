@@ -1,6 +1,10 @@
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import React from 'react'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import Preloader from '../../pages/preloader/preloader'
+import { fetchOrder } from '../../redux/actions/constructor-action'
 import {
   addBun,
   addIngredient,
@@ -8,24 +12,28 @@ import {
   setOrder,
   setTotalPrice
 } from '../../redux/slice/constructor-slice'
-import { requestOrder } from '../../utils/api'
-import { isBun, isMain, isSauce } from '../../utils/constants'
+import { userState } from '../../redux/slice/user-slice'
+import { isBun } from '../../utils/constants'
 import IngredientConstructor from '../ingredient-constructor/ingredient-constructor'
 import Modal from '../modal/modal'
 import OrderDetails from '../order-details/order-details'
 import styles from './burger-constructor.module.css'
 
 const BurgerConstructor = () => {
-  const { bun, addedIngredients, totalPrice, order } = useSelector(constructorState)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
 
-  const handleClickOrder = async () => {
-    const ingredientsIdx = [...addedIngredients.map(item => item._id), bun._id]
-    await requestOrder({
-      ingredients: ingredientsIdx
-    })
-      .then(data => dispatch(setOrder(data.order)))
-      .catch(err => console.log('Ошибка данных: ' + err.message))
+  const { user } = useSelector(userState)
+  const { bun, addedIngredients, totalPrice, order, statusOrder } = useSelector(constructorState)
+
+  const handleClickOrder = () => {
+    if (!user) {
+      navigate('/login', { state: { from: { pathname } } })
+    } else {
+      const ingredientsIdx = [...addedIngredients.map(item => item._id), bun._id]
+      dispatch(fetchOrder({ ingredients: ingredientsIdx }))
+    }
   }
 
   const closeModalOrder = () => {
@@ -37,10 +45,8 @@ const BurgerConstructor = () => {
     drop: element => {
       if (element.type === isBun) {
         dispatch(addBun({ ...element, id: crypto.randomUUID() }))
-        dispatch(setTotalPrice({ type: isBun, price: element.price }))
-      } else {
+      } else if (bun.isLocked) {
         dispatch(addIngredient({ ...element, id: crypto.randomUUID() }))
-        dispatch(setTotalPrice({ type: isSauce || isMain, price: element.price }))
       }
     },
     collect: monitor => ({
@@ -48,10 +54,22 @@ const BurgerConstructor = () => {
     })
   })
 
-  const classesAnimation = isDrop ? [styles.content, styles.shadow] : [styles.content]
+  React.useEffect(() => {
+    const total = addedIngredients.reduce((acc, item) => acc + item.price, bun.price * 2)
+    dispatch(setTotalPrice(total))
+  }, [addedIngredients, bun])
+
+  const classesAnimation =
+    isDrop && bun.isLocked ? [styles.content, styles.indicator] : [styles.content]
+
+  if (statusOrder === 'loading') return <Preloader />
   return (
     <>
       <section ref={dropRef} className={classesAnimation.join(' ')}>
+        {!bun.isLocked && !addedIngredients?.length && (
+          <h2 className={`text text_type_main-large ${styles.title}`}>Приготовьте булку!</h2>
+        )}
+
         <ul className={styles.wrapper}>
           <IngredientConstructor type='top' item={bun} />
           <ul className={`custom-scroll ${styles.otherItems}`}>
@@ -67,7 +85,11 @@ const BurgerConstructor = () => {
             <span className='text text_type_digits-medium'>
               {totalPrice} <CurrencyIcon />
             </span>
-            <Button onClick={handleClickOrder} htmlType='button'>
+            <Button
+              onClick={handleClickOrder}
+              htmlType='button'
+              disabled={addedIngredients.length < 1}
+            >
               Оформить заказ
             </Button>
           </div>

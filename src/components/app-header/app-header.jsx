@@ -1,36 +1,48 @@
-import headerStyles from './app-header.module.css'
 import {
-  Logo,
-  ProfileIcon,
   BurgerIcon,
-  ListIcon
+  ListIcon,
+  Logo,
+  ProfileIcon
 } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Link, useLocation, useMatch } from 'react-router-dom'
+import styles from './app-header.module.css'
 
 const AppHeader = () => {
+  const { pathname } = useLocation()
+
+  const isHome = useMatch('/')
+  const isProfile = useMatch('/profile')
+
+  const isClassLinkHome = `text text_type_main-default ${
+    pathname !== '/' ? 'text_color_inactive' : ''
+  }`
+  const isClassLinkProfile = `text text_type_main-default ${
+    pathname !== '/profile' ? 'text_color_inactive' : ''
+  }`
   return (
-    <header className={headerStyles.header}>
-      <div className={headerStyles.content}>
-        <nav className={headerStyles.nav}>
-          <a href='#' className={headerStyles.link}>
-            <BurgerIcon />
-            <p className='text text_type_main-default '>Конструктор</p>
-          </a>
+    <header className={styles.header}>
+      <nav className={styles.nav}>
+        <div className={styles.links}>
+          <Link to='/' className={styles.link} state={{ from: { pathname } }}>
+            <BurgerIcon type={isHome ? 'primary' : 'secondary'} />
+            <p className={isClassLinkHome}>Конструктор</p>
+          </Link>
 
-          <a href='#' className={headerStyles.link}>
-            <ListIcon type='secondary' />
+          <Link to='#' className={styles.link} state={{ from: { pathname } }}>
+            <ListIcon type={false ? 'primary' : 'secondary'} />
             <p className='text text_type_main-default text_color_inactive'>Лента заказов</p>
-          </a>
-        </nav>
-
-        <div className={headerStyles.logo}>
-          <Logo />
+          </Link>
         </div>
 
-        <a href='#' className={headerStyles.profile}>
-          <ProfileIcon type='secondary' />
-          <p className='text text_type_main-default text_color_inactive'>Личный кабинет</p>
-        </a>
-      </div>
+        <Link to='/' className={styles.logo}>
+          <Logo />
+        </Link>
+
+        <Link to='/profile' className={styles.profileLink} state={{ from: { pathname } }}>
+          <ProfileIcon type={isProfile ? 'primary' : 'secondary'} />
+          <p className={isClassLinkProfile}>Личный кабинет</p>
+        </Link>
+      </nav>
     </header>
   )
 }

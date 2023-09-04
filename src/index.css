@@ -2,3 +2,55 @@ body {
   margin: 0;
   position: relative;
 }
+
+.wrapper {
+  text-align: center;
+}
+
+.content-route {
+  margin: 196px 0 59px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.route-link {
+  text-decoration: none;
+}
+
+.route-link:hover {
+  text-decoration: underline;
+}
+
+.input {
+  position: relative;
+}
+
+.icon-input {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+}
+
+.icon-input:hover {
+  opacity: 0.4;
+}
+
+.text-error {
+  height: 21px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.1s ease-in;
+}
+
+.text-error-active {
+  height: 21px;
+  visibility: visible;
+  opacity: 1;
+
+  font-size: 14px;
+  color: tomato;
+  transition: all 0.1s ease-in;
+}

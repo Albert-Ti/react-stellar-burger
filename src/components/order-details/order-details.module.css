@@ -1,9 +1,14 @@
 .details {
-  width: 520px;
-  margin: 120px 100px;
+  padding: 60px 40px 120px;
+  width: 640px;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.box {
+  width: 640px;
+  height: 64px;
 }
 
 .number {

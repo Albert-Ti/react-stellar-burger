@@ -9,33 +9,16 @@ import {
   resetPasswordRequest
 } from '../../utils/api'
 
-export const fetchCheckUser = createAsyncThunk('user/fetchCheckUserStatus', async () => {
-  return await userRequest()
-})
-
-export const fetchRegister = createAsyncThunk('user/fetchRegisterStatus', async form => {
-  return await registerRequest(form)
-})
-
-export const fetchLogin = createAsyncThunk('user/fetchLoginStatus', async form => {
-  return await loginRequest(form)
-})
-
-export const fetchEditUser = createAsyncThunk('user/fetchEditUserStatus', async form => {
-  return await editUserRequest(form)
-})
-
-export const fetchLogout = createAsyncThunk('user/fetchLogoutstatus', async () => {
-  return await logoutRequest()
-})
-
+export const fetchCheckUser = createAsyncThunk('user/fetchCheckUserStatus', userRequest)
+export const fetchRegister = createAsyncThunk('user/fetchRegisterStatus', registerRequest)
+export const fetchLogin = createAsyncThunk('user/fetchLoginStatus', loginRequest)
+export const fetchEditUser = createAsyncThunk('user/fetchEditUserStatus', editUserRequest)
+export const fetchLogout = createAsyncThunk('user/fetchLogoutstatus', logoutRequest)
 export const fetchForgotPassword = createAsyncThunk(
   'user/fetchForgotPasswordStatus',
-  async form => {
-    return await forgotPasswordRequest(form)
-  }
+  forgotPasswordRequest
 )
-
-export const fetchResetPassword = createAsyncThunk('user/fetchResetPasswordStatus', async form => {
-  return await resetPasswordRequest(form)
-})
+export const fetchResetPassword = createAsyncThunk(
+  'user/fetchResetPasswordStatus',
+  resetPasswordRequest
+)

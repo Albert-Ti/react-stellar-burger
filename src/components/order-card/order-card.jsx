@@ -21,7 +21,7 @@ const OrderCard = props => {
               left: `${i * 44}px`
             }}
             key={i}
-            src={item.image_mobile}
+            src={item?.image_mobile}
             alt='картинка'
           />
         ))
@@ -34,7 +34,7 @@ const OrderCard = props => {
               opacity: i === 5 ? 0.4 : ''
             }}
             key={i}
-            src={item.image_mobile}
+            src={item?.image_mobile}
             alt='картинка'
           />
         ))
@@ -82,7 +82,9 @@ const OrderCard = props => {
           {contentMoreImages}
         </div>
         <div className={styles.boxPrice}>
-          <span className='text text_type_digits-default'>{findIngredients.totalPrice}</span>{' '}
+          <span className='text text_type_digits-default'>
+            {findIngredients.totalPrice.toString()}
+          </span>{' '}
           <CurrencyIcon type='primary' />
         </div>
       </div>

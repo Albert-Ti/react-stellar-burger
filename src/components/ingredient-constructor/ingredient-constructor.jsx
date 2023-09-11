@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
-import { removeIngredient, sortedIngredients } from '../../redux/slice/constructor-slice'
+import { removeIngredient, sortedIngredients } from '../../redux/constructor/constructor-slice'
 import { ingredientConstructorPropType } from '../../utils/prop-types'
 import styles from './ingredient-constructor.module.css'
 

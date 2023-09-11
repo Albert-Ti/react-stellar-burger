@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { fetchLogout } from '../../redux/actions/user-action'
-import { userState } from '../../redux/slice/user-slice'
+import { fetchLogout } from '../../redux/user/user-actions'
+import { userStore } from '../../redux/user/user-slice'
 import styles from './profile-nav.module.css'
 
 const ProfileNav = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { logoutStatus } = useSelector(userState)
+  const { logoutStatus } = useSelector(userStore)
 
   const handleLogout = () => {
     dispatch(fetchLogout())

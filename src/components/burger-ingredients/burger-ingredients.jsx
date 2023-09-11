@@ -1,14 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { ingredientsState } from '../../redux/slice/ingredients-slice'
+import { ingredientsStore } from '../../redux/ingredients/ingredients-slice'
 import { isBun, isMain, isSauce, titleBun, titleMain, titleSauce } from '../../utils/constants'
 import Categories from '../categories/categories'
-import MyLoader from '../loader/loader'
+import IngredientsLoader from '../UI/ingredients-loader/ingredients-loader'
 import TabList from '../tab-list/tab-list'
 import styles from './burger-ingredients.module.css'
 
 const BurgerIngredients = () => {
-  const { status, items } = useSelector(ingredientsState)
+  const { status, items } = useSelector(ingredientsStore)
 
   const sortedCategories = React.useMemo(() => {
     return [
@@ -25,7 +25,7 @@ const BurgerIngredients = () => {
       <div className={`custom-scroll ${styles.scroll}`}>
         {sortedCategories.map(category =>
           status === 'loading' ? (
-            [...Array(2)].map((_, i) => <MyLoader key={i} />)
+            [...Array(2)].map((_, i) => <IngredientsLoader key={i} />)
           ) : (
             <Categories key={category.id} {...category} />
           )

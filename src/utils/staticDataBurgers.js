@@ -27,7 +27,7 @@ const twoDaysAgo = new Date(
 export const burgersData = [
   {
     id: crypto.randomUUID(),
-    number: '#034535',
+    number: '034535',
     title: 'Death Star Starship Main бургер',
     price: 480,
     date: today,

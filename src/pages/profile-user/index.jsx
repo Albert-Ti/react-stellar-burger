@@ -2,13 +2,13 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from '../../hooks/use-form'
-import { fetchEditUser } from '../../redux/actions/user-action'
-import { userState } from '../../redux/slice/user-slice'
+import { fetchEditUser } from '../../redux/user/user-actions'
+import { userStore } from '../../redux/user/user-slice'
 import styles from './profile-user.module.css'
 
 const ProfileUser = () => {
   const dispatch = useDispatch()
-  const { user } = useSelector(userState)
+  const { user } = useSelector(userStore)
 
   const { values, setValues } = useForm({
     name: user.name || '',

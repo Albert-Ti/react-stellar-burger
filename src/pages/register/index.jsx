@@ -1,14 +1,15 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../../components/UI/password-input'
 import { useForm } from '../../hooks/use-form'
-import { fetchRegister } from '../../redux/actions/user-action'
-import { userState } from '../../redux/slice/user-slice'
+import { fetchRegister } from '../../redux/user/user-actions'
+import { catchError, userStore } from '../../redux/user/user-slice'
 
 const Register = () => {
   const dispatch = useDispatch()
-  const { errorStatus } = useSelector(userState)
+  const { errorStatus } = useSelector(userStore)
 
   const { values, handleChanges } = useForm({
     name: sessionStorage.getItem('name') || '',
@@ -20,6 +21,12 @@ const Register = () => {
     e.preventDefault()
     dispatch(fetchRegister(values))
   }
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      dispatch(catchError(null))
+    }, 6000)
+  }, [errorStatus, dispatch])
 
   return (
     <section className='wrapper'>

@@ -1,0 +1,21 @@
+.progress {
+  width: 272px;
+  height: 317px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-content: start;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  column-gap: 25px;
+  overflow-y: hidden;
+  list-style: none;
+}
+
+.title {
+  display: flex;
+}
+
+.titleProgress {
+  margin-bottom: 24px;
+}

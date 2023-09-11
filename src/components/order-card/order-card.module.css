@@ -13,7 +13,11 @@
   justify-content: space-between;
 }
 
-.dietails {
+.status {
+  margin-top: 8px;
+}
+
+.details {
   display: flex;
   justify-content: space-between;
   gap: 24px;
@@ -28,9 +32,9 @@
 .moreImages {
   position: absolute;
   top: 50%;
-  left: 273px;
+  left: 288px;
   transform: translate(-50%, -50%);
-  z-index: 100;
+  z-index: 1;
 }
 
 .boxPrice {

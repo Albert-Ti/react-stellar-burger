@@ -21,8 +21,14 @@ export const ingredientsRequest = () => request('ingredients')
 export const orderRequest = obj =>
   request('orders', {
     ...options,
+    headers: {
+      'Content-type': 'application/json',
+      authorization: localStorage.getItem('access-token')
+    },
     body: JSON.stringify(obj)
   })
+
+export const getOrderRequest = number => request(`orders/${number}`)
 
 export const loginRequest = form =>
   request('auth/login', {
@@ -99,13 +105,3 @@ const fetchWithRefresh = async (url, options) => {
     }
   }
 }
-
-/* 
-POST https://norma.nomoreparties.space/api/auth/login - эндпоинт для авторизации.
-POST https://norma.nomoreparties.space/api/auth/register - эндпоинт для регистрации пользователя.
-POST https://norma.nomoreparties.space/api/auth/logout - эндпоинт для выхода из системы.
-POST https://norma.nomoreparties.space/api/auth/token - эндпоинт обновления токена.
-
-GET https://norma.nomoreparties.space/api/auth/user - эндпоинт получения данных о пользователе.
-PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обновления данных о пользователе.
-*/

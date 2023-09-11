@@ -3,12 +3,12 @@ import React from 'react'
 import { useDrag } from 'react-dnd'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-import { constructorState } from '../../redux/slice/constructor-slice'
+import { constructorStore } from '../../redux/constructor/constructor-slice'
 import { ingredientPropType } from '../../utils/prop-types'
 import styles from './category-ingredients.module.css'
 
 const CategoryIngredients = ({ element }) => {
-  const { bun, addedIngredients } = useSelector(constructorState)
+  const { bun, addedIngredients } = useSelector(constructorStore)
   const location = useLocation()
 
   const countIngredient = React.useMemo(() => {

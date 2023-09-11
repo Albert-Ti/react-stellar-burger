@@ -23,3 +23,11 @@ export const visibleModalPropType = PropTypes.shape({
   order: PropTypes.bool.isRequired,
   ingredient: PropTypes.bool.isRequired
 })
+
+export const orderPropType = PropTypes.shape({
+  name: PropTypes.string,
+  number: PropTypes.number,
+  updatedAt: PropTypes.string,
+  status: PropTypes.string,
+  ingredients: PropTypes.arrayOf(PropTypes.string)
+})

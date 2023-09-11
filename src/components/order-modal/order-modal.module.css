@@ -1,8 +1,9 @@
 .order {
   width: 640px;
-  margin: 120px auto;
+  max-height: 620px;
   display: flex;
   flex-direction: column;
+  padding: 60px 40px;
 }
 
 .orderNumber {
@@ -18,11 +19,7 @@
   margin-bottom: 63px;
 }
 
-.titleListText {
-  margin-bottom: 24px;
-}
-
-.orderList {
+.list {
   padding-right: 24px;
   margin-bottom: 40px;
   max-height: 313px;
@@ -33,21 +30,8 @@
   gap: 16px;
 }
 
-.orderListItem {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.orderInfoItem {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.orderPriceItem {
-  display: flex;
-  gap: 8px;
+.titleListText {
+  margin-bottom: 24px;
 }
 
 .orderDate {

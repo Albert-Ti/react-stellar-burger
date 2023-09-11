@@ -2,7 +2,7 @@ import styles from './preloader.module.css'
 
 const Preloader = () => {
   return (
-    <div className='content-route'>
+    <div className='wrapper'>
       <span className={styles.loader}></span>
     </div>
   )

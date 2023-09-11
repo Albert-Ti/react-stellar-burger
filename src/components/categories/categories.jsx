@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-import { getCurrentTab } from '../../redux/slice/ingredients-slice'
+import { getCurrentTab } from '../../redux/ingredients/ingredients-slice'
 import {
   isBun,
   isMain,

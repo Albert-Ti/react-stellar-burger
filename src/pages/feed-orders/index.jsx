@@ -19,7 +19,7 @@ const FeedOrders = () => {
   React.useEffect(() => {
     dispatch(connect(WS_ORDERS_ALL_URL))
     return () => dispatch(disconnect())
-  }, [])
+  }, [dispatch])
 
   if (connectingError) return <ErrorPage />
   if (!orders) return <Preloader />

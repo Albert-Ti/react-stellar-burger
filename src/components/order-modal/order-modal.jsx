@@ -22,11 +22,29 @@ const OrderModal = () => {
   const orderByNumber = order && order[0]
   const findIngredients = useOrder(orderByNumber?.ingredients)
 
+  const findIngredientsAddCount = React.useMemo(() => {
+    const uniqueIngredientMap = new Map()
+
+    if (typeof findIngredients?.items === 'object') {
+      for (const ingredient of findIngredients.items) {
+        const ingredientSrting = JSON.stringify(ingredient)
+
+        if (uniqueIngredientMap.has(ingredientSrting)) {
+          const existingIngredient = uniqueIngredientMap.get(ingredientSrting)
+          existingIngredient.count += 1
+        } else {
+          uniqueIngredientMap.set(ingredientSrting, { ...ingredient, count: 1 })
+        }
+      }
+    }
+    return Array.from(uniqueIngredientMap.values())
+  }, [findIngredients])
+
   React.useEffect(() => {
     dispatch(fetchOrderCard(number))
     dispatch(connect(WS_ORDERS_ALL_URL))
     return () => dispatch(disconnect())
-  }, [])
+  }, [number, dispatch])
 
   if (statusOrder === 'loading')
     return (
@@ -58,7 +76,7 @@ const OrderModal = () => {
       </p>
       <h3 className={`text text_type_main-medium ${styles.titleListText}`}>Состав:</h3>
       <div className={`custom-scroll ${styles.list}`}>
-        {findIngredients.items.map((item, i) => (
+        {findIngredientsAddCount.map((item, i) => (
           <OrderComposition key={i} {...item} />
         ))}
       </div>

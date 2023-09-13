@@ -12,7 +12,7 @@ const OrderCard = props => {
   const findIngredients = useOrder(ingredients)
 
   const contentImages =
-    findIngredients?.items.length < 5
+    findIngredients.items.length < 5
       ? findIngredients.items.map((item, i) => (
           <img
             style={{

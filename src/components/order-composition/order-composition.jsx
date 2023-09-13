@@ -1,7 +1,7 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { isBun } from '../../utils/constants'
-import styles from './order-composition.module.css'
 import { orderPropType } from '../../utils/prop-types'
+import styles from './order-composition.module.css'
+import { isBun } from '../../utils/constants'
 
 const OrderComposition = props => {
   return (
@@ -11,7 +11,7 @@ const OrderComposition = props => {
         <h4 className={`text text_type_main-default ${styles.nameItem}`}>{props.name}</h4>
         <div className={styles.priceItem}>
           <span className='text_type_digits-default'>
-            {props.type === isBun ? 2 : 1} x {props.price}
+            {props.type === isBun ? 2 : props.count} x {props.price}
           </span>
           <CurrencyIcon />
         </div>

@@ -5,12 +5,10 @@ import { isBun } from '../utils/constants'
 
 export const useOrder = arrayId => {
   const { items } = useSelector(ingredientsStore)
-
   const getFindIngredients = React.useMemo(() => {
     const findItems = arrayId?.map(i => items.find(item => item._id === i))
     const bun = findItems?.filter(item => item?.type === isBun)
     const other = findItems?.filter(item => item?.type !== isBun)
-
     if (bun) {
       return {
         items: [bun[0], ...other],

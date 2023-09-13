@@ -1,6 +1,6 @@
 import ContentLoader from 'react-content-loader'
 
-const MyLoader = props => (
+const IngredientsLoader = props => (
   <ContentLoader
     speed={2}
     width={272}
@@ -20,4 +20,4 @@ const MyLoader = props => (
   </ContentLoader>
 )
 
-export default MyLoader
+export default IngredientsLoader

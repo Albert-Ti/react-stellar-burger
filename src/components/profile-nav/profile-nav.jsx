@@ -1,31 +1,34 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { fetchLogout } from '../../redux/actions/user-action'
-import { userState } from '../../redux/slice/user-slice'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { fetchLogout } from '../../redux/user/user-actions'
+import { userStore } from '../../redux/user/user-slice'
 import styles from './profile-nav.module.css'
 
 const ProfileNav = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { logoutStatus } = useSelector(userState)
+  const { logoutStatus } = useSelector(userStore)
 
   const handleLogout = () => {
     dispatch(fetchLogout())
     logoutStatus && navigate('/login')
   }
 
+  const classesAnimation = ({ isActive }) =>
+    isActive ? `${styles.link} text_color_primary` : `${styles.link} text_color_inactive`
+
   return (
     <div className={styles.links}>
       <nav className={styles.nav}>
-        <Link to='/profile' className={styles.link}>
+        <NavLink end to='/profile' className={classesAnimation}>
           <p className='text text_type_main-medium'>Профиль</p>
-        </Link>
-        <Link to='/profile/order' className={styles.link}>
-          <p className='text text_type_main-medium text_color_inactive'>История заказов</p>
-        </Link>
-        <Link onClick={handleLogout} to='#' className={styles.link}>
-          <p className='text text_type_main-medium text_color_inactive'>Выход</p>
-        </Link>
+        </NavLink>
+        <NavLink end to='/profile/order' className={classesAnimation}>
+          <p className='text text_type_main-medium'>История заказов</p>
+        </NavLink>
+        <NavLink end onClick={handleLogout} to='#' className={classesAnimation}>
+          <p className='text text_type_main-medium  text_color_inactive'>Выход</p>
+        </NavLink>
       </nav>
       <div className={styles.description}>
         <p className='text text_type_main-default text_color_inactive'>

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchOrder } from '../actions/constructor-action'
+import { fetchOrder } from './constructor-actions'
 
 const initialState = {
   bun: {},
@@ -57,7 +57,7 @@ const constructorSlice = createSlice({
   }
 })
 
-export const constructorState = state => state.burger
+export const constructorStore = store => store.burger
 export const {
   addBun,
   addIngredient,

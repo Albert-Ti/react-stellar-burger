@@ -2,7 +2,7 @@ import IngredientDetails from '../../components/ingredient-details/ingredient-de
 
 const Ingredient = () => {
   return (
-    <div className='content-route'>
+    <div className='wrapper'>
       <IngredientDetails />
     </div>
   )

@@ -3,18 +3,23 @@ import { useDispatch } from 'react-redux'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import IngredientDetails from '../components/ingredient-details/ingredient-details'
 import Modal from '../components/modal/modal'
+import OrderModal from '../components/order-modal/order-modal'
 import { OnlyAuth, OnlyUnAuth } from '../hoc/protected-route'
 import ErrorPage from '../pages/error-page'
+import FeedOrders from '../pages/feed-orders'
 import ForgotPassword from '../pages/forgot-password'
 import Home from '../pages/home'
 import Ingredient from '../pages/ingredient'
 import Layout from '../pages/layout'
 import Login from '../pages/login'
+import Order from '../pages/order'
 import Profile from '../pages/profile'
+import ProfileOrders from '../pages/profile-orders'
+import ProfileUser from '../pages/profile-user'
 import Register from '../pages/register'
 import ResetPassword from '../pages/reset-password'
-import { fetchIngredients } from '../redux/actions/ingredients-action'
-import { fetchCheckUser } from '../redux/actions/user-action'
+import { fetchIngredients } from '../redux/ingredients/ingredients-actions'
+import { fetchCheckUser } from '../redux/user/user-actions'
 
 function App() {
   const navigate = useNavigate()
@@ -27,9 +32,17 @@ function App() {
     dispatch(fetchIngredients())
   }, [])
 
+  const handleCLoseModal = () => {
+    navigate(-1)
+  }
   const ingredientModal = (
-    <Modal onClose={() => navigate(-1)}>
+    <Modal onClose={handleCLoseModal}>
       <IngredientDetails />
+    </Modal>
+  )
+  const orderModal = (
+    <Modal onClose={handleCLoseModal}>
+      <OrderModal />
     </Modal>
   )
 
@@ -39,7 +52,13 @@ function App() {
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
           <Route path='/ingredients/:id' element={<Ingredient />} />
-          <Route path='/profile' element={<OnlyAuth element={<Profile />} />} />
+          <Route path='/feed' element={<FeedOrders />} />
+          <Route path='/feed/:number' element={<Order />} />
+          <Route path='/profile' element={<OnlyAuth element={<Profile />} />}>
+            <Route index element={<OnlyAuth element={<ProfileUser />} />} />
+            <Route path='/profile/order' element={<OnlyAuth element={<ProfileOrders />} />} />
+          </Route>
+          <Route path='/profile/order/:number' element={<OnlyAuth element={<Order />} />} />
           <Route path='/register' element={<OnlyUnAuth element={<Register />} />} />
           <Route path='/login' element={<OnlyUnAuth element={<Login />} />} />
           <Route path='/forgot-password' element={<OnlyUnAuth element={<ForgotPassword />} />} />
@@ -49,6 +68,8 @@ function App() {
       </Routes>
       {background && (
         <Routes>
+          <Route path='/feed/:number' element={orderModal} />
+          <Route path='/profile/order/:number' element={orderModal} />
           <Route path='/ingredients/:id' element={ingredientModal} />
         </Routes>
       )}

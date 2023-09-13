@@ -7,7 +7,7 @@ import {
   fetchLogin,
   fetchRegister,
   fetchResetPassword
-} from '../actions/user-action'
+} from './user-actions'
 
 const initialState = {
   user: null,
@@ -106,7 +106,7 @@ const userSlice = createSlice({
   }
 })
 
-export const userState = state => state.user
+export const userStore = state => state.user
 
 export const { setUser, setAuthChecked, removeUser, catchError } = userSlice.actions
 export default userSlice.reducer

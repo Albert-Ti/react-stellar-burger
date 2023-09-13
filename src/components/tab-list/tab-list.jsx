@@ -1,12 +1,12 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCurrentTab, ingredientsState } from '../../redux/slice/ingredients-slice'
+import { getCurrentTab, ingredientsStore } from '../../redux/ingredients/ingredients-slice'
 import { isBun, isMain, isSauce, tabBun, tabMain, tabSauce } from '../../utils/constants'
 import styles from './tab-list.module.css'
 
 const TabList = () => {
   const dispatch = useDispatch()
-  const { currentTab } = useSelector(ingredientsState)
+  const { currentTab } = useSelector(ingredientsStore)
 
   return (
     <div className={styles.tabLists}>

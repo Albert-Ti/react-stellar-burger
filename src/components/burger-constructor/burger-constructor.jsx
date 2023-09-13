@@ -3,16 +3,16 @@ import React from 'react'
 import { useDrop } from 'react-dnd'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import Preloader from '../../pages/preloader/preloader'
-import { fetchOrder } from '../../redux/actions/constructor-action'
+import Preloader from '../UI/preloader/preloader'
+import { fetchOrder } from '../../redux/constructor/constructor-actions'
 import {
   addBun,
   addIngredient,
-  constructorState,
+  constructorStore,
   setOrder,
   setTotalPrice
-} from '../../redux/slice/constructor-slice'
-import { userState } from '../../redux/slice/user-slice'
+} from '../../redux/constructor/constructor-slice'
+import { userStore } from '../../redux/user/user-slice'
 import { isBun } from '../../utils/constants'
 import IngredientConstructor from '../ingredient-constructor/ingredient-constructor'
 import Modal from '../modal/modal'
@@ -24,8 +24,8 @@ const BurgerConstructor = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  const { user } = useSelector(userState)
-  const { bun, addedIngredients, totalPrice, order, statusOrder } = useSelector(constructorState)
+  const { user } = useSelector(userStore)
+  const { bun, addedIngredients, totalPrice, order, statusOrder } = useSelector(constructorStore)
 
   const handleClickOrder = () => {
     if (!user) {
@@ -59,10 +59,14 @@ const BurgerConstructor = () => {
     dispatch(setTotalPrice(total))
   }, [addedIngredients, bun])
 
-  const classesAnimation =
-    isDrop && bun.isLocked ? [styles.content, styles.indicator] : [styles.content]
+  const classesAnimation = isDrop ? [styles.content, styles.indicator] : [styles.content]
 
-  if (statusOrder === 'loading') return <Preloader />
+  if (statusOrder === 'loading')
+    return (
+      <div className={styles.content}>
+        <Preloader />
+      </div>
+    )
   return (
     <>
       <section ref={dropRef} className={classesAnimation.join(' ')}>

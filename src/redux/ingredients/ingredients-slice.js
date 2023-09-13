@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { tabBun } from '../../utils/constants'
-import { fetchIngredients } from '../actions/ingredients-action'
+import { fetchIngredients } from './ingredients-actions'
 
 const initialState = {
   items: [],
@@ -31,6 +31,6 @@ const ingredientsSlice = createSlice({
   }
 })
 
-export const ingredientsState = state => state.ingredients
+export const ingredientsStore = store => store.ingredients
 export const { getCurrentTab } = ingredientsSlice.actions
 export default ingredientsSlice.reducer

@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 import { Navigate, useLocation } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
-import Preloader from '../pages/preloader/preloader'
-import { userState } from '../redux/slice/user-slice'
+import Preloader from '../components/UI/preloader/preloader'
+import { userStore } from '../redux/user/user-slice'
 
 const Protected = ({ onlyUnAuth = false, element }) => {
-  const { isAuthChecked, user } = useSelector(userState)
+  const { isAuthChecked, user } = useSelector(userStore)
 
   const location = useLocation()
 

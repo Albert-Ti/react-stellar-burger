@@ -1,4 +1,4 @@
-import { Middleware } from 'redux'
+import { Middleware, MiddlewareAPI } from 'redux'
 import {
   feedOrdersConnect,
   feedOrdersDisconnect,
@@ -17,7 +17,7 @@ import {
   profileOrderWsMessage,
   profileOrderWsOpen
 } from '../profile-orders/actions'
-import { AppDispatch } from '../store'
+import { AppDispatch, RootState } from '../store'
 import { fetchCheckUser } from '../user/actions'
 
 type TWsActions = {
@@ -30,13 +30,13 @@ type TWsActions = {
   onError: typeof feedOrdersWsError | typeof profileOrderWsError
 }
 
-export const socketMiddleware = (wsActions: TWsActions): Middleware<{}> => {
-  return store => {
+export const socketMiddleware = (wsActions: TWsActions): Middleware => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null
     let isCLosed = false
 
     return next => action => {
-      const { dispatch }: { dispatch: AppDispatch } = store
+      const { dispatch } = store
       const { wsConnect, wsdisconnect, wsConnecting, onOpen, onMessage, onClose, onError } =
         wsActions
 

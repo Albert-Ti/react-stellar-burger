@@ -30,7 +30,7 @@ const BurgerConstructor = () => {
   const { bun, addedIngredients, totalPrice, createdOrder, statusCreatedOrder } =
     useSelector(constructorStore)
 
-  const handleClickOrder = () => {
+  const handleOrderRequest = () => {
     if (!user) {
       navigate('/login', { state: { from: { pathname } } })
     } else {
@@ -97,7 +97,7 @@ const BurgerConstructor = () => {
               {totalPrice} <CurrencyIcon type='primary' />
             </span>
             <Button
-              onClick={handleClickOrder}
+              onClick={handleOrderRequest}
               htmlType='button'
               disabled={addedIngredients.length < 1}
             >

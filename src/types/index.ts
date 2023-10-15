@@ -38,18 +38,16 @@ export type TOrdersResponse = {
   message?: string
 }
 
-export type TOrderCreationProperty = { ingredients: string[] }
-
 export type TOrderNumber = {
   number: number
 }
 
-export type TCurrectedOrder = Omit<TOrder, 'ingredients'> & TOrderCreationProperty
+export type TCurrectedOrder = TOrder & { ingredients: TIngredient[] }
 
 export type TOrderCreationResponse = {
   success: boolean
   name: string
-  order: TOrderNumber | TCurrectedOrder
+  order: TCurrectedOrder
 }
 
 export type TModal = {
@@ -75,13 +73,12 @@ export type TOptionsResponse = {
   }
 }
 
-export type TUserSuccessResponse = {
+export type TSuccessResponse = {
   success: boolean
-  user: TFormUser
   message?: string
 }
 
-export type TSuccessResponse = Omit<TUserSuccessResponse, 'user'>
+export type TUserSuccessResponse = TSuccessResponse & { user: TFormUser }
 
 export type TToken = {
   accessToken: string

@@ -66,7 +66,7 @@ export type TFormUser = { [key: string]: string }
 
 export type TOptionsResponse = {
   [key: string]: string | { [key: string]: string }
-} & {
+  method: 'GET' | 'POST' | 'PATCH' | 'DELETE'
   headers: {
     readonly 'Content-type': 'application/json'
     authorization?: string

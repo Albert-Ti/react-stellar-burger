@@ -10,7 +10,7 @@ import {
   addIngredient,
   constructorStore,
   setOrder,
-  setTotalPrice
+  setTotalPrice,
 } from '../../redux/constructor/slice'
 import { userStore } from '../../redux/user/slice'
 import { TIngredient } from '../../types'
@@ -53,8 +53,8 @@ const BurgerConstructor = () => {
       }
     },
     collect: monitor => ({
-      isDrop: monitor.isOver()
-    })
+      isDrop: monitor.isOver(),
+    }),
   })
 
   React.useEffect(() => {

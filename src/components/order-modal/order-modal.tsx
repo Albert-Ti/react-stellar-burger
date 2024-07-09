@@ -8,7 +8,7 @@ import { fetchByClickingOnTheCardOrder } from '../../redux/constructor/actions'
 import { constructorStore } from '../../redux/constructor/slice'
 import {
   feedOrdersConnect as connect,
-  feedOrdersDisconnect as disconnect
+  feedOrdersDisconnect as disconnect,
 } from '../../redux/feed-orders/actions'
 import { TCorrectCardInfo, TIngredient } from '../../types'
 import { WS_ORDERS_ALL_URL } from '../../utils/constants'
@@ -28,13 +28,13 @@ const OrderModal = () => {
 
     if (typeof correctCardInfo.items === 'object') {
       for (const ingredient of correctCardInfo.items) {
-        const ingredientSrting = JSON.stringify(ingredient)
+        const ingredientString = JSON.stringify(ingredient)
 
-        if (uniqueIngredientMap.has(ingredientSrting)) {
-          const existingIngredient = uniqueIngredientMap.get(ingredientSrting)
+        if (uniqueIngredientMap.has(ingredientString)) {
+          const existingIngredient = uniqueIngredientMap.get(ingredientString)
           existingIngredient.count += 1
         } else {
-          uniqueIngredientMap.set(ingredientSrting, { ...ingredient, count: 1 })
+          uniqueIngredientMap.set(ingredientString, { ...ingredient, count: 1 })
         }
       }
     }

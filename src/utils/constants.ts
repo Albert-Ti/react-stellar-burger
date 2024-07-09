@@ -13,13 +13,13 @@ export const tabMain = 'three'
 export const isHeaders = {
   Булки: isBun,
   Соусы: isSauce,
-  Начинки: isMain
+  Начинки: isMain,
 } as const
 
 export const wsStatus = {
   connecting: 'CONNECTING',
   offline: 'OFFLINE',
-  online: 'ONLINE'
+  online: 'ONLINE',
 } as const
 
 export const BASE_URL = 'https://norma.nomoreparties.space/api/'
@@ -32,8 +32,8 @@ export const options: TOptionsResponse = {
   cache: 'no-cache',
   credentials: 'same-origin',
   headers: {
-    'Content-type': 'application/json'
+    'Content-type': 'application/json',
   },
   redirect: 'follow',
-  referrerPolicy: 'no-referrer'
+  referrerPolicy: 'no-referrer',
 }

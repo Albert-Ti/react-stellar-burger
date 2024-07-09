@@ -1,47 +1,31 @@
 import { configureStore } from '@reduxjs/toolkit'
 import burger from '../constructor/slice'
-import {
-  feedOrdersConnect,
-  feedOrdersDisconnect,
-  feedOrdersWsClose,
-  feedOrdersWsConnecting,
-  feedOrdersWsError,
-  feedOrdersWsMessage,
-  feedOrdersWsOpen
-} from '../feed-orders/actions'
 import { feedOrdersReducer as feedOrders } from '../feed-orders/reducer'
 import ingredients from '../ingredients/slice'
 import { socketMiddleware } from '../middleware/socket-middleware'
-import {
-  profileOrderConntect,
-  profileOrderDisconnect,
-  profileOrderWsClose,
-  profileOrderWsConnecting,
-  profileOrderWsError,
-  profileOrderWsMessage,
-  profileOrderWsOpen
-} from '../profile-orders/actions'
+import * as actionsFeed from '../feed-orders/actions'
+import * as actionsProfile from '../profile-orders/actions'
 import { profileOrderReducer as profileOrder } from '../profile-orders/reducer'
 import user from '../user/slice'
 
 const feedOrdersMiddleWare = socketMiddleware({
-  wsConnect: feedOrdersConnect,
-  wsConnecting: feedOrdersWsConnecting,
-  wsdisconnect: feedOrdersDisconnect,
-  onOpen: feedOrdersWsOpen,
-  onClose: feedOrdersWsClose,
-  onError: feedOrdersWsError,
-  onMessage: feedOrdersWsMessage
+  wsConnect: actionsFeed.feedOrdersConnect,
+  wsConnecting: actionsFeed.feedOrdersWsConnecting,
+  wsdisconnect: actionsFeed.feedOrdersDisconnect,
+  onOpen: actionsFeed.feedOrdersWsOpen,
+  onClose: actionsFeed.feedOrdersWsClose,
+  onError: actionsFeed.feedOrdersWsError,
+  onMessage: actionsFeed.feedOrdersWsMessage,
 })
 
 const profileOrderMiddleWare = socketMiddleware({
-  wsConnect: profileOrderConntect,
-  wsConnecting: profileOrderWsConnecting,
-  wsdisconnect: profileOrderDisconnect,
-  onOpen: profileOrderWsOpen,
-  onClose: profileOrderWsClose,
-  onError: profileOrderWsError,
-  onMessage: profileOrderWsMessage
+  wsConnect: actionsProfile.profileOrderConntect,
+  wsConnecting: actionsProfile.profileOrderWsConnecting,
+  wsdisconnect: actionsProfile.profileOrderDisconnect,
+  onOpen: actionsProfile.profileOrderWsOpen,
+  onClose: actionsProfile.profileOrderWsClose,
+  onError: actionsProfile.profileOrderWsError,
+  onMessage: actionsProfile.profileOrderWsMessage,
 })
 
 const store = configureStore({
@@ -50,11 +34,11 @@ const store = configureStore({
     burger,
     user,
     feedOrders,
-    profileOrder
+    profileOrder,
   },
   middleware: getDefaultMiddleware => {
     return getDefaultMiddleware().concat(feedOrdersMiddleWare, profileOrderMiddleWare)
-  }
+  },
 })
 
 export type RootState = ReturnType<typeof store.getState>

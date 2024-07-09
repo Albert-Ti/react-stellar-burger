@@ -98,27 +98,7 @@ export const refreshToken = () =>
   })
 
 const fetchWithRefresh = async <T>(url: string, options: TOptionsResponse) => {
-  try {
-    return await request<T>(url, options)
-  } catch (error: any) {
-    if (error.messages === 'jwt expired') {
-      const refreshData = await refreshToken()
-      if (!refreshData) return Promise.reject(refreshData)
-
-      localStorage.setItem('access-token', refreshData.accessToken)
-      localStorage.setItem('refresh-token', refreshData.refreshToken)
-      options.headers.authorization = refreshData.accessToken
-
-      return request<T>(url, options)
-    } else {
-      return Promise.reject(error)
-    }
-  }
-}
-
-/* --------------альтернативный способ через then для функции обновления токена-----------------
-
-return await request<T>(url, options).catch(async err => {
+  return await request<T>(url, options).catch(async err => {
     if (err.message === 'jwt expired') {
       const refreshData = await refreshToken()
 
@@ -137,4 +117,24 @@ return await request<T>(url, options).catch(async err => {
     }
     return Promise.reject(err)
   })
+}
+
+/* --------------альтернативный способ для функции обновления токена-----------------
+  try {
+    return await request<T>(url, options)
+  } catch (error: any) {
+    if (error.messages === 'jwt expired') {
+      const refreshData = await refreshToken()
+      if (!refreshData) return Promise.reject(refreshData)
+
+      localStorage.setItem('access-token', refreshData.accessToken)
+      localStorage.setItem('refresh-token', refreshData.refreshToken)
+      options.headers.authorization = refreshData.accessToken
+
+      return request<T>(url, options)
+    } else {
+      return Promise.reject(error)
+    }
+  }
+
 */

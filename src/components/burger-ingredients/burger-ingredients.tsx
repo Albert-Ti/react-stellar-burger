@@ -13,11 +13,7 @@ const BurgerIngredients = () => {
   const sortedCategories = React.useMemo(() => {
     return [
       { id: 1, title: 'Булки', items: items.filter(item => item.type === isBun) },
-      {
-        id: 2,
-        title: 'Соусы',
-        items: items.filter(item => item.type === isSauce)
-      },
+      { id: 2, title: 'Соусы', items: items.filter(item => item.type === isSauce) },
       { id: 3, title: 'Начинки', items: items.filter(item => item.type === isMain) }
     ]
   }, [items])

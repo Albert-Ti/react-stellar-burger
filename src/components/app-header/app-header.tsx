@@ -2,13 +2,16 @@ import {
   BurgerIcon,
   ListIcon,
   Logo,
-  ProfileIcon
+  ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useLocation, useMatch } from 'react-router-dom'
 import styles from './app-header.module.css'
+import { useSelector } from 'react-redux'
+import { userStore } from '../../redux/user/slice'
 
 const AppHeader = () => {
   const { pathname } = useLocation()
+  const { user } = useSelector(userStore)
 
   const isHome = useMatch('/')
   const isProfile = useMatch('/profile')
@@ -44,7 +47,7 @@ const AppHeader = () => {
 
         <Link to='/profile' className={styles.profileLink} state={{ from: { pathname } }}>
           <ProfileIcon type={isProfile ? 'primary' : 'secondary'} />
-          <p className={isClassLinkProfile}>Личный кабинет</p>
+          <p className={isClassLinkProfile}>{user ? user.name : 'Личный кабинет'}</p>
         </Link>
       </nav>
     </header>

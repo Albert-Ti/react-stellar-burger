@@ -1,20 +1,20 @@
-import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
+import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { Link, Navigate } from 'react-router-dom'
-import { useAppDispatch, useForm } from '../../hooks'
-import { fetchForgotPassword } from '../../redux/user/actions'
-import { catchError, userStore } from '../../redux/user/slice'
+import {useSelector} from 'react-redux'
+import {Link, Navigate} from 'react-router-dom'
+import {useAppDispatch, useForm} from '../../hooks'
+import {fetchForgotPassword} from '../../redux/user/actions'
+import {catchError, userStore} from '../../redux/user/slice'
 
 const ForgotPassword = () => {
   const dispatch = useAppDispatch()
-  const { resetPasswordStatus, errorStatus } = useSelector(userStore)
+  const {resetPasswordStatus, errorStatus} = useSelector(userStore)
 
-  const { values, handleChanges } = useForm({
-    email: sessionStorage.getItem('email') || ''
+  const {values, handleChanges} = useForm({
+    email: sessionStorage.getItem('email') || '',
   })
 
-  const handleSubmitForgotPassword = (e: { preventDefault: () => void }) => {
+  const handleSubmitForgotPassword = (e: {preventDefault: () => void}) => {
     e.preventDefault()
     dispatch(fetchForgotPassword(values))
   }
@@ -42,9 +42,7 @@ const ForgotPassword = () => {
           Восстановить
         </Button>
         <span
-          className={`text text_type_main-default ${
-            errorStatus ? 'text-error-active' : 'text-error'
-          }`}
+          className={`text text_type_main-default ${errorStatus ? 'text-error-active' : 'text-error'}`}
         >
           {errorStatus?.message}
         </span>

@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import {Outlet} from 'react-router-dom'
 import ProfileNav from '../../components/profile-nav/profile-nav'
 import styles from './profile.module.css'
 

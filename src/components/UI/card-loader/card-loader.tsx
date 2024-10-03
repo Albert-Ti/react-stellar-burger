@@ -1,5 +1,5 @@
 import React from 'react'
-import ContentLoader, { IContentLoaderProps } from 'react-content-loader'
+import ContentLoader, {IContentLoaderProps} from 'react-content-loader'
 
 const CardLoader: React.FC<IContentLoaderProps> = props => (
   <ContentLoader

@@ -1,25 +1,25 @@
-import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
+import {CurrencyIcon, FormattedDate} from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import { useAppDispatch, useOrder } from '../../hooks'
+import {useSelector} from 'react-redux'
+import {useParams} from 'react-router-dom'
+import {useAppDispatch, useOrder} from '../../hooks'
 import ErrorPage from '../../pages/error-page'
-import { fetchByClickingOnTheCardOrder } from '../../redux/constructor/actions'
-import { constructorStore } from '../../redux/constructor/slice'
+import {fetchByClickingOnTheCardOrder} from '../../redux/constructor/actions'
+import {constructorStore} from '../../redux/constructor/slice'
 import {
   feedOrdersConnect as connect,
   feedOrdersDisconnect as disconnect,
 } from '../../redux/feed-orders/actions'
-import { TCorrectCardInfo, TIngredient } from '../../types'
-import { WS_ORDERS_ALL_URL } from '../../utils/constants'
+import {TCorrectCardInfo, TIngredient} from '../../types'
+import {WS_ORDERS_ALL_URL} from '../../utils/constants'
 import Preloader from '../UI/preloader/preloader'
 import OrderComposition from '../order-composition/order-composition'
 import styles from './order-modal.module.css'
 
 const OrderModal = () => {
   const dispatch = useAppDispatch()
-  const { number } = useParams()
-  const { order, statusOrder } = useSelector(constructorStore)
+  const {number} = useParams()
+  const {order, statusOrder} = useSelector(constructorStore)
 
   const correctCardInfo = useOrder(order.ingredients) as TCorrectCardInfo
 
@@ -34,7 +34,7 @@ const OrderModal = () => {
           const existingIngredient = uniqueIngredientMap.get(ingredientString)
           existingIngredient.count += 1
         } else {
-          uniqueIngredientMap.set(ingredientString, { ...ingredient, count: 1 })
+          uniqueIngredientMap.set(ingredientString, {...ingredient, count: 1})
         }
       }
     }
@@ -69,11 +69,7 @@ const OrderModal = () => {
             : ''
         } ${styles.orderStatus}`}
       >
-        {order?.status === 'done'
-          ? 'Выполнен'
-          : order.status === 'cancelled'
-          ? 'Отменен'
-          : 'Готовится'}
+        {order?.status === 'done' ? 'Выполнен' : order.status === 'cancelled' ? 'Отменен' : 'Готовится'}
       </p>
       <h3 className={`text text_type_main-medium ${styles.titleListText}`}>Состав:</h3>
       <div className={`custom-scroll ${styles.list}`}>

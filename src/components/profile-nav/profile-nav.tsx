@@ -1,21 +1,21 @@
-import { useSelector } from 'react-redux'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../../hooks'
-import { fetchLogout } from '../../redux/user/actions'
-import { userStore } from '../../redux/user/slice'
+import {useSelector} from 'react-redux'
+import {NavLink, useNavigate} from 'react-router-dom'
+import {useAppDispatch} from '../../hooks'
+import {fetchLogout} from '../../redux/user/actions'
+import {userStore} from '../../redux/user/slice'
 import styles from './profile-nav.module.css'
 
 const ProfileNav = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { logoutStatus } = useSelector(userStore)
+  const {logoutStatus} = useSelector(userStore)
 
   const handleLogout = () => {
     dispatch(fetchLogout())
     logoutStatus && navigate('/login')
   }
 
-  const classesAnimation = ({ isActive }: { isActive: boolean }) =>
+  const classesAnimation = ({isActive}: {isActive: boolean}) =>
     isActive ? `${styles.link} text_color_primary` : `${styles.link} text_color_inactive`
 
   return (

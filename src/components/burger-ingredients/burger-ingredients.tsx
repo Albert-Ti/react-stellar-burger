@@ -1,20 +1,20 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { ingredientsStore } from '../../redux/ingredients/slice'
-import { isBun, isMain, isSauce } from '../../utils/constants'
+import {useSelector} from 'react-redux'
+import {ingredientsStore} from '../../redux/ingredients/slice'
+import {isBun, isMain, isSauce} from '../../utils/constants'
 import IngredientsLoader from '../UI/ingredients-loader/ingredients-loader'
 import Categories from '../categories/categories'
 import TabList from '../tab-list/tab-list'
 import styles from './burger-ingredients.module.css'
 
 const BurgerIngredients = () => {
-  const { status, items } = useSelector(ingredientsStore)
+  const {status, items} = useSelector(ingredientsStore)
 
   const sortedCategories = React.useMemo(() => {
     return [
-      { id: 1, title: 'Булки', items: items.filter(item => item.type === isBun) },
-      { id: 2, title: 'Соусы', items: items.filter(item => item.type === isSauce) },
-      { id: 3, title: 'Начинки', items: items.filter(item => item.type === isMain) }
+      {id: 1, title: 'Булки', items: items.filter(item => item.type === isBun)},
+      {id: 2, title: 'Соусы', items: items.filter(item => item.type === isSauce)},
+      {id: 3, title: 'Начинки', items: items.filter(item => item.type === isMain)},
     ]
   }, [items])
 

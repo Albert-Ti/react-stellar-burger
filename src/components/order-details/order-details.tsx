@@ -1,8 +1,8 @@
 import React from 'react'
-import { TOrderNumber } from '../../types'
+import {TOrderNumber} from '../../types'
 import styles from './order-details.module.css'
 
-const OrderDetails: React.FC<TOrderNumber> = ({ number }) => {
+const OrderDetails: React.FC<TOrderNumber> = ({number}) => {
   return (
     <div className={styles.details}>
       <div className={styles.box}></div>

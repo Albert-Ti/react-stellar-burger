@@ -1,17 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
 import burger from '../constructor/slice'
-import { feedOrdersReducer as feedOrders } from '../feed-orders/reducer'
+import {feedOrdersReducer as feedOrders} from '../feed-orders/reducer'
 import ingredients from '../ingredients/slice'
-import { socketMiddleware } from '../middleware/socket-middleware'
+import {socketMiddleware} from '../middleware/socket-middleware'
 import * as actionsFeed from '../feed-orders/actions'
 import * as actionsProfile from '../profile-orders/actions'
-import { profileOrderReducer as profileOrder } from '../profile-orders/reducer'
+import {profileOrderReducer as profileOrder} from '../profile-orders/reducer'
 import user from '../user/slice'
 
 const feedOrdersMiddleWare = socketMiddleware({
   wsConnect: actionsFeed.feedOrdersConnect,
   wsConnecting: actionsFeed.feedOrdersWsConnecting,
-  wsdisconnect: actionsFeed.feedOrdersDisconnect,
+  wsDisconnect: actionsFeed.feedOrdersDisconnect,
   onOpen: actionsFeed.feedOrdersWsOpen,
   onClose: actionsFeed.feedOrdersWsClose,
   onError: actionsFeed.feedOrdersWsError,
@@ -19,9 +19,9 @@ const feedOrdersMiddleWare = socketMiddleware({
 })
 
 const profileOrderMiddleWare = socketMiddleware({
-  wsConnect: actionsProfile.profileOrderConntect,
+  wsConnect: actionsProfile.profileOrderConnect,
   wsConnecting: actionsProfile.profileOrderWsConnecting,
-  wsdisconnect: actionsProfile.profileOrderDisconnect,
+  wsDisconnect: actionsProfile.profileOrderDisconnect,
   onOpen: actionsProfile.profileOrderWsOpen,
   onClose: actionsProfile.profileOrderWsClose,
   onError: actionsProfile.profileOrderWsError,

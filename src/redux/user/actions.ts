@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import {createAsyncThunk} from '@reduxjs/toolkit'
 import {
   editUserRequest,
   forgotPasswordRequest,
@@ -6,7 +6,7 @@ import {
   logoutRequest,
   registerRequest,
   resetPasswordRequest,
-  userRequest
+  userRequest,
 } from '../../utils/api'
 
 export const fetchCheckUser = createAsyncThunk('user/fetchCheckUserStatus', userRequest)
@@ -23,7 +23,4 @@ export const fetchForgotPassword = createAsyncThunk(
   'user/fetchForgotPasswordStatus',
   forgotPasswordRequest
 )
-export const fetchResetPassword = createAsyncThunk(
-  'user/fetchResetPasswordStatus',
-  resetPasswordRequest
-)
+export const fetchResetPassword = createAsyncThunk('user/fetchResetPasswordStatus', resetPasswordRequest)

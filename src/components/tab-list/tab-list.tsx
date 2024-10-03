@@ -1,14 +1,13 @@
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { useAppDispatch } from '../../hooks'
-import { getCurrentTab, ingredientsStore } from '../../redux/ingredients/slice'
-import { isBun, isMain, isSauce, tabBun, tabMain, tabSauce } from '../../utils/constants'
+import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
+import {useSelector} from 'react-redux'
+import {useAppDispatch} from '../../hooks'
+import {getCurrentTab, ingredientsStore} from '../../redux/ingredients/slice'
+import {isBun, isMain, isSauce, tabBun, tabMain, tabSauce} from '../../utils/constants'
 import styles from './tab-list.module.css'
 
 const TabList = () => {
   const dispatch = useAppDispatch()
-  const { currentTab } = useSelector(ingredientsStore)
+  const {currentTab} = useSelector(ingredientsStore)
 
   return (
     <div className={styles.tabLists}>

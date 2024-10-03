@@ -1,27 +1,27 @@
-import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
+import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import {useSelector} from 'react-redux'
+import {Link, Navigate, useNavigate} from 'react-router-dom'
 import PasswordInput from '../../components/UI/password-input/password-input'
-import { useAppDispatch, useForm } from '../../hooks'
-import { fetchResetPassword } from '../../redux/user/actions'
-import { catchError, userStore } from '../../redux/user/slice'
-import { THandleSubmitForm } from '../../types'
+import {useAppDispatch, useForm} from '../../hooks'
+import {fetchResetPassword} from '../../redux/user/actions'
+import {catchError, userStore} from '../../redux/user/slice'
+import {THandleSubmitForm} from '../../types'
 
 const ResetPassword = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { resetPasswordStatus, errorStatus } = useSelector(userStore)
+  const {resetPasswordStatus, errorStatus} = useSelector(userStore)
 
-  const { values, handleChanges } = useForm({
+  const {values, handleChanges} = useForm({
     password: '',
-    token: ''
+    token: '',
   })
 
   const handleResetPassword = (e: THandleSubmitForm) => {
     e.preventDefault()
     dispatch(fetchResetPassword(values))
-    navigate('/', { replace: true })
+    navigate('/', {replace: true})
   }
 
   React.useEffect(() => {
@@ -50,9 +50,7 @@ const ResetPassword = () => {
         />
         <Button htmlType='submit'>Сохранить</Button>
         <span
-          className={`text text_type_main-default ${
-            errorStatus ? 'text-error-active' : 'text-error'
-          }`}
+          className={`text text_type_main-default ${errorStatus ? 'text-error-active' : 'text-error'}`}
         >
           {errorStatus?.message}
         </span>

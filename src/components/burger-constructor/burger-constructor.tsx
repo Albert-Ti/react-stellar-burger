@@ -1,10 +1,10 @@
-import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { useDrop } from 'react-dnd'
-import { useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../../hooks'
-import { fetchOrder } from '../../redux/constructor/actions'
+import {useDrop} from 'react-dnd'
+import {useSelector} from 'react-redux'
+import {useLocation, useNavigate} from 'react-router-dom'
+import {useAppDispatch} from '../../hooks'
+import {fetchOrder} from '../../redux/constructor/actions'
 import {
   addBun,
   addIngredient,
@@ -12,9 +12,9 @@ import {
   setOrder,
   setTotalPrice,
 } from '../../redux/constructor/slice'
-import { userStore } from '../../redux/user/slice'
-import { TIngredient } from '../../types'
-import { isBun } from '../../utils/constants'
+import {userStore} from '../../redux/user/slice'
+import {TIngredient} from '../../types'
+import {isBun} from '../../utils/constants'
 import Preloader from '../UI/preloader/preloader'
 import IngredientConstructor from '../ingredient-constructor/ingredient-constructor'
 import Modal from '../modal/modal'
@@ -24,32 +24,32 @@ import styles from './burger-constructor.module.css'
 const BurgerConstructor = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { pathname } = useLocation()
+  const {pathname} = useLocation()
 
-  const { user } = useSelector(userStore)
-  const { bun, addedIngredients, totalPrice, createdOrder, statusCreatedOrder } =
+  const {user} = useSelector(userStore)
+  const {bun, addedIngredients, totalPrice, createdOrder, statusCreatedOrder} =
     useSelector(constructorStore)
 
   const handleOrderRequest = () => {
     if (!user) {
-      navigate('/login', { state: { from: { pathname } } })
+      navigate('/login', {state: {from: {pathname}}})
     } else {
       const ingredientsIdx = [...addedIngredients.map((item: TIngredient) => item._id), bun._id]
-      dispatch(fetchOrder({ ingredients: ingredientsIdx }))
+      dispatch(fetchOrder({ingredients: ingredientsIdx}))
     }
   }
 
   const closeModalOrder = () => {
-    dispatch(setOrder({ number: 0 }))
+    dispatch(setOrder({number: 0}))
   }
 
-  const [{ isDrop }, dropRef] = useDrop({
+  const [{isDrop}, dropRef] = useDrop({
     accept: 'ingredient',
     drop: (element: TIngredient) => {
       if (element.type === isBun) {
-        dispatch(addBun({ ...element, uuid: crypto.randomUUID() }))
+        dispatch(addBun({...element, uuid: crypto.randomUUID()}))
       } else if (bun.isLocked) {
-        dispatch(addIngredient({ ...element, uuid: crypto.randomUUID() }))
+        dispatch(addIngredient({...element, uuid: crypto.randomUUID()}))
       }
     },
     collect: monitor => ({

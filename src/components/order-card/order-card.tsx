@@ -1,12 +1,12 @@
-import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link, useLocation, useMatch } from 'react-router-dom'
-import { TCorrectCardInfo, TOrder } from '../../types'
+import {CurrencyIcon, FormattedDate} from '@ya.praktikum/react-developer-burger-ui-components'
+import {Link, useLocation, useMatch} from 'react-router-dom'
+import {useOrder} from '../../hooks'
+import {TCorrectCardInfo, TOrder} from '../../types'
 import styles from './order-card.module.css'
-import { useOrder } from '../../hooks'
 
 const OrderCard: React.FC<TOrder> = props => {
   const location = useLocation()
-  const { name, number, updatedAt, ingredients, status } = props
+  const {name, number, updatedAt, ingredients, status} = props
   const profileOrderPath = useMatch('/profile/order')
 
   const correctCardInfo = useOrder(ingredients) as TCorrectCardInfo
@@ -19,7 +19,7 @@ const OrderCard: React.FC<TOrder> = props => {
             style={{
               position: 'absolute',
               zIndex: correctCardInfo.items.length - i,
-              left: `${i * 44}px`
+              left: `${i * 44}px`,
             }}
             key={i}
             src={item?.image_mobile}
@@ -33,7 +33,7 @@ const OrderCard: React.FC<TOrder> = props => {
               position: 'absolute',
               zIndex: ingredients.length - i,
               left: `${i * 44}px`,
-              opacity: i === 5 ? 0.4 : ''
+              opacity: i === 5 ? 0.4 : '',
             }}
             key={i}
             src={item?.image_mobile}
@@ -50,11 +50,7 @@ const OrderCard: React.FC<TOrder> = props => {
   const contentStatus = (
     <p
       className={`text text_type_main-default ${
-        status === 'pending'
-          ? 'text_color_success'
-          : status === 'cancelled'
-          ? 'text_color_error'
-          : ''
+        status === 'pending' ? 'text_color_success' : status === 'cancelled' ? 'text_color_error' : ''
       } ${styles.status}`}
     >
       {status === 'pending' ? 'Готовится' : status === 'cancelled' ? 'Отменен' : 'Выполнен'}
@@ -64,7 +60,7 @@ const OrderCard: React.FC<TOrder> = props => {
   return (
     <Link
       to={profileOrderPath ? `/profile/order/${number}` : `/feed/${number}`}
-      state={{ background: location }}
+      state={{background: location}}
       className={styles.content}
     >
       <div className={styles.info}>
@@ -84,9 +80,7 @@ const OrderCard: React.FC<TOrder> = props => {
           {contentMoreImages}
         </div>
         <div className={styles.boxPrice}>
-          <span className='text text_type_digits-default'>
-            {correctCardInfo.totalPrice.toString()}
-          </span>{' '}
+          <span className='text text_type_digits-default'>{correctCardInfo.totalPrice.toString()}</span>{' '}
           <CurrencyIcon type='primary' />
         </div>
       </div>

@@ -1,21 +1,21 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import {useSelector} from 'react-redux'
 import CardLoader from '../../components/UI/card-loader/card-loader'
 import OrderCard from '../../components/order-card/order-card'
-import { useAppDispatch } from '../../hooks'
+import {useAppDispatch} from '../../hooks'
 import {
-  profileOrderConntect as connect,
-  profileOrderDisconnect as disconnect
+  profileOrderConnect as connect,
+  profileOrderDisconnect as disconnect,
 } from '../../redux/profile-orders/actions'
-import { profileOrderStore } from '../../redux/profile-orders/reducer'
-import { fetchCheckUser } from '../../redux/user/actions'
-import { WS_ORDERS_URL, wsStatus } from '../../utils/constants'
+import {profileOrderStore} from '../../redux/profile-orders/reducer'
+import {fetchCheckUser} from '../../redux/user/actions'
+import {WS_ORDERS_URL, wsStatus} from '../../utils/constants'
 import ErrorPage from '../error-page'
 import styles from './profile-orders.module.css'
 
 const ProfileOrders = () => {
   const dispatch = useAppDispatch()
-  const { orders, wsStatusOrders, connectingError } = useSelector(profileOrderStore)
+  const {orders, wsStatusOrders, connectingError} = useSelector(profileOrderStore)
   const token = localStorage.getItem('access-token')?.replace('Bearer ', '')
 
   React.useEffect(() => {
@@ -40,7 +40,7 @@ const ProfileOrders = () => {
         ))
       ) : !orders?.length ? (
         <div>
-          <h1 style={{ textAlign: 'center' }} className='text_type_main-large'>
+          <h1 style={{textAlign: 'center'}} className='text_type_main-large'>
             История заказов пуста
           </h1>
         </div>

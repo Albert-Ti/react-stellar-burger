@@ -1,5 +1,5 @@
-import { createAction } from '@reduxjs/toolkit'
-import { TOrdersResponse } from '../../types'
+import {createAction} from '@reduxjs/toolkit'
+import {TOrdersResponse} from '../../types'
 
 export const feedOrdersConnect = createAction<string | undefined, 'FEED_ORDERS_CONNECT'>(
   'FEED_ORDERS_CONNECT'

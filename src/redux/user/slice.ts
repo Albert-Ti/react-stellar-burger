@@ -1,5 +1,5 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import { RootState } from '../store'
+import {PayloadAction, SerializedError, createSlice} from '@reduxjs/toolkit'
+import {RootState} from '../store'
 import {
   fetchCheckUser,
   fetchEditUser,
@@ -7,9 +7,9 @@ import {
   fetchLogin,
   fetchLogout,
   fetchRegister,
-  fetchResetPassword
+  fetchResetPassword,
 } from './actions'
-import { TUserState } from './types'
+import {TUserState} from './types'
 
 const initialState: TUserState = {
   user: null,
@@ -17,11 +17,11 @@ const initialState: TUserState = {
     name: '',
     message: '',
     stack: '',
-    code: ''
+    code: '',
   },
   isAuthChecked: false,
   resetPasswordStatus: false,
-  logoutStatus: false
+  logoutStatus: false,
 }
 
 const userSlice = createSlice({
@@ -32,11 +32,11 @@ const userSlice = createSlice({
       if (action.payload) {
         state.errorStatus = action.payload
       }
-    }
+    },
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchCheckUser.fulfilled, (state, { payload }) => {
+      .addCase(fetchCheckUser.fulfilled, (state, {payload}) => {
         if (localStorage.getItem('access-token')) {
           state.user = payload.user
         }
@@ -49,7 +49,7 @@ const userSlice = createSlice({
         localStorage.removeItem('access-token')
         localStorage.removeItem('refresh-token')
       })
-      .addCase(fetchRegister.fulfilled, (state, { payload }) => {
+      .addCase(fetchRegister.fulfilled, (state, {payload}) => {
         if (payload.accessToken && payload.refreshToken) {
           localStorage.setItem('access-token', payload.accessToken)
           localStorage.setItem('refresh-token', payload.refreshToken)
@@ -60,7 +60,7 @@ const userSlice = createSlice({
       .addCase(fetchRegister.rejected, (state, action) => {
         state.errorStatus = action.error
       })
-      .addCase(fetchLogin.fulfilled, (state, { payload }) => {
+      .addCase(fetchLogin.fulfilled, (state, {payload}) => {
         if (payload.accessToken && payload.refreshToken) {
           localStorage.setItem('access-token', payload.accessToken)
           localStorage.setItem('refresh-token', payload.refreshToken)
@@ -71,24 +71,24 @@ const userSlice = createSlice({
       .addCase(fetchLogin.rejected, (state, action) => {
         state.errorStatus = action.error
       })
-      .addCase(fetchEditUser.fulfilled, (state, { payload }) => {
+      .addCase(fetchEditUser.fulfilled, (state, {payload}) => {
         state.user = payload.user
       })
       .addCase(fetchEditUser.rejected, (state, action) => {
         state.errorStatus = action.error
       })
-      .addCase(fetchForgotPassword.fulfilled, (state, { payload }) => {
+      .addCase(fetchForgotPassword.fulfilled, (state, {payload}) => {
         state.resetPasswordStatus = payload.success
       })
       .addCase(fetchForgotPassword.rejected, (state, action) => {
         state.errorStatus = action.error
         state.resetPasswordStatus = false
       })
-      .addCase(fetchResetPassword.fulfilled, (state, { payload }) => {})
+      .addCase(fetchResetPassword.fulfilled, (state, {payload}) => {})
       .addCase(fetchResetPassword.rejected, (state, action) => {
         state.errorStatus = action.error
       })
-      .addCase(fetchLogout.fulfilled, (state, { payload }) => {
+      .addCase(fetchLogout.fulfilled, (state, {payload}) => {
         if (payload.success) {
           state.user = null
           state.logoutStatus = payload.success
@@ -99,10 +99,10 @@ const userSlice = createSlice({
       .addCase(fetchLogout.rejected, (state, action) => {
         state.errorStatus = action.error
       })
-  }
+  },
 })
 
 export const userStore = (store: RootState) => store.user
 
-export const { catchError } = userSlice.actions
+export const {catchError} = userSlice.actions
 export default userSlice.reducer

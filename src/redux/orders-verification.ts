@@ -1,4 +1,4 @@
-import { TOrder } from '../types'
+import {TOrder} from '../types'
 
 /* eslint-disable array-callback-return */
 export function isValidHexID(id: string) {

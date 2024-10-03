@@ -1,20 +1,20 @@
-import { createReducer } from '@reduxjs/toolkit'
-import { wsStatus } from '../../utils/constants'
-import { currectOrderItems } from '../orders-verification'
-import { RootState } from '../store'
+import {createReducer} from '@reduxjs/toolkit'
+import {wsStatus} from '../../utils/constants'
+import {currectOrderItems} from '../orders-verification'
+import {RootState} from '../store'
 import {
   profileOrderWsClose,
   profileOrderWsConnecting,
   profileOrderWsError,
   profileOrderWsMessage,
-  profileOrderWsOpen
+  profileOrderWsOpen,
 } from './actions'
-import { TProfileOrdersState } from './types'
+import {TProfileOrdersState} from './types'
 
 const initialState: TProfileOrdersState = {
   wsStatusOrders: wsStatus.offline,
   orders: [],
-  connectingError: null
+  connectingError: null,
 }
 
 export const profileOrderReducer = createReducer(initialState, builder => {
@@ -28,13 +28,13 @@ export const profileOrderReducer = createReducer(initialState, builder => {
     .addCase(profileOrderWsClose, state => {
       state.wsStatusOrders = wsStatus.offline
     })
-    .addCase(profileOrderWsMessage, (state, { payload }) => {
-      const { orders, success } = payload
+    .addCase(profileOrderWsMessage, (state, {payload}) => {
+      const {orders, success} = payload
       if (success) {
         state.orders = currectOrderItems(orders)
       }
     })
-    .addCase(profileOrderWsError, (state, { payload }) => {
+    .addCase(profileOrderWsError, (state, {payload}) => {
       if (payload) {
         state.connectingError = payload
       }

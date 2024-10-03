@@ -1,21 +1,21 @@
-import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
+import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import {useSelector} from 'react-redux'
+import {Link} from 'react-router-dom'
 import PasswordInput from '../../components/UI/password-input/password-input'
-import { useAppDispatch, useForm } from '../../hooks'
-import { fetchRegister } from '../../redux/user/actions'
-import { catchError, userStore } from '../../redux/user/slice'
-import { THandleSubmitForm } from '../../types'
+import {useAppDispatch, useForm} from '../../hooks'
+import {fetchRegister} from '../../redux/user/actions'
+import {catchError, userStore} from '../../redux/user/slice'
+import {THandleSubmitForm} from '../../types'
 
 const Register = () => {
   const dispatch = useAppDispatch()
-  const { errorStatus } = useSelector(userStore)
+  const {errorStatus} = useSelector(userStore)
 
-  const { values, handleChanges } = useForm({
+  const {values, handleChanges} = useForm({
     name: sessionStorage.getItem('name') || '',
     email: sessionStorage.getItem('email') || '',
-    password: ''
+    password: '',
   })
 
   const handleSubmitRegistration = (e: THandleSubmitForm) => {
@@ -51,9 +51,7 @@ const Register = () => {
         <PasswordInput placeholder='Пароль' value={values.password} onChange={handleChanges} />
         <Button htmlType='submit'>Зарегистрироваться</Button>
         <span
-          className={`text text_type_main-default ${
-            errorStatus ? 'text-error-active' : 'text-error'
-          }`}
+          className={`text text_type_main-default ${errorStatus ? 'text-error-active' : 'text-error'}`}
         >
           {errorStatus?.message}
         </span>

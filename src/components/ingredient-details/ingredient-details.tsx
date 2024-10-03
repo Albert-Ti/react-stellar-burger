@@ -1,15 +1,15 @@
-import { useSelector } from 'react-redux'
-import { useLocation, useParams } from 'react-router-dom'
+import {useSelector} from 'react-redux'
+import {useLocation, useParams} from 'react-router-dom'
 import ErrorPage from '../../pages/error-page'
-import { ingredientsStore } from '../../redux/ingredients/slice'
-import { TIngredient } from '../../types'
+import {ingredientsStore} from '../../redux/ingredients/slice'
+import {TIngredient} from '../../types'
 import styles from './ingredient-details.module.css'
 
 const IngredientDetails = () => {
-  const { id } = useParams()
-  const { state } = useLocation()
+  const {id} = useParams()
+  const {state} = useLocation()
 
-  const { items } = useSelector(ingredientsStore)
+  const {items} = useSelector(ingredientsStore)
   if (!items.length) return null
 
   const findItem = items.find((item: TIngredient) => item._id === id)

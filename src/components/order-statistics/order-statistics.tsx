@@ -1,11 +1,10 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { feedOrderStore } from '../../redux/feed-orders/reducer'
+import {useSelector} from 'react-redux'
+import {feedOrderStore} from '../../redux/feed-orders/reducer'
 import OrderNumberList from '../order-number-list/order-number-list'
 import styles from './order-statistics.module.css'
 
 const OrderStatistics = () => {
-  const { statistics } = useSelector(feedOrderStore)
+  const {statistics} = useSelector(feedOrderStore)
 
   return (
     <section className={styles.orderDietails}>
@@ -19,9 +18,7 @@ const OrderStatistics = () => {
       </div>
       <div>
         <h3 className='text text_type_main-medium'>Выполнено за сегодня:</h3>
-        <span className={`${styles.timeProgress} text_type_digits-large`}>
-          {statistics.totalToday}
-        </span>
+        <span className={`${styles.timeProgress} text_type_digits-large`}>{statistics.totalToday}</span>
       </div>
     </section>
   )

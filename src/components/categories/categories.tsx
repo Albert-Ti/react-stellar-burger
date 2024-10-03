@@ -1,17 +1,17 @@
 import React from 'react'
-import { useAppDispatch } from '../../hooks'
-import { getCurrentTab } from '../../redux/ingredients/slice'
-import { isBun, isHeaders, isMain, isSauce, tabBun, tabMain, tabSauce } from '../../utils/constants'
+import {useAppDispatch} from '../../hooks'
+import {getCurrentTab} from '../../redux/ingredients/slice'
+import {isBun, isHeaders, isMain, isSauce, tabBun, tabMain, tabSauce} from '../../utils/constants'
 import CategoryIngredients from '../category-ingredients/category-ingredients'
 import styles from './categories.module.css'
-import { TCategories } from './types'
+import {TCategories} from './types'
 
-const Categories: React.FC<TCategories> = ({ title, items }) => {
+const Categories: React.FC<TCategories> = ({title, items}) => {
   const dispatch = useAppDispatch()
 
   const targetRef = React.useRef<HTMLDivElement>(null)
   React.useEffect(() => {
-    const observer = new IntersectionObserver(callBack, { threshold: 0.5 })
+    const observer = new IntersectionObserver(callBack, {threshold: 0.5})
 
     function callBack(entries: IntersectionObserverEntry[]) {
       entries.forEach((entry: IntersectionObserverEntry) => {

@@ -1,6 +1,6 @@
-import { TOptionsResponse } from '../types'
+import {TOptionsResponse} from '../types'
 
-export const modalElememt = document.getElementById('modal')!
+export const modalElement = document.getElementById('modal')!
 
 export const isBun = 'bun'
 export const isSauce = 'sauce'

@@ -1,8 +1,8 @@
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { isBun } from '../../utils/constants'
+import {TIngredient} from '../../types'
+import {isBun} from '../../utils/constants'
 import styles from './order-composition.module.css'
-import { TIngredient } from '../../types'
 
 const OrderComposition: React.FC<TIngredient> = props => {
   return (

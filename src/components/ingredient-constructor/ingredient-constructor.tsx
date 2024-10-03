@@ -1,13 +1,13 @@
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { useDrag, useDrop } from 'react-dnd'
-import { useAppDispatch } from '../../hooks'
-import { removeIngredient, sortedIngredients } from '../../redux/constructor/slice'
-import { TIngredient } from '../../types'
+import {useDrag, useDrop} from 'react-dnd'
+import {useAppDispatch} from '../../hooks'
+import {removeIngredient, sortedIngredients} from '../../redux/constructor/slice'
+import {TIngredient} from '../../types'
 import styles from './ingredient-constructor.module.css'
-import { TIngredientConstructor } from './types'
+import {TIngredientConstructor} from './types'
 
-const IngredientConstructor: React.FC<TIngredientConstructor> = ({ type, ingredient, index }) => {
+const IngredientConstructor: React.FC<TIngredientConstructor> = ({type, ingredient, index}) => {
   const dispatch = useAppDispatch()
   const ref = React.useRef<HTMLLIElement>(null)
 
@@ -17,24 +17,24 @@ const IngredientConstructor: React.FC<TIngredientConstructor> = ({ type, ingredi
 
   const [, drag] = useDrag({
     type: 'burger',
-    item: { index }
+    item: {index},
   })
 
-  const [{ isDrop }, drop] = useDrop({
+  const [{isDrop}, drop] = useDrop({
     accept: 'burger',
     collect: monitor => ({
-      isDrop: monitor.isOver()
+      isDrop: monitor.isOver(),
     }),
-    hover: (item: { index: number }) => {
+    hover: (item: {index: number}) => {
       if (!ref.current) return
       const dragIndex = item.index
       const hoverIndex = index as number
 
       if (dragIndex === hoverIndex) return
-      dispatch(sortedIngredients({ dragIndex, hoverIndex }))
+      dispatch(sortedIngredients({dragIndex, hoverIndex}))
 
       item.index = hoverIndex
-    }
+    },
   })
 
   !ingredient.isLocked && drag(drop(ref))

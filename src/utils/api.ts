@@ -6,9 +6,9 @@ import {
   TOrderCreationResponse,
   TSuccessResponse,
   TToken,
-  TUserSuccessResponse
+  TUserSuccessResponse,
 } from '../types'
-import { BASE_URL, options } from './constants'
+import {BASE_URL, options} from './constants'
 
 const request = async <T>(endpoint: string, options?: TOptionsResponse): Promise<T> => {
   // prettier-ignore
@@ -22,50 +22,49 @@ const request = async <T>(endpoint: string, options?: TOptionsResponse): Promise
       : Promise.reject(json))
 }
 
-export const ingredientsRequest = () =>
-  request<TSuccessResponse & { data: TIngredient[] }>('ingredients')
+export const ingredientsRequest = () => request<TSuccessResponse & {data: TIngredient[]}>('ingredients')
 
-export const orderRequest = (obj: { ingredients: string[] }) =>
+export const orderRequest = (obj: {ingredients: string[]}) =>
   request<TOrderCreationResponse>('orders', {
     ...options,
     headers: {
       ...options.headers,
-      authorization: localStorage.getItem('access-token')!
+      authorization: localStorage.getItem('access-token')!,
     },
-    body: JSON.stringify(obj)
+    body: JSON.stringify(obj),
   })
 
 export const getOrderRequest = (number: string) =>
-  request<TSuccessResponse & { orders: TOrder[] }>(`orders/${number}`)
+  request<TSuccessResponse & {orders: TOrder[]}>(`orders/${number}`)
 
 export const loginRequest = (form: TFormUser) =>
   request<TUserSuccessResponse & TToken>('auth/login', {
     ...options,
-    body: JSON.stringify(form)
+    body: JSON.stringify(form),
   })
 
 export const registerRequest = (form: TFormUser) =>
   request<TUserSuccessResponse & TToken>('auth/register', {
     ...options,
-    body: JSON.stringify(form)
+    body: JSON.stringify(form),
   })
 
 export const forgotPasswordRequest = (form: TFormUser) =>
   request<TSuccessResponse>('password-reset', {
     ...options,
-    body: JSON.stringify(form)
+    body: JSON.stringify(form),
   })
 
 export const resetPasswordRequest = (form: TFormUser) =>
   request<TSuccessResponse>('password-reset/reset', {
     ...options,
-    body: JSON.stringify(form)
+    body: JSON.stringify(form),
   })
 
 export const logoutRequest = () =>
   request<TSuccessResponse>('auth/logout', {
     ...options,
-    body: JSON.stringify({ token: localStorage.getItem('refresh-token') })
+    body: JSON.stringify({token: localStorage.getItem('refresh-token')}),
   })
 
 export const userRequest = () => {
@@ -74,8 +73,8 @@ export const userRequest = () => {
     method: 'GET',
     headers: {
       ...options.headers,
-      authorization: localStorage.getItem('access-token')!
-    }
+      authorization: localStorage.getItem('access-token')!,
+    },
   })
 }
 
@@ -85,16 +84,16 @@ export const editUserRequest = (form: TFormUser) => {
     method: 'PATCH',
     headers: {
       ...options.headers,
-      authorization: localStorage.getItem('access-token')!
+      authorization: localStorage.getItem('access-token')!,
     },
-    body: JSON.stringify(form)
+    body: JSON.stringify(form),
   })
 }
 
 export const refreshToken = () =>
   request<TToken>('auth/token', {
     ...options,
-    body: JSON.stringify({ token: localStorage.getItem('refresh-token') })
+    body: JSON.stringify({token: localStorage.getItem('refresh-token')}),
   })
 
 const fetchWithRefresh = async <T>(url: string, options: TOptionsResponse) => {
@@ -111,8 +110,8 @@ const fetchWithRefresh = async <T>(url: string, options: TOptionsResponse) => {
         ...options,
         headers: {
           ...options.headers,
-          authorization: refreshData.accessToken
-        }
+          authorization: refreshData.accessToken,
+        },
       })
     }
     return Promise.reject(err)

@@ -1,4 +1,4 @@
-import { Middleware, MiddlewareAPI } from 'redux'
+import {Middleware, MiddlewareAPI} from 'redux'
 import {
   feedOrdersConnect,
   feedOrdersDisconnect,
@@ -6,23 +6,23 @@ import {
   feedOrdersWsConnecting,
   feedOrdersWsError,
   feedOrdersWsMessage,
-  feedOrdersWsOpen
+  feedOrdersWsOpen,
 } from '../feed-orders/actions'
 import {
-  profileOrderConntect,
+  profileOrderConnect,
   profileOrderDisconnect,
   profileOrderWsClose,
   profileOrderWsConnecting,
   profileOrderWsError,
   profileOrderWsMessage,
-  profileOrderWsOpen
+  profileOrderWsOpen,
 } from '../profile-orders/actions'
-import { AppDispatch, RootState } from '../store'
-import { fetchCheckUser } from '../user/actions'
+import {AppDispatch, RootState} from '../store'
+import {fetchCheckUser} from '../user/actions'
 
 type TWsActions = {
-  wsConnect: typeof feedOrdersConnect | typeof profileOrderConntect
-  wsdisconnect: typeof feedOrdersDisconnect | typeof profileOrderDisconnect
+  wsConnect: typeof feedOrdersConnect | typeof profileOrderConnect
+  wsDisconnect: typeof feedOrdersDisconnect | typeof profileOrderDisconnect
   wsConnecting: typeof feedOrdersWsConnecting | typeof profileOrderWsConnecting
   onOpen: typeof feedOrdersWsOpen | typeof profileOrderWsOpen
   onMessage: typeof feedOrdersWsMessage | typeof profileOrderWsMessage
@@ -36,9 +36,8 @@ export const socketMiddleware = (wsActions: TWsActions): Middleware => {
     let isCLosed = false
 
     return next => action => {
-      const { dispatch } = store
-      const { wsConnect, wsdisconnect, wsConnecting, onOpen, onMessage, onClose, onError } =
-        wsActions
+      const {dispatch} = store
+      const {wsConnect, wsDisconnect, wsConnecting, onOpen, onMessage, onClose, onError} = wsActions
 
       if (wsConnect.match(action)) {
         if (action.payload) {
@@ -53,7 +52,7 @@ export const socketMiddleware = (wsActions: TWsActions): Middleware => {
         }
 
         socket.onmessage = event => {
-          const { data } = event
+          const {data} = event
           if (data.message === 'Invalid or missing token') {
             dispatch(fetchCheckUser())
           } else {
@@ -73,7 +72,7 @@ export const socketMiddleware = (wsActions: TWsActions): Middleware => {
           }
         }
 
-        if (wsdisconnect.match(action)) {
+        if (wsDisconnect.match(action)) {
           socket.close()
           socket = null
           isCLosed = true

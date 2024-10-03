@@ -1,8 +1,8 @@
-import { HideIcon, Input, ShowIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import {HideIcon, Input, ShowIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { TPasswordInput } from './types'
+import {TPasswordInput} from './types'
 
-const PasswordInput: React.FC<TPasswordInput> = ({ ...props }) => {
+const PasswordInput: React.FC<TPasswordInput> = ({...props}) => {
   const [isVisible, setIsVisible] = React.useState(false)
   return (
     <div className='input'>

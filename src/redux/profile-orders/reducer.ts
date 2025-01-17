@@ -1,6 +1,6 @@
 import {createReducer} from '@reduxjs/toolkit'
 import {wsStatus} from '../../utils/constants'
-import {currectOrderItems} from '../orders-verification'
+import {correctOrderItems} from '../orders-verification'
 import {RootState} from '../store'
 import {
   profileOrderWsClose,
@@ -31,7 +31,7 @@ export const profileOrderReducer = createReducer(initialState, builder => {
     .addCase(profileOrderWsMessage, (state, {payload}) => {
       const {orders, success} = payload
       if (success) {
-        state.orders = currectOrderItems(orders)
+        state.orders = correctOrderItems(orders)
       }
     })
     .addCase(profileOrderWsError, (state, {payload}) => {

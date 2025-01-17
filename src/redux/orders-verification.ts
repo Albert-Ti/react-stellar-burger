@@ -9,7 +9,7 @@ export function isValidHexID(id: string) {
   return true
 }
 
-export function currectOrderItems(items: TOrder[]) {
+export function correctOrderItems(items: TOrder[]) {
   return items
     .map(order => {
       if (

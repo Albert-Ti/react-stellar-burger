@@ -1,6 +1,6 @@
 import {createReducer} from '@reduxjs/toolkit'
 import {wsStatus} from '../../utils/constants'
-import {currectOrderItems} from '../orders-verification'
+import {correctOrderItems} from '../orders-verification'
 import {RootState} from '../store'
 import {
   feedOrdersWsClose,
@@ -42,7 +42,7 @@ export const feedOrdersReducer = createReducer(initialState, builder => {
         const {orders, total, totalToday, success} = payload
         if (success) {
           state.statistics = {total, totalToday}
-          state.orders = currectOrderItems(orders)
+          state.orders = correctOrderItems(orders)
         }
       }
     })
